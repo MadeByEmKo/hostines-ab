@@ -3,42 +3,46 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import '../styles/global.css';
-
-// Daily menu – read from content file
 import { readFileSync } from 'fs';
 import { join } from 'path';
 
-let dailyMenu = { date: '', soups: [], mains: [] };
+let dm = { date:'', soups:[], bezlepkova:[], bezmasa:[], hotova:[], gril:[], salaty:[], dezerty:[] };
 try {
-  const raw = readFileSync(join(process.cwd(), 'content/daily-menu.md'), 'utf8');
-  // Simple frontmatter parser
+  const raw = readFileSync(join(process.cwd(),'content/daily-menu.md'),'utf8');
   const fm = raw.match(/^---\n([\s\S]*?)\n---/);
-  if (fm) {
-    const lines = fm[1].split('\n');
-    lines.forEach(l => {
-      if (l.startsWith('date:'))   dailyMenu.date  = l.replace('date:', '').trim();
-    });
-    // Extract soups and mains arrays
-    const soupsMatch  = raw.match(/soups:([\s\S]*?)(?=mains:|$)/);
-    const mainsMatch  = raw.match(/mains:([\s\S]*?)(?=---|$)/);
-    const parseItems = (block) => block ? block.split('\n').filter(l => l.trim().startsWith('-')).map(l => {
-      const [name, price] = l.replace(/^\s*-\s*/, '').split('|').map(s => s.trim());
-      return { name, price: price || '' };
+  const parseSection = (key) => {
+    const m = raw.match(new RegExp(key+':\n([\\s\\S]*?)(?=\\w+:|---)'));
+    return m ? m[1].split('\n').filter(l=>l.trim().startsWith('-')).map(l=>{
+      const [name,price]=l.replace(/^\s*-\s*/,'').split('|').map(s=>s.trim());
+      return {name,price:price||''};
     }) : [];
-    dailyMenu.soups = parseItems(soupsMatch?.[1]);
-    dailyMenu.mains = parseItems(mainsMatch?.[1]);
-  }
-} catch(e) { /* fallback – show placeholder */ }
+  };
+  if(fm) fm[1].split('\n').forEach(l=>{if(l.startsWith('date:'))dm.date=l.replace('date:','').trim().replace(/"/g,'');});
+  dm.soups=parseSection('soups'); dm.bezlepkova=parseSection('bezlepkova');
+  dm.bezmasa=parseSection('bezmasa'); dm.hotova=parseSection('hotova');
+  dm.gril=parseSection('gril'); dm.salaty=parseSection('salaty');
+  dm.dezerty=parseSection('dezerty');
+} catch(e){}
+
+const allDailyItems = [
+  ...dm.soups.map(i=>({...i,cat:'Polévky'})),
+  ...dm.bezlepkova.map(i=>({...i,cat:'Bezlepková'})),
+  ...dm.bezmasa.map(i=>({...i,cat:'Bezmasá'})),
+  ...dm.hotova.map(i=>({...i,cat:'Hotová jídla'})),
+  ...dm.gril.map(i=>({...i,cat:'Gril & wok'})),
+  ...dm.salaty.map(i=>({...i,cat:'Saláty'})),
+  ...dm.dezerty.map(i=>({...i,cat:'Dezerty'})),
+];
 ---
 
-<BaseLayout title="Jídelní lístek" description="Denní menu od 99 Kč a stálý jídelní lístek Hostince AB v Městečku. Polévky, hlavní jídla, dezerty, nápoje.">
+<BaseLayout title="Jídelní lístek" description="Jídelní a nápojový lístek Hostince Antonín Barták v Městečku. Denní menu, stálý jídelní lístek, nápojový lístek.">
   <Header />
 
   <div class="page-hero">
     <div class="container">
       <span class="badge">Kuchyně</span>
       <h1 class="mt-md">Jídelní & nápojový lístek</h1>
-      <p class="lead mt-md">Poctivá česká kuchyně z čerstvých surovin · Denní menu 11–14 hod</p>
+      <p class="lead mt-md">Poctivá česká kuchyně · Denní menu 11–14 hod · Rozvoz od 4 jídel do 10 km zdarma</p>
     </div>
   </div>
 
@@ -55,46 +59,55 @@ try {
         <div class="daily-header reveal">
           <div>
             <h2>Denní menu</h2>
-            <p class="lead">Platné {dailyMenu.date || 'dnes'} · Vydáváme 11:00 – 14:00</p>
+            <p class="lead">Platné {dm.date || 'dnes'} · Vydáváme 11:00 – 14:00</p>
           </div>
           <div class="daily-badge-wrap">
-            <span class="daily-price-badge">od 99 Kč</span>
-            <a href="/menu?print=1" class="btn btn-ghost btn-sm no-print" id="menu-print-btn" onclick="window.print(); return false;">
-              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
-              Vytisknout
-            </a>
+            <span class="daily-price-badge">od 59 Kč</span>
+            <a href="/objednat" class="btn btn-primary btn-sm no-print" id="menu-order-btn">🛍️ Objednat s sebou</a>
+            <button class="btn btn-ghost btn-sm no-print" id="menu-print-btn" onclick="window.print()">🖨️ Tisk</button>
           </div>
         </div>
 
-        {dailyMenu.soups.length > 0 ? (
+        {allDailyItems.length > 0 ? (
           <div class="menu-card reveal">
-            <div class="menu-category">
-              <div class="menu-category-title">🥣 Polévky</div>
-              {dailyMenu.soups.map(item => (
-                <div class="menu-item">
-                  <div><div class="menu-item-name">{item.name}</div></div>
-                  <div class="menu-item-price">{item.price}</div>
-                </div>
-              ))}
-            </div>
-            <div class="menu-category">
-              <div class="menu-category-title">🍽️ Hlavní jídla</div>
-              {dailyMenu.mains.map(item => (
-                <div class="menu-item">
-                  <div><div class="menu-item-name">{item.name}</div></div>
-                  <div class="menu-item-price">{item.price}</div>
-                </div>
-              ))}
+            {[
+              {key:'soups',    emoji:'🥣', title:'Polévky',        items:dm.soups},
+              {key:'bezlepkova',emoji:'🌾',title:'Bezlepková jídla',items:dm.bezlepkova},
+              {key:'bezmasa',  emoji:'🌱', title:'Bezmasá jídla',  items:dm.bezmasa},
+              {key:'hotova',   emoji:'🍽️', title:'Hotová jídla',   items:dm.hotova},
+              {key:'gril',     emoji:'🔥', title:'Jídla z grilu a wok', items:dm.gril},
+              {key:'salaty',   emoji:'🥗', title:'Saláty',         items:dm.salaty},
+              {key:'dezerty',  emoji:'🍰', title:'Dezerty',        items:dm.dezerty},
+            ].filter(s=>s.items.length>0).map(sec=>(
+              <div class="menu-category">
+                <div class="menu-category-title">{sec.emoji} {sec.title}</div>
+                {sec.items.map(item=>(
+                  <div class="menu-item menu-item-clickable"
+                    data-name={item.name} data-price={item.price}
+                    role="button" tabindex="0" title="Klikněte pro objednávku s sebou">
+                    <div>
+                      <div class="menu-item-name">{item.name}</div>
+                    </div>
+                    <div class="menu-item-right">
+                      <div class="menu-item-price">{item.price}</div>
+                      <a href={`/objednat?item=${encodeURIComponent(item.name)}&price=${encodeURIComponent(item.price)}`}
+                         class="order-badge" title="Objednat s sebou">🛍️</a>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ))}
+            <div class="menu-note">
+              📞 Objednávky: <strong>737 484 116</strong> · Rozvoz od 4 jídel do 10 km zdarma
             </div>
           </div>
         ) : (
           <div class="daily-placeholder reveal">
             <div class="placeholder-icon">🍴</div>
             <h3>Dnešní menu bude brzy zveřejněno</h3>
-            <p>Aktuální nabídku zjistíte také telefonicky nebo na Facebooku.</p>
+            <p>Aktuální nabídku zjistíte telefonicky nebo na Facebooku.</p>
             <div class="flex gap-md flex-wrap items-center mt-lg" style="justify-content:center">
               <a href="tel:+420737484116" class="btn btn-primary" id="menu-phone-btn">+420 737 484 116</a>
-              <a href="https://www.facebook.com/Hostinec-Anton%C3%ADn-Bart%C3%A1k-822946991392710" target="_blank" rel="noopener" class="btn btn-outline" id="menu-fb-btn">Facebook</a>
             </div>
           </div>
         )}
@@ -104,92 +117,183 @@ try {
       <div class="tab-content hidden" id="content-jidelni">
         <div class="menu-print-bar no-print reveal">
           <p class="lead">Stálý jídelní lístek · Ceny včetně DPH</p>
-          <button class="btn btn-ghost btn-sm" id="jidelni-print-btn" onclick="window.print()">
-            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
-            Vytisknout lístek
-          </button>
+          <button class="btn btn-ghost btn-sm" onclick="window.print()">🖨️ Vytisknout</button>
         </div>
-
         <div class="menu-card reveal">
           {[
-            { title: '🥣 Polévky', items: [
-              { name: 'Hovězí vývar s nudlemi',       desc: 'Domácí vývar, čerstvé nudle',       price: '45 Kč'  },
-              { name: 'Gulášová polévka',              desc: 'Hovězí maso, paprika, brambory',    price: '55 Kč'  },
-              { name: 'Česnečka se sýrem',             desc: 'Česnek, sýr, krutony',               price: '50 Kč'  },
+            { title:'🥗 Předkrmy', items:[
+              {name:'Nakládaný hermelín v oleji',          desc:'Paprika, cibule, česnek, bylinky',                    price:'89 Kč'},
+              {name:'Utopenec',                            desc:'Pikantní naložený párek v octě',                      price:'65 Kč'},
+              {name:'Tatarský biftek 100g',                desc:'Topinky, česnek',                                     price:'149 Kč'},
             ]},
-            { title: '🥩 Studené předkrmy', items: [
-              { name: 'Utopenec',                      desc: 'Pikantní naložený párek',            price: '65 Kč'  },
-              { name: 'Nakládaný hermelín',             desc: 'Hermelín, paprika, česnek, olej',   price: '89 Kč'  },
+            { title:'🍻 Chuťovky k pivu', items:[
+              {name:'Smažené žampiony',                    desc:'Tatarská omáčka',                                     price:'99 Kč'},
+              {name:'Nakládané okurčičky',                 desc:'Domácí nakládané',                                    price:'55 Kč'},
+              {name:'Pečivo s máslem',                     desc:'',                                                    price:'25 Kč'},
             ]},
-            { title: '🍽️ Hlavní jídla', items: [
-              { name: 'Svíčková na smetaně',           desc: 'Hovězí pečeně, smetanová omáčka, houskový knedlík', price: '179 Kč' },
-              { name: 'Smažený vepřový řízek',         desc: 'Bramborový salát nebo hranolky',    price: '159 Kč' },
-              { name: 'Guláš s knedlíkem',             desc: 'Vepřový guláš, houskový knedlík',  price: '149 Kč' },
-              { name: 'Smažený sýr',                   desc: 'Eidam, tatarská omáčka, hranolky', price: '139 Kč' },
-              { name: 'Grilovaná žebra',               desc: 'Vepřová žebra, grilovaná zelenina, brambory', price: '229 Kč' },
-              { name: 'Kuřecí steak na másle',         desc: 'Kuřecí prsa, americké brambory',   price: '169 Kč' },
+            { title:'🥣 Polévky', items:[
+              {name:'Hovězí vývar s nudlemi',              desc:'Domácí vývar, játrové knedlíčky',                     price:'59 Kč'},
+              {name:'Gulášová polévka',                    desc:'Hovězí maso, paprika, brambory',                      price:'65 Kč'},
+              {name:'Česnečka se sýrem a krutony',         desc:'',                                                    price:'59 Kč'},
             ]},
-            { title: '🌱 Bezmasá jídla', items: [
-              { name: 'Smažený sýr (bezmasý)',         desc: 'Eidam, hranolky, tatarská omáčka', price: '139 Kč' },
-              { name: 'Těstoviny se zeleninou',        desc: 'Sezónní zelenina, parmazán',        price: '129 Kč' },
+            { title:'🌱 Bezmasé pokrmy', items:[
+              {name:'120g Smažený sýr GOUDA',              desc:'Petrželkový brambor, tatarská omáčka',                price:'199 Kč'},
+              {name:'350g Italské krémové zeleninové rizoto',desc:'Žampióny, parmazán',                                price:'189 Kč'},
+              {name:'200g Těstoviny se zeleninou',          desc:'Sezónní zelenina, parmazán',                         price:'169 Kč'},
             ]},
-            { title: '🍰 Dezerty', items: [
-              { name: 'Palačinky s džemem',            desc: 'S jahodovým nebo meruňkovým džemem', price: '69 Kč' },
-              { name: 'Zmrzlinový pohár',              desc: 'Tři kopečky zmrzliny, šlehačka',   price: '59 Kč'  },
+            { title:'🍽️ Staročeské speciality i klasika', items:[
+              {name:'150g Svíčková hovězí na smetaně',     desc:'Karlovarský knedlík, brusinkový terč, šlehačka',     price:'229 Kč'},
+              {name:'200g Vepřový guláš',                  desc:'Houskový knedlík',                                   price:'169 Kč'},
+              {name:'150g Vepřové výpečky',                desc:'Bramborový knedlík, listový špenát',                 price:'199 Kč'},
+              {name:'200g Smažený vepřový řízek',          desc:'Bramborový salát nebo hranolky, citrón',             price:'199 Kč'},
+              {name:'200g Smažený holandský řízek',        desc:'Bramborová kaše, okurka',                            price:'199 Kč'},
+              {name:'1/4ks Pečená kachna',                 desc:'Variace knedlíků, dušené zelí',                      price:'269 Kč'},
             ]},
-          ].map(cat => (
+            { title:'👶 Dětská jídla', items:[
+              {name:'100g Smažený kuřecí řízek',           desc:'Hranolky, kečup',                                    price:'129 Kč'},
+              {name:'Špagety s kečupem',                   desc:'Parmazán',                                           price:'99 Kč'},
+              {name:'Palačinky s džemem',                  desc:'Šlehačka',                                           price:'89 Kč'},
+            ]},
+            { title:'🔥 Šťavnaté steaky z grilu', items:[
+              {name:'200g Hovězí FLANK steak',             desc:'Pepřová omáčka, hranolky',                           price:'319 Kč'},
+              {name:'180g Kuřecí plněné prsíčko SOUS-VIDE',desc:'Rokforová omáčka, bramborová kaše',                  price:'219 Kč'},
+              {name:'200g Asijský vepřový bůček',          desc:'Sezam, jasmínová rýže',                              price:'209 Kč'},
+              {name:'350g MAXIWRAP',                       desc:'Kuřecí stripsy, zelenina, franc. dip, hranolky',     price:'219 Kč'},
+            ]},
+            { title:'🌍 Minutková jídla, mezinárodní kuchyně', items:[
+              {name:'350g Boloňské špagety',               desc:'Masové ragú, sýr',                                   price:'189 Kč'},
+              {name:'350g Italské rizoto se žampióny',     desc:'Parmazán, krémová omáčka',                           price:'189 Kč'},
+            ]},
+            { title:'🥗 Zeleninové variace a saláty', items:[
+              {name:'350g Caesar salát s kuřecím',         desc:'Angl. slanina, dip, krutony, parmazán',              price:'229 Kč'},
+              {name:'150g Coleslaw',                       desc:'Domácí zelný salát',                                 price:'59 Kč'},
+            ]},
+            { title:'🥄 Omáčky (příloha)', items:[
+              {name:'Pepřová omáčka',                      desc:'',                                                   price:'39 Kč'},
+              {name:'Tatarská omáčka',                     desc:'',                                                   price:'29 Kč'},
+              {name:'Česneková omáčka',                    desc:'',                                                   price:'29 Kč'},
+            ]},
+            { title:'🍰 Dezerty', items:[
+              {name:'Tiramisu',                            desc:'',                                                   price:'79 Kč'},
+              {name:'1ks Panna cotta s lesním ovocem',     desc:'',                                                   price:'79 Kč'},
+              {name:'Zákusek / dort dle nabídky',          desc:'',                                                   price:'79 Kč'},
+              {name:'1ks Jablečný závin',                  desc:'Šlehačka, cukr, rozinky',                            price:'79 Kč'},
+            ]},
+            { title:'🍟 Přílohy', items:[
+              {name:'Hranolky',     desc:'',  price:'45 Kč'},
+              {name:'Brambory',     desc:'',  price:'35 Kč'},
+              {name:'Rýže',         desc:'',  price:'35 Kč'},
+              {name:'Knedlík houskový (2ks)',  desc:'', price:'35 Kč'},
+              {name:'Knedlík bramborový (2ks)',desc:'', price:'35 Kč'},
+            ]},
+          ].map(cat=>(
             <div class="menu-category">
               <div class="menu-category-title">{cat.title}</div>
-              {cat.items.map(item => (
+              {cat.items.map(item=>(
                 <div class="menu-item">
                   <div>
                     <div class="menu-item-name">{item.name}</div>
-                    <div class="menu-item-desc">{item.desc}</div>
+                    {item.desc && <div class="menu-item-desc">{item.desc}</div>}
                   </div>
                   <div class="menu-item-price">{item.price}</div>
                 </div>
               ))}
             </div>
           ))}
+          <div class="menu-note">
+            Objednávky na tel. <strong>737 484 116</strong> · Rozvoz od 4 jídel do 10 km zdarma<br/>
+            <em>Seznam alergenů dle značení k dispozici u obsluhy</em>
+          </div>
         </div>
       </div>
 
       <!-- NÁPOJOVÝ LÍSTEK -->
-      <div class="tab-content hidden" id="content-napoje" role="tabpanel">
+      <div class="tab-content hidden" id="content-napoje">
+        <div class="menu-print-bar no-print reveal">
+          <p class="lead">Nápojový lístek · Ceny včetně DPH</p>
+          <button class="btn btn-ghost btn-sm" onclick="window.print()">🖨️ Vytisknout</button>
+        </div>
         <div class="menu-card reveal">
           {[
-            { title: '🍺 Čepované pivo', items: [
-              { name: 'Gambrinus 11° světlé výčepní', desc: '0,5 l',  price: '45 Kč' },
-              { name: 'Pilsner Urquell 12° světlý ležák', desc: '0,5 l', price: '52 Kč' },
-              { name: 'Kozel černý 10°',              desc: '0,5 l',  price: '48 Kč' },
-              { name: 'Birell nealkoholický',          desc: '0,5 l',  price: '40 Kč' },
+            { title:'🍺 Piva na čepu', items:[
+              {name:'Gambrinus 11° světlé výčepní',  desc:'0,5 l', price:'45 Kč'},
+              {name:'Gambrinus 11° světlé výčepní',  desc:'0,3 l', price:'30 Kč'},
+              {name:'Pilsner Urquell 12° ležák',     desc:'0,5 l', price:'55 Kč'},
+              {name:'Pilsner Urquell 12° ležák',     desc:'0,3 l', price:'38 Kč'},
+              {name:'Kozel černý 10°',               desc:'0,5 l', price:'48 Kč'},
+              {name:'Kozel černý 10°',               desc:'0,3 l', price:'32 Kč'},
             ]},
-            { title: '🥤 Nealkoholické', items: [
-              { name: 'Kofola',                        desc: '0,3 l',  price: '35 Kč' },
-              { name: 'Coca-Cola / Fanta / Sprite',    desc: '0,3 l',  price: '38 Kč' },
-              { name: 'Džus',                          desc: '0,2 l',  price: '32 Kč' },
-              { name: 'Minerální voda',                desc: '0,33 l', price: '28 Kč' },
+            { title:'🍺 Nealko piva', items:[
+              {name:'Birell světlý',   desc:'0,5 l', price:'40 Kč'},
+              {name:'Birell světlý',   desc:'0,3 l', price:'28 Kč'},
+              {name:'Birell tmavý',    desc:'0,5 l', price:'40 Kč'},
             ]},
-            { title: '☕ Teplé nápoje', items: [
-              { name: 'Espresso',                      desc: 'double shot',  price: '42 Kč' },
-              { name: 'Cappuccino',                    desc: '0,2 l',        price: '49 Kč' },
-              { name: 'Čaj',                           desc: 'výběr druhů',  price: '35 Kč' },
-              { name: 'Horká čokoláda',               desc: '0,2 l',        price: '52 Kč' },
+            { title:'🍷 Vína rozlévaná, Sekty', items:[
+              {name:'Víno bílé',           desc:'0,2 l', price:'55 Kč'},
+              {name:'Víno červené',        desc:'0,2 l', price:'55 Kč'},
+              {name:'Víno rosé',           desc:'0,2 l', price:'55 Kč'},
+              {name:'Prosecco / Sekt',     desc:'0,1 l', price:'65 Kč'},
+              {name:'Víno lahvové',        desc:'0,75 l',price:'dle nabídky'},
             ]},
-            { title: '🥃 Lihoviny a víno', items: [
-              { name: 'Slivovice',                     desc: '0,04 l', price: '45 Kč' },
-              { name: 'Becherovka',                    desc: '0,04 l', price: '42 Kč' },
-              { name: 'Víno bílé / červené',           desc: '0,2 l',  price: '55 Kč' },
-              { name: 'Prosecco',                      desc: '0,1 l',  price: '65 Kč' },
+            { title:'🍸 Aperitivy', items:[
+              {name:'Aperol Spritz',       desc:'0,3 l', price:'115 Kč'},
+              {name:'Campari',             desc:'0,04 l',price:'55 Kč'},
+              {name:'Martini Bianco/Rosso',desc:'0,05 l',price:'55 Kč'},
             ]},
-          ].map(cat => (
+            { title:'🥤 Nealkoholické nápoje', items:[
+              {name:'Kofola',                     desc:'0,3 l', price:'35 Kč'},
+              {name:'Coca-Cola',                  desc:'0,3 l', price:'38 Kč'},
+              {name:'Fanta / Sprite',             desc:'0,3 l', price:'38 Kč'},
+              {name:'Tonic / Sodovka',            desc:'0,2 l', price:'28 Kč'},
+              {name:'Džus (pomeranč/jablko)',     desc:'0,2 l', price:'32 Kč'},
+              {name:'Mattoni / Aquila',           desc:'0,33 l',price:'28 Kč'},
+              {name:'Mattoni / Aquila',           desc:'0,75 l',price:'45 Kč'},
+              {name:'Energetický nápoj',          desc:'0,25 l',price:'55 Kč'},
+            ]},
+            { title:'☕ Teplé nápoje', items:[
+              {name:'Espresso',            desc:'',       price:'42 Kč'},
+              {name:'Cappuccino',          desc:'0,15 l', price:'52 Kč'},
+              {name:'Latte macchiato',     desc:'0,3 l',  price:'59 Kč'},
+              {name:'Čaj (výběr druhů)',   desc:'',       price:'35 Kč'},
+              {name:'Horká čokoláda',      desc:'0,2 l',  price:'52 Kč'},
+              {name:'Svařené víno',        desc:'0,2 l',  price:'49 Kč'},
+              {name:'Grog',               desc:'0,2 l',  price:'55 Kč'},
+            ]},
+            { title:'🥃 Destiláty', items:[
+              {name:'Slivovice (domácí)',   desc:'0,04 l',price:'50 Kč'},
+              {name:'Becherovka',           desc:'0,04 l',price:'45 Kč'},
+              {name:'Fernet Stock',         desc:'0,04 l',price:'45 Kč'},
+              {name:'Tuzemský rum',         desc:'0,04 l',price:'40 Kč'},
+              {name:'Vodka',               desc:'0,04 l',price:'45 Kč'},
+              {name:'Gin',                 desc:'0,04 l',price:'55 Kč'},
+            ]},
+            { title:'🥃 Brandy a Koňak', items:[
+              {name:'Metaxa 5*',           desc:'0,04 l',price:'65 Kč'},
+              {name:'Arménský koňak',      desc:'0,04 l',price:'75 Kč'},
+            ]},
+            { title:'🥃 Whisky a Bourbon', items:[
+              {name:'Jameson',             desc:'0,04 l',price:'75 Kč'},
+              {name:'Jack Daniel\'s',      desc:'0,04 l',price:'79 Kč'},
+              {name:'Johnnie Walker Red',  desc:'0,04 l',price:'79 Kč'},
+            ]},
+            { title:'🍹 Likéry', items:[
+              {name:'Baileys',             desc:'0,04 l',price:'65 Kč'},
+              {name:'Jägermeister',        desc:'0,04 l',price:'55 Kč'},
+              {name:'Amaretto',            desc:'0,04 l',price:'60 Kč'},
+            ]},
+            { title:'🍹 Rumy', items:[
+              {name:'Havana Club 3y',      desc:'0,04 l',price:'55 Kč'},
+              {name:'Diplomatico',         desc:'0,04 l',price:'79 Kč'},
+              {name:'Bacardi',             desc:'0,04 l',price:'55 Kč'},
+            ]},
+          ].map(cat=>(
             <div class="menu-category">
               <div class="menu-category-title">{cat.title}</div>
-              {cat.items.map(item => (
+              {cat.items.map(item=>(
                 <div class="menu-item">
                   <div>
                     <div class="menu-item-name">{item.name}</div>
-                    <div class="menu-item-desc">{item.desc}</div>
+                    {item.desc && <div class="menu-item-desc">{item.desc}</div>}
                   </div>
                   <div class="menu-item-price">{item.price}</div>
                 </div>
@@ -205,84 +309,28 @@ try {
 </BaseLayout>
 
 <style>
-  .menu-tabs {
-    display: flex;
-    gap: var(--space-sm);
-    border-bottom: 2px solid var(--clr-border);
-    margin-bottom: var(--space-2xl);
-    flex-wrap: wrap;
-  }
-  .tab-btn {
-    padding: 0.75rem 1.5rem;
-    background: none;
-    border: none;
-    color: var(--clr-text-muted);
-    font-family: var(--font-body);
-    font-size: 0.9rem;
-    font-weight: 600;
-    cursor: pointer;
-    border-bottom: 2px solid transparent;
-    margin-bottom: -2px;
-    transition: color 0.2s, border-color 0.2s;
-    letter-spacing: 0.02em;
-  }
-  .tab-btn:hover { color: var(--clr-cream); }
-  .tab-btn.active { color: var(--clr-gold); border-bottom-color: var(--clr-gold); }
-
-  .hidden { display: none !important; }
-
-  .daily-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: var(--space-lg);
-    margin-bottom: var(--space-xl);
-    flex-wrap: wrap;
-  }
-  .daily-badge-wrap { display: flex; align-items: center; gap: var(--space-md); }
-  .daily-price-badge {
-    background: linear-gradient(135deg, var(--clr-gold), var(--clr-gold-dark));
-    color: var(--clr-bg);
-    font-weight: 700;
-    font-size: 1.1rem;
-    padding: 0.4rem 1rem;
-    border-radius: var(--radius-sm);
-    font-family: var(--font-display);
-  }
-
-  .menu-card {
-    background: var(--clr-surface);
-    border: 1px solid var(--clr-border);
-    border-radius: var(--radius-lg);
-    padding: var(--space-2xl);
-  }
-
-  .daily-placeholder {
-    text-align: center;
-    padding: var(--space-3xl);
-    background: var(--clr-surface);
-    border: 1px solid var(--clr-border);
-    border-radius: var(--radius-lg);
-  }
-  .placeholder-icon { font-size: 3rem; margin-bottom: var(--space-lg); }
-
-  .menu-print-bar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: var(--space-xl);
-    flex-wrap: wrap;
-    gap: var(--space-md);
-  }
-
-  @media (max-width: 600px) {
-    .menu-card { padding: var(--space-lg); }
-    .daily-header { flex-direction: column; }
-  }
+  .menu-tabs { display:flex; gap:var(--space-sm); border-bottom:2px solid var(--clr-border); margin-bottom:var(--space-2xl); flex-wrap:wrap; }
+  .tab-btn { padding:.75rem 1.5rem; background:none; border:none; color:var(--clr-text-muted); font-family:var(--font-body); font-size:.9rem; font-weight:600; cursor:pointer; border-bottom:2px solid transparent; margin-bottom:-2px; transition:color .2s,border-color .2s; }
+  .tab-btn:hover { color:var(--clr-cream); }
+  .tab-btn.active { color:var(--clr-gold); border-bottom-color:var(--clr-gold); }
+  .hidden { display:none!important; }
+  .daily-header { display:flex; justify-content:space-between; align-items:flex-start; gap:var(--space-lg); margin-bottom:var(--space-xl); flex-wrap:wrap; }
+  .daily-badge-wrap { display:flex; align-items:center; gap:var(--space-sm); flex-wrap:wrap; }
+  .daily-price-badge { background:linear-gradient(135deg,var(--clr-gold),var(--clr-gold-dark)); color:var(--clr-bg); font-weight:700; font-size:1.05rem; padding:.4rem 1rem; border-radius:var(--radius-sm); font-family:var(--font-display); }
+  .menu-card { background:var(--clr-surface); border:1px solid var(--clr-border); border-radius:var(--radius-lg); padding:var(--space-2xl); }
+  .menu-item-clickable { cursor:pointer; border-radius:var(--radius-sm); transition:background .15s; }
+  .menu-item-clickable:hover { background:rgba(201,168,76,.06); }
+  .menu-item-right { display:flex; align-items:center; gap:var(--space-sm); flex-shrink:0; }
+  .order-badge { font-size:1rem; opacity:.5; transition:opacity .2s; text-decoration:none; }
+  .menu-item-clickable:hover .order-badge { opacity:1; }
+  .menu-note { margin-top:var(--space-xl); padding-top:var(--space-lg); border-top:1px solid var(--clr-border); font-size:.85rem; color:var(--clr-text-muted); text-align:center; line-height:1.8; }
+  .menu-print-bar { display:flex; justify-content:space-between; align-items:center; margin-bottom:var(--space-xl); flex-wrap:wrap; gap:var(--space-md); }
+  .daily-placeholder { text-align:center; padding:var(--space-3xl); background:var(--clr-surface); border:1px solid var(--clr-border); border-radius:var(--radius-lg); }
+  .placeholder-icon { font-size:3rem; margin-bottom:var(--space-lg); }
+  @media (max-width:600px) { .menu-card { padding:var(--space-lg); } .daily-header { flex-direction:column; } }
 </style>
 
 <script>
-  // Tab switching
   const tabs = document.querySelectorAll('.tab-btn');
   const contents = document.querySelectorAll('.tab-content');
   tabs.forEach(tab => {
@@ -290,13 +338,8 @@ try {
       tabs.forEach(t => t.classList.remove('active'));
       contents.forEach(c => c.classList.add('hidden'));
       tab.classList.add('active');
-      const target = document.getElementById(`content-${tab.dataset.tab}`);
-      target?.classList.remove('hidden');
+      document.getElementById(`content-${(tab as HTMLElement).dataset.tab}`)?.classList.remove('hidden');
     });
   });
-
-  // Open napoje tab if URL has #napoje
-  if (window.location.hash === '#napoje') {
-    document.getElementById('tab-napoje')?.click();
-  }
+  if (window.location.hash === '#napoje') document.getElementById('tab-napoje')?.click();
 </script>
