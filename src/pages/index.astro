@@ -335,10 +335,14 @@ import { getUrl } from '../utils/paths.js';
     transform: translateY(-2px);
     box-shadow: var(--shadow-gold);
   }
+  .qc-card:hover .qc-icon i,
+  .qc-card:hover .qc-arrow {
+    color: #E8C547;
+  }
   .qc-icon { font-size: 1.8rem; flex-shrink: 0; }
   .qc-title { font-weight: 600; color: var(--clr-cream); margin-bottom: 2px; }
   .qc-sub { font-size: 0.8rem; color: var(--clr-text-muted); }
-  .qc-arrow { color: var(--clr-gold); margin-left: auto; flex-shrink: 0; }
+  .qc-arrow { color: var(--clr-gold); margin-left: auto; flex-shrink: 0; transition: color var(--transition); }
 
   /* ABOUT */
   .about-grid {

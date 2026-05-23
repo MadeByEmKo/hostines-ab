@@ -57,7 +57,7 @@ const allDailyItems = [
 
       <!-- DENNÍ MENU -->
       <div class="tab-content" id="content-denni">
-        <div class="daily-header reveal">
+        <div class="daily-header">
           <div>
             <h2>Denní menu</h2>
             <p class="lead">Platné {dm.date || 'dnes'} · Vydáváme 11:00 – 14:00</p>
@@ -70,7 +70,7 @@ const allDailyItems = [
         </div>
 
         {allDailyItems.length > 0 ? (
-          <div class="menu-card reveal">
+          <div class="menu-card">
             {[
               {key:'soups',    emoji:'fa-solid fa-bowl-food', title:'Polévky',        items:dm.soups},
               {key:'bezlepkova',emoji:'fa-solid fa-wheat-awn', title:'Bezlepková jídla',items:dm.bezlepkova},
@@ -99,12 +99,12 @@ const allDailyItems = [
               </div>
             ))}
             <div class="menu-note">
-              📞 Objednávky: <strong>737 484 116</strong> · Rozvoz od 4 jídel do 10 km zdarma
+              <i class="fa-solid fa-phone"></i> Objednávky: <strong>737 484 116</strong> · Rozvoz od 4 jídel do 10 km zdarma
             </div>
           </div>
         ) : (
-          <div class="daily-placeholder reveal">
-            <div class="placeholder-icon">🍴</div>
+          <div class="daily-placeholder">
+            <div class="placeholder-icon"><i class="fa-solid fa-utensils"></i></div>
             <h3>Dnešní menu bude brzy zveřejněno</h3>
             <p>Aktuální nabídku zjistíte telefonicky nebo na Facebooku.</p>
             <div class="flex gap-md flex-wrap items-center mt-lg" style="justify-content:center">
@@ -116,11 +116,11 @@ const allDailyItems = [
 
       <!-- JÍDELNÍ LÍSTEK -->
       <div class="tab-content hidden" id="content-jidelni">
-        <div class="menu-print-bar no-print reveal">
+        <div class="menu-print-bar no-print">
           <p class="lead">Stálý jídelní lístek · Ceny včetně DPH</p>
-          <button class="btn btn-ghost btn-sm" onclick="window.print()">🖨️ Vytisknout</button>
+          <button class="btn btn-ghost btn-sm" onclick="window.print()"><i class="fa-solid fa-print"></i> Vytisknout</button>
         </div>
-        <div class="menu-card reveal">
+        <div class="menu-card">
           {[
             { icon: 'fa-solid fa-carrot', title:'Předkrmy', items:[
               {name:'Nakládaný hermelín v oleji',          desc:'Paprika, cibule, česnek, bylinky',                    price:'89 Kč'},
@@ -210,11 +210,11 @@ const allDailyItems = [
 
       <!-- NÁPOJOVÝ LÍSTEK -->
       <div class="tab-content hidden" id="content-napoje">
-        <div class="menu-print-bar no-print reveal">
+        <div class="menu-print-bar no-print">
           <p class="lead">Nápojový lístek · Ceny včetně DPH</p>
-          <button class="btn btn-ghost btn-sm" onclick="window.print()">🖨️ Vytisknout</button>
+          <button class="btn btn-ghost btn-sm" onclick="window.print()"><i class="fa-solid fa-print"></i> Vytisknout</button>
         </div>
-        <div class="menu-card reveal">
+        <div class="menu-card">
           {[
             { icon: 'fa-solid fa-beer-mug-empty', title:'Piva na čepu', items:[
               {name:'Gambrinus 11° světlé výčepní',  desc:'0,5 l', price:'45 Kč'},
@@ -328,7 +328,24 @@ const allDailyItems = [
   .menu-print-bar { display:flex; justify-content:space-between; align-items:center; margin-bottom:var(--space-xl); flex-wrap:wrap; gap:var(--space-md); }
   .daily-placeholder { text-align:center; padding:var(--space-3xl); background:var(--clr-surface); border:1px solid var(--clr-border); border-radius:var(--radius-lg); }
   .placeholder-icon { font-size:3rem; margin-bottom:var(--space-lg); }
-  @media (max-width:600px) { .menu-card { padding:var(--space-lg); } .daily-header { flex-direction:column; } }
+  @media (max-width:600px) {
+    .menu-card { padding:var(--space-lg); }
+    .daily-header { flex-direction:column; }
+    .menu-tabs {
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: 4px;
+      scrollbar-width: none;
+    }
+    .menu-tabs::-webkit-scrollbar { display: none; }
+    .tab-btn {
+      flex: 1;
+      text-align: center;
+      white-space: nowrap;
+      padding: 0.75rem 1rem;
+    }
+  }
 </style>
 
 <script>
@@ -339,7 +356,7 @@ const allDailyItems = [
       tabs.forEach(t => t.classList.remove('active'));
       contents.forEach(c => c.classList.add('hidden'));
       tab.classList.add('active');
-      document.getElementById(`content-${(tab as HTMLElement).dataset.tab}`)?.classList.remove('hidden');
+      document.getElementById(`content-${tab.getAttribute('data-tab')}`)?.classList.remove('hidden');
     });
   });
   if (window.location.hash === '#napoje') document.getElementById('tab-napoje')?.click();
