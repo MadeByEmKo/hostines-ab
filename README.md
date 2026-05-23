@@ -14,7 +14,7 @@ Postaven na **Astro** frameworku, obsah spravovatelný přes **Decap CMS**.
 
 ```bash
 # Klonovat repozitář
-git clone https://github.com/MadeByEmKo/hostines-ab.git
+git clone https://github.com/MadeByEmKo/hostinec-ab.git
 cd hostines-ab
 
 # Instalovat závislosti
