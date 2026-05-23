@@ -5,6 +5,10 @@ import Footer from '../components/Footer.astro';
 import '../styles/global.css';
 import { getUrl } from '../utils/paths.js';
 
+const getMobileImg = (path) => path.replace(/\.(png|jpg|JPG|jpeg)$/i, '-mobile.webp');
+const getTabletImg = (path) => path.replace(/\.(png|jpg|JPG|jpeg)$/i, '-tablet.webp');
+const getWebpImg = (path) => path.replace(/\.(png|jpg|JPG|jpeg)$/i, '.webp');
+
 const photos = [
   { src: getUrl('/images/interior.png'), alt: 'Interiér restaurace' },
   { src: getUrl('/images/zahrada.png'),  alt: 'Letní zahrádka' },
@@ -49,7 +53,10 @@ const photos = [
             aria-label={`Zobrazit: ${photo.alt}`}
             id={`gallery-item-${i}`}
           >
-            <img src={photo.src} alt={photo.alt} loading="lazy" />
+            <picture>
+              <source srcset={`${getMobileImg(photo.src)} 480w, ${getTabletImg(photo.src)} 768w, ${getWebpImg(photo.src)} 1920w`} type="image/webp" />
+              <img src={photo.src} alt={photo.alt} loading="lazy" class="shimmer-img" onload="this.classList.add('loaded')" />
+            </picture>
             <div class="gallery-caption">{photo.alt}</div>
           </div>
         ))}

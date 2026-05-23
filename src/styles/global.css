@@ -489,3 +489,21 @@ i.icon-gray[class*="fa-"] {
   background-color: #D4AF37;
 }
 
+/* ── Shimmer & Fade-in Animations for Lazy Loaded Images ── */
+img.shimmer-img {
+  background: linear-gradient(90deg, rgba(255,255,255,0.03) 25%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.03) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite linear;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+img.shimmer-img.loaded {
+  opacity: 1;
+  background: none !important;
+  animation: none;
+}
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+

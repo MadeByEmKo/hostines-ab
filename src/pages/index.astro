@@ -12,7 +12,10 @@ import { getUrl } from '../utils/paths.js';
   <!-- HERO -->
   <section class="hero" aria-label="Úvodní banner">
     <div class="hero-bg">
-      <img src={getUrl('/images/restaurant/Image_in2.JPG')} alt="Hostinec AB interiér" class="hero-img" fetchpriority="high" />
+      <picture>
+        <source srcset={`${getUrl('/images/restaurant/Image_in2-mobile.webp')} 480w, ${getUrl('/images/restaurant/Image_in2-tablet.webp')} 768w, ${getUrl('/images/restaurant/Image_in2.webp')} 1920w`} type="image/webp" />
+        <img src={getUrl('/images/restaurant/Image_in2.JPG')} alt="Hostinec AB interiér" class="hero-img shimmer-img" fetchpriority="high" onload="this.classList.add('loaded')" />
+      </picture>
       <div class="hero-overlay"></div>
     </div>
     <div class="hero-content container">
@@ -20,8 +23,8 @@ import { getUrl } from '../utils/paths.js';
         <span class="badge">Otevřeno dnes 11:00 – 22:00</span>
       </div>
       <h1 class="hero-title">
-        Vítá Vás<br />
-        <em>Hostinec Antonín Barták</em>
+        <span class="hero-subtitle">Vítá Vás</span>
+        <span class="hero-main-title">Hostinec Antonín Barták</span>
       </h1>
       <p class="hero-sub lead">
         Tradiční česká hospoda v srdci Městečka u Nespek. Čepujeme Gambrinus, Prazdroj, Kozel. Vaříme poctivou domácí kuchyni.<br />
@@ -87,8 +90,14 @@ import { getUrl } from '../utils/paths.js';
     <div class="container">
       <div class="about-grid">
         <div class="about-imgs reveal">
-          <img src={getUrl('/images/interior.png')} alt="Interiér restaurace" class="about-img-main" loading="lazy" />
-          <img src={getUrl('/images/zahrada.png')}  alt="Letní zahrádka"     class="about-img-sec"  loading="lazy" />
+          <picture>
+            <source srcset={`${getUrl('/images/interior-mobile.webp')} 480w, ${getUrl('/images/interior-tablet.webp')} 768w, ${getUrl('/images/interior.webp')} 1920w`} type="image/webp" />
+            <img src={getUrl('/images/interior.png')} alt="Interiér restaurace" class="about-img-main shimmer-img" loading="lazy" onload="this.classList.add('loaded')" />
+          </picture>
+          <picture>
+            <source srcset={`${getUrl('/images/zahrada-mobile.webp')} 480w, ${getUrl('/images/zahrada-tablet.webp')} 768w, ${getUrl('/images/zahrada.webp')} 1920w`} type="image/webp" />
+            <img src={getUrl('/images/zahrada.png')} alt="Letní zahrádka" class="about-img-sec shimmer-img" loading="lazy" onload="this.classList.add('loaded')" />
+          </picture>
         </div>
         <div class="about-text reveal">
           <span class="gold-line" aria-hidden="true"></span>
@@ -136,28 +145,40 @@ import { getUrl } from '../utils/paths.js';
       </div>
       <div class="food-grid reveal">
         <div class="food-card">
-          <img src={getUrl('/images/svickova.png')} alt="Svíčková na smetaně" loading="lazy" />
+          <picture>
+            <source srcset={`${getUrl('/images/svickova-mobile.webp')} 480w, ${getUrl('/images/svickova-tablet.webp')} 768w, ${getUrl('/images/svickova.webp')} 1920w`} type="image/webp" />
+            <img src={getUrl('/images/svickova.png')} alt="Svíčková na smetaně" class="shimmer-img" loading="lazy" onload="this.classList.add('loaded')" />
+          </picture>
           <div class="food-card-body">
             <div class="food-card-name">Svíčková na smetaně</div>
             <div class="food-card-price text-gold">od 179 Kč</div>
           </div>
         </div>
         <div class="food-card food-card-large">
-          <img src={getUrl('/images/grill.png')} alt="Grilovaná žebírka" loading="lazy" />
+          <picture>
+            <source srcset={`${getUrl('/images/grill-mobile.webp')} 480w, ${getUrl('/images/grill-tablet.webp')} 768w, ${getUrl('/images/grill.webp')} 1920w`} type="image/webp" />
+            <img src={getUrl('/images/grill.png')} alt="Grilovaná žebírka" class="shimmer-img" loading="lazy" onload="this.classList.add('loaded')" />
+          </picture>
           <div class="food-card-body">
             <div class="food-card-name">Grilovaná žebírka</div>
             <div class="food-card-price text-gold">od 229 Kč</div>
           </div>
         </div>
         <div class="food-card">
-          <img src={getUrl('/images/rizek.png')} alt="Smažený řízek" loading="lazy" />
+          <picture>
+            <source srcset={`${getUrl('/images/rizek-mobile.webp')} 480w, ${getUrl('/images/rizek-tablet.webp')} 768w, ${getUrl('/images/rizek.webp')} 1920w`} type="image/webp" />
+            <img src={getUrl('/images/rizek.png')} alt="Smažený řízek" class="shimmer-img" loading="lazy" onload="this.classList.add('loaded')" />
+          </picture>
           <div class="food-card-body">
             <div class="food-card-name">Smažený řízek</div>
             <div class="food-card-price text-gold">od 159 Kč</div>
           </div>
         </div>
         <div class="food-card">
-          <img src={getUrl('/images/polevka.png')} alt="Hovězí vývar" loading="lazy" />
+          <picture>
+            <source srcset={`${getUrl('/images/polevka-mobile.webp')} 480w, ${getUrl('/images/polevka-tablet.webp')} 768w, ${getUrl('/images/polevka.webp')} 1920w`} type="image/webp" />
+            <img src={getUrl('/images/polevka.png')} alt="Hovězí vývar" class="shimmer-img" loading="lazy" onload="this.classList.add('loaded')" />
+          </picture>
           <div class="food-card-body">
             <div class="food-card-name">Hovězí vývar</div>
             <div class="food-card-price text-gold">od 45 Kč</div>
@@ -175,7 +196,10 @@ import { getUrl } from '../utils/paths.js';
     <div class="container">
       <div class="beer-grid">
         <div class="beer-img reveal">
-          <img src={getUrl('/images/pivo.png')} alt="Čepované pivo" loading="lazy" />
+          <picture>
+            <source srcset={`${getUrl('/images/pivo-mobile.webp')} 480w, ${getUrl('/images/pivo-tablet.webp')} 768w, ${getUrl('/images/pivo.webp')} 1920w`} type="image/webp" />
+            <img src={getUrl('/images/pivo.png')} alt="Čepované pivo" class="shimmer-img" loading="lazy" onload="this.classList.add('loaded')" />
+          </picture>
         </div>
         <div class="beer-text reveal">
           <span class="gold-line" aria-hidden="true"></span>
@@ -258,14 +282,24 @@ import { getUrl } from '../utils/paths.js';
   }
   .hero-badge { margin-bottom: var(--space-lg); }
   .hero-title {
-    font-size: clamp(2.4rem, 6vw, 4.5rem);
-    color: var(--clr-cream);
-    line-height: 1.1;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
     margin-bottom: var(--space-lg);
+    line-height: 1.1;
   }
-  .hero-title em {
+  .hero-subtitle {
+    font-size: 24px;
+    color: #FFFFFF;
+    font-weight: 300;
+    font-family: var(--font-body);
+  }
+  .hero-main-title {
+    font-size: 56px;
+    font-weight: 700;
     font-style: italic;
     color: var(--clr-gold);
+    font-family: var(--font-display);
     display: block;
   }
   .hero-sub {
@@ -469,10 +503,16 @@ import { getUrl } from '../utils/paths.js';
     .about-imgs { height: 320px; }
     .food-grid { grid-template-columns: repeat(2, 1fr); }
     .qc-grid { grid-template-columns: 1fr; }
+    .hero-subtitle { font-size: 20px; }
+    .hero-main-title { font-size: 44px; }
+    .hero-title { gap: 14px; }
   }
   @media (max-width: 600px) {
     .food-grid { grid-template-columns: 1fr; }
     .hero-stats { gap: var(--space-lg); }
     .hero-ctas .btn { width: auto; }
+    .hero-subtitle { font-size: 18px; }
+    .hero-main-title { font-size: 36px; }
+    .hero-title { gap: 12px; }
   }
 </style>

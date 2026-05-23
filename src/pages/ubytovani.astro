@@ -5,6 +5,10 @@ import Footer from '../components/Footer.astro';
 import '../styles/global.css';
 import { getUrl } from '../utils/paths.js';
 
+const getMobileImg = (path) => path.replace(/\.(png|jpg|JPG|jpeg)$/i, '-mobile.webp');
+const getTabletImg = (path) => path.replace(/\.(png|jpg|JPG|jpeg)$/i, '-tablet.webp');
+const getWebpImg = (path) => path.replace(/\.(png|jpg|JPG|jpeg)$/i, '.webp');
+
 const rooms = [
   {
     id: 'srdce',
@@ -123,12 +127,16 @@ const rooms = [
           <div class="room-card" id={`room-${room.id}`}>
             {room.badge && <div class="room-badge">{room.badge}</div>}
             <div class="room-img-wrap">
-              <img
-                src={room.img}
-                alt={`${room.name} – ilustrativní fotka`}
-                loading="lazy"
-                class="room-img"
-              />
+              <picture>
+                <source srcset={`${getMobileImg(room.img)} 480w, ${getTabletImg(room.img)} 768w, ${getWebpImg(room.img)} 1920w`} type="image/webp" />
+                <img
+                  src={room.img}
+                  alt={`${room.name} – ilustrativní fotka`}
+                  loading="lazy"
+                  class="room-img shimmer-img"
+                  onload="this.classList.add('loaded')"
+                />
+              </picture>
               <div class="room-img-note">📷 Foto je ilustrativní</div>
             </div>
             <div class="room-body">
