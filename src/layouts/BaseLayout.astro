@@ -53,31 +53,79 @@ const fullTitle = title === 'Hostinec AB' ? title : `${title} | Hostinec AB`;
     <slot />
     <slot name="footer-after" />
 
-    <!-- Mobile Sticky Footer -->
-    <div class="mobile-sticky-cta no-print" id="mobile-sticky-footer">
-      <a href={getUrl('/rezervace')} class="btn btn-primary btn-sticky">
-        <i class="fa-solid fa-calendar-days"></i>
-        <span>Rezervace stolu</span>
-      </a>
-      <a href={getUrl('/menu')} class="btn btn-outline btn-sticky">
-        <i class="fa-solid fa-utensils"></i>
-        <span>Zobrazit menu</span>
-      </a>
+    <!-- Mobile Sticky Footer (context-aware) -->
+    <div class="mobile-sticky-cta no-print" id="mobile-sticky-footer"
+         data-base={base}>
     </div>
 
-    <!-- Scroll reveal animation -->
+    <!-- Scroll reveal + Context-aware CTA -->
     <script>
+      // ── Scroll reveal ──────────────────────────────────────────────
       const observer = new IntersectionObserver(
         (entries) => {
           entries.forEach((e) => {
-            if (e.isIntersecting) {
-              e.target.classList.add('visible');
-            }
+            if (e.isIntersecting) e.target.classList.add('visible');
           });
         },
         { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }
       );
       document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+
+      // ── Context-aware mobile CTA ───────────────────────────────────
+      (function () {
+        const footer = document.getElementById('mobile-sticky-footer');
+        if (!footer) return;
+        const base = (footer.dataset.base || '').replace(/\/$/, '');
+        const path = window.location.pathname;
+
+        // Strip base prefix for matching
+        const rel = base ? path.replace(base, '') : path;
+
+        // Variant definitions: [primaryHref, primaryIcon, primaryLabel, secondaryHref, secondaryIcon, secondaryLabel]
+        let v;
+
+        if (/\/objednat/.test(rel)) {
+          // D – Objednávka
+          v = [
+            '#objednat-form', 'fa-solid fa-paper-plane', 'Odeslat objednávku',
+            base + '/menu', 'fa-solid fa-arrow-left', 'Zpět na menu'
+          ];
+        } else if (/\/ubytovani/.test(rel)) {
+          // B – Ubytování
+          v = [
+            base + '/rezervace-pokoje', 'fa-solid fa-bed', 'Rezervovat pobyt',
+            base + '/kontakt', 'fa-solid fa-phone', 'Kontakt'
+          ];
+        } else if (/\/menu/.test(rel)) {
+          // C – Menu
+          v = [
+            base + '/objednat', 'fa-solid fa-bag-shopping', 'Objednat s sebou',
+            base + '/rezervace', 'fa-solid fa-calendar-days', 'Rezervace stolu'
+          ];
+        } else {
+          // A – Default (Domů, Skupiny, O nás, Galerie, Kontakt, Rezervace…)
+          v = [
+            base + '/rezervace', 'fa-solid fa-calendar-days', 'Rezervace stolu',
+            base + '/menu', 'fa-solid fa-utensils', 'Zobrazit menu'
+          ];
+        }
+
+        footer.innerHTML =
+          '<a href="' + v[0] + '" class="btn btn-primary btn-sticky">' +
+            '<i class="' + v[1] + '"></i><span>' + v[2] + '</span>' +
+          '</a>' +
+          '<a href="' + v[3] + '" class="btn btn-outline btn-sticky">' +
+            '<i class="' + v[4] + '"></i><span>' + v[5] + '</span>' +
+          '</a>';
+
+        // Special case: "Odeslat objednávku" should submit the form, not navigate
+        if (/\/objednat/.test(rel)) {
+          footer.querySelector('a').addEventListener('click', function (e) {
+            const form = document.getElementById('takeaway-form');
+            if (form) { e.preventDefault(); form.requestSubmit(); }
+          });
+        }
+      })();
     </script>
   </body>
 </html>

@@ -58,7 +58,7 @@ const allDailyItems = [
         <button class="tab-btn"        id="tab-jidelni" data-tab="jidelni">
           <i class="fa-solid fa-utensils"></i>
           <span class="tab-label-desktop">Jídelní lístek</span>
-          <span class="tab-label-mobile">Jídelní</span>
+          <span class="tab-label-mobile">Stálice</span>
         </button>
         <button class="tab-btn"        id="tab-napoje"  data-tab="napoje">
           <i class="fa-solid fa-wine-bottle"></i>
@@ -132,13 +132,121 @@ const allDailyItems = [
           <p class="lead">Stálý jídelní lístek · Ceny včetně DPH</p>
           <button class="btn btn-ghost btn-sm" onclick="window.print()"><i class="fa-solid fa-print"></i> Vytisknout</button>
         </div>
-        <div class="menu-image-container reveal">
-          <picture>
-            <source srcset={`${getUrl('/images/menu-mobile.webp')} 480w`} type="image/webp" media="(max-width: 480px)" />
-            <source srcset={`${getUrl('/images/menu-tablet.webp')} 768w`} type="image/webp" media="(max-width: 768px)" />
-            <source srcset={`${getUrl('/images/menu.webp')}`} type="image/webp" />
-            <img src={getUrl('/images/menu.png')} alt="Jídelní lístek" class="shimmer-img menu-sheet" loading="lazy" onload="this.classList.add('loaded')" />
-          </picture>
+        <div class="menu-card">
+
+          <div class="menu-category">
+            <div class="menu-category-title"><i class="fa-solid fa-carrot"></i> Předkrmy</div>
+            <div class="menu-item"><div><div class="menu-item-name">Hovězí tataráček z flanku s topinkami a česnekem</div><div class="menu-item-desc">150g</div></div><div class="menu-item-price">289 Kč</div></div>
+            <div class="menu-item"><div><div class="menu-item-name">Anglický rostbíf s topinkami, karamelizovaná cibulka, tatarská omáčka</div><div class="menu-item-desc">150g</div></div><div class="menu-item-price">199 Kč</div></div>
+            <div class="menu-item"><div><div class="menu-item-name">Tataráček z avokáda se sušenými rajčaty a opékanými toasty</div><div class="menu-item-desc">150g</div></div><div class="menu-item-price">199 Kč</div></div>
+            <div class="menu-item"><div><div class="menu-item-name">Topinky s vepřovou pikantní směsí z panenky zapékané sýrem (3ks)</div><div class="menu-item-desc">150g</div></div><div class="menu-item-price">199 Kč</div></div>
+            <div class="menu-item"><div><div class="menu-item-name">Grilovaný Camembert s pečenou anglickou slaninou, brusinkami a opékanými toasty</div><div class="menu-item-desc">140g</div></div><div class="menu-item-price">169 Kč</div></div>
+          </div>
+
+          <div class="menu-category">
+            <div class="menu-category-title"><i class="fa-solid fa-beer-mug-empty"></i> Chuťovky k pivu</div>
+            <div class="menu-item menu-item-small"><div><div class="menu-item-name">Utopencové pikantní řezy s cibulí a Jalapeňos</div><div class="menu-item-desc">150g</div></div><div class="menu-item-price">69 Kč</div></div>
+            <div class="menu-item menu-item-small"><div><div class="menu-item-name">Šunková tlačenka od Dolejších s octem a cibulí</div><div class="menu-item-desc">100g</div></div><div class="menu-item-price">79 Kč</div></div>
+            <div class="menu-item menu-item-small"><div><div class="menu-item-name">Gothajský salám od Dolejších s octem a cibulí</div><div class="menu-item-desc">100g</div></div><div class="menu-item-price">79 Kč</div></div>
+            <div class="menu-item menu-item-small"><div><div class="menu-item-name">Matjesy s jemnou cibulkou</div><div class="menu-item-desc">100g</div></div><div class="menu-item-price">79 Kč</div></div>
+            <div class="menu-item menu-item-small"><div><div class="menu-item-name">Nakládaný Camembert s feferony a zelným salátkem Coleslaw</div><div class="menu-item-desc">100g</div></div><div class="menu-item-price">119 Kč</div></div>
+            <div class="menu-item menu-item-small"><div><div class="menu-item-name">Bramborové solené lupínky s česnekovým dipem</div><div class="menu-item-desc">150g</div></div><div class="menu-item-price">119 Kč</div></div>
+          </div>
+
+          <div class="menu-category">
+            <div class="menu-category-title"><i class="fa-solid fa-bowl-food"></i> Polévky</div>
+            <div class="menu-item"><div><div class="menu-item-name">Staročeská česnečka se slaninou, vejci, bramborem a krutonky</div></div><div class="menu-item-price">59 Kč</div></div>
+            <div class="menu-item"><div><div class="menu-item-name">Dle denní nabídky</div></div><div class="menu-item-price">59 Kč</div></div>
+          </div>
+
+          <div class="menu-category">
+            <div class="menu-category-title"><i class="fa-solid fa-seedling"></i> Bezmasé pokrmy</div>
+            <div class="menu-item"><div><div class="menu-item-name">Smažený sýr GOUDA (nebo CAMEMBERT), tatarská omáčka</div><div class="menu-item-desc">120g</div></div><div class="menu-item-price">169 Kč</div></div>
+            <div class="menu-item"><div><div class="menu-item-name">Smažený uzený sýr plněný povidly, tatarská omáčka</div><div class="menu-item-desc">150g</div></div><div class="menu-item-price">199 Kč</div></div>
+            <div class="menu-item"><div><div class="menu-item-name">Tagliatelle s bazalkovým pestem, sušenými rajčaty a parmezánem</div><div class="menu-item-desc">350g</div></div><div class="menu-item-price">199 Kč</div></div>
+            <div class="menu-item"><div><div class="menu-item-name">Tagliatelle AGLIO – OLIO PEPPERONCINO s parmazánem</div><div class="menu-item-desc">350g</div></div><div class="menu-item-price">199 Kč</div></div>
+          </div>
+
+          <div class="menu-category">
+            <div class="menu-category-title"><i class="fa-solid fa-utensils"></i> Staročeské specialitky i klasika</div>
+            <div class="menu-item"><div><div class="menu-item-name">Hovězí jemně pikantní guláš s cibulkou</div><div class="menu-item-desc">200g</div></div><div class="menu-item-price">199 Kč</div></div>
+            <div class="menu-item"><div><div class="menu-item-name">Tradiční smažený vepřový nebo kuřecí řízek v trojobalu s citrónem</div><div class="menu-item-desc">200g</div></div><div class="menu-item-price">199 Kč</div></div>
+            <div class="menu-item"><div><div class="menu-item-name">Vepřový šleh z panenky s papričkami, cibulkou a pórkem</div><div class="menu-item-desc">200g</div></div><div class="menu-item-price">229 Kč</div></div>
+            <div class="menu-item"><div><div class="menu-item-name">Pečená kachýnka na kmíně, variace knedlíků, dušené zelí (1/4ks)</div><div class="menu-item-desc">600g</div></div><div class="menu-item-price">299 Kč</div></div>
+            <div class="menu-item"><div><div class="menu-item-name">Vepřové medailonky SOUS-VIDE z panenky s hříbkovou omáčkou</div><div class="menu-item-desc">200g</div></div><div class="menu-item-price">249 Kč</div></div>
+          </div>
+
+          <div class="menu-category">
+            <div class="menu-category-title"><i class="fa-solid fa-child"></i> Dětská jídla</div>
+            <div class="menu-item"><div><div class="menu-item-name">Smažený kuřecí řízek v trojobalu s hranolkami a citrónem</div><div class="menu-item-desc">100g</div></div><div class="menu-item-price">139 Kč</div></div>
+            <div class="menu-item"><div><div class="menu-item-name">Přírodní kuřecí prsíčko na bylinkách s hranolkami</div><div class="menu-item-desc">100g</div></div><div class="menu-item-price">139 Kč</div></div>
+            <div class="menu-item"><div><div class="menu-item-name">Tagliatelle POMODORO s bazalkovým pestem a parmazánem</div><div class="menu-item-desc">250g</div></div><div class="menu-item-price">139 Kč</div></div>
+          </div>
+
+          <div class="menu-category">
+            <div class="menu-category-title"><i class="fa-solid fa-fire"></i> Šťavnaté steaky z grilu</div>
+            <div class="menu-item"><div><div class="menu-item-name">MIX-GRILL – variace grilovaných libových mas pro dvě osoby (hovězí, vepřové a kuřecí)</div><div class="menu-item-desc">600g</div></div><div class="menu-item-price">549 Kč</div></div>
+            <div class="menu-item"><div><div class="menu-item-name">Hovězí filírovaný FLANK steak</div><div class="menu-item-desc">300g</div></div><div class="menu-item-price">399 Kč</div></div>
+            <div class="menu-item"><div><div class="menu-item-name">Hovězí RUMP steak ARGENTINA (PARAGUAY)</div><div class="menu-item-desc">250g</div></div><div class="menu-item-price">349 Kč</div></div>
+            <div class="menu-item"><div><div class="menu-item-name">Marinovaný vepřový steak z KRKOVICE s karamelizovanou cibulkou</div><div class="menu-item-desc">300g</div></div><div class="menu-item-price">249 Kč</div></div>
+            <div class="menu-item menu-item-info"><i class="fa-solid fa-circle-info"></i> Omáčky ke steakům – v ceně pokrmu: pepřová, hříbková a BBQ omáčka</div>
+          </div>
+
+          <div class="menu-category">
+            <div class="menu-category-title"><i class="fa-solid fa-globe"></i> Minutková jídla, mezinárodní kuchyně</div>
+            <div class="menu-item"><div><div class="menu-item-name">Mexický hovězí BURGER v domácí bulce (Čedar, Jalapeňos, MAYO)</div><div class="menu-item-desc">200g</div></div><div class="menu-item-price">229 Kč</div></div>
+            <div class="menu-item"><div><div class="menu-item-name">Vepřový špalek z panenky SOUS-VIDE zapékaný Čedarem a Jalapeňos</div><div class="menu-item-desc">200g</div></div><div class="menu-item-price">259 Kč</div></div>
+            <div class="menu-item"><div><div class="menu-item-name">Anglická vepřová jatýrka na roštu se slaninou a sázeným vejcem</div><div class="menu-item-desc">200g</div></div><div class="menu-item-price">199 Kč</div></div>
+            <div class="menu-item"><div><div class="menu-item-name">Tagliatelle s vepřovou panenkou, sušenými rajčaty, smetanou, bazalkovým pestem a parmezánem</div><div class="menu-item-desc">350g</div></div><div class="menu-item-price">229 Kč</div></div>
+            <div class="menu-item"><div><div class="menu-item-name">Filírovaná kuřecí prsíčka SOUS-VIDE s pršutem a sušenými rajčaty</div><div class="menu-item-desc">200g</div></div><div class="menu-item-price">239 Kč</div></div>
+            <div class="menu-item"><div><div class="menu-item-name">MAXIWRAP s kuřecím masem, zelenina, Čedar, francouzský dip</div><div class="menu-item-desc">350g</div></div><div class="menu-item-price">229 Kč</div></div>
+            <div class="menu-item"><div><div class="menu-item-name">Kuřecí ZINGERBURGER v domácí bulce (rajče, okurka, MAYO)</div><div class="menu-item-desc">150g</div></div><div class="menu-item-price">229 Kč</div></div>
+          </div>
+
+          <div class="menu-category">
+            <div class="menu-category-title"><i class="fa-solid fa-leaf"></i> Zeleninové variace a saláty</div>
+            <div class="menu-item"><div><div class="menu-item-name">Variace listových salátů a zeleniny s anglickým rostbífem a dijonským dipem</div><div class="menu-item-desc">350g</div></div><div class="menu-item-price">229 Kč</div></div>
+            <div class="menu-item"><div><div class="menu-item-name">Caesar salát s kuřecími prsíčky, krutonky, slaninou, ančovičkovým dipem a parmezánem</div><div class="menu-item-desc">350g</div></div><div class="menu-item-price">229 Kč</div></div>
+            <div class="menu-item"><div><div class="menu-item-name">Velký zeleninový salát s křupavými kuřecími stripsy a bylinkovým dipem</div><div class="menu-item-desc">450g</div></div><div class="menu-item-price">229 Kč</div></div>
+            <div class="menu-item"><div><div class="menu-item-name">Míchaný zeleninový salát s bylinkami, citrónovou šťávou a tlučeným pepřem</div><div class="menu-item-desc">250g</div></div><div class="menu-item-price">99 Kč</div></div>
+            <div class="menu-item"><div><div class="menu-item-name">Zelný salát Coleslaw s mrkví, koriandrem, majonézou a citrónovou šťávou</div><div class="menu-item-desc">200g</div></div><div class="menu-item-price">59 Kč</div></div>
+          </div>
+
+          <div class="menu-category">
+            <div class="menu-category-title"><i class="fa-solid fa-spoon"></i> Omáčky</div>
+            <div class="menu-item menu-item-small"><div><div class="menu-item-name">Tatarská omáčka</div><div class="menu-item-desc">50g</div></div><div class="menu-item-price">30 Kč</div></div>
+            <div class="menu-item menu-item-small"><div><div class="menu-item-name">Smetanová omáčka ze zeleného pepře s koňakem</div><div class="menu-item-desc">75ml</div></div><div class="menu-item-price">30 Kč</div></div>
+            <div class="menu-item menu-item-small"><div><div class="menu-item-name">Jemná hříbková omáčka s máslem</div><div class="menu-item-desc">75ml</div></div><div class="menu-item-price">30 Kč</div></div>
+            <div class="menu-item menu-item-small"><div><div class="menu-item-name">BBQ omáčka</div><div class="menu-item-desc">75ml</div></div><div class="menu-item-price">30 Kč</div></div>
+          </div>
+
+          <div class="menu-category">
+            <div class="menu-category-title"><i class="fa-solid fa-cake-candles"></i> Dezerty</div>
+            <div class="menu-item"><div><div class="menu-item-name">Tiramisu se šlehačkou</div></div><div class="menu-item-price">89 Kč</div></div>
+            <div class="menu-item"><div><div class="menu-item-name">Panna Cotta s lesním ovocem</div></div><div class="menu-item-price">89 Kč</div></div>
+            <div class="menu-item"><div><div class="menu-item-name">Zákusek (dort) dle denní nabídky</div></div><div class="menu-item-price">89 Kč</div></div>
+            <div class="menu-item"><div><div class="menu-item-name">Teplý jablečný závin se skořicí, rozinkami a šlehačkou</div></div><div class="menu-item-price">89 Kč</div></div>
+            <div class="menu-item"><div><div class="menu-item-name">Pohár s vanilkovou zmrzlinou, piškotem, šlehačkou, karamelem, čokoládovou polevou a oříšky</div></div><div class="menu-item-price">119 Kč</div></div>
+            <div class="menu-item"><div><div class="menu-item-name">Horké maliny s vanilkovou zmrzlinou a šlehačkou</div></div><div class="menu-item-price">129 Kč</div></div>
+          </div>
+
+          <div class="menu-category">
+            <div class="menu-category-title"><i class="fa-solid fa-cookie"></i> Přílohy</div>
+            <div class="menu-item menu-item-small"><div><div class="menu-item-name">Petrželkové brambory / Jasmínová rýže / Houskový knedlík</div><div class="menu-item-desc">200g</div></div><div class="menu-item-price">49 Kč</div></div>
+            <div class="menu-item menu-item-small"><div><div class="menu-item-name">Restované zelené fazolky s anglickou slaninou s česnekovými lupínky</div><div class="menu-item-desc">200g</div></div><div class="menu-item-price">89 Kč</div></div>
+            <div class="menu-item menu-item-small"><div><div class="menu-item-name">Grilovaná zelenina (mrkev, cuketa, papriky, cibule, žampiony)</div><div class="menu-item-desc">250g</div></div><div class="menu-item-price">89 Kč</div></div>
+            <div class="menu-item menu-item-small"><div><div class="menu-item-name">Domácí bramborový salát s majonézou</div><div class="menu-item-desc">250g</div></div><div class="menu-item-price">59 Kč</div></div>
+            <div class="menu-item menu-item-small"><div><div class="menu-item-name">Smažené bramborové krokety</div><div class="menu-item-desc">200g</div></div><div class="menu-item-price">69 Kč</div></div>
+            <div class="menu-item menu-item-small"><div><div class="menu-item-name">Smažené bramborové hranolky Julienne</div><div class="menu-item-desc">200g</div></div><div class="menu-item-price">59 Kč</div></div>
+            <div class="menu-item menu-item-small"><div><div class="menu-item-name">Opékané majoránkové brambory</div><div class="menu-item-desc">200g</div></div><div class="menu-item-price">59 Kč</div></div>
+            <div class="menu-item menu-item-small"><div><div class="menu-item-name">Domácí bramboráčky (3ks)</div></div><div class="menu-item-price">59 Kč</div></div>
+            <div class="menu-item menu-item-info"><i class="fa-solid fa-circle-info"></i> Poloviční porce se účtují za 70 % z původní ceny</div>
+          </div>
+
+          <div class="menu-note">
+            Objednávky na tel. <strong>737 484 116</strong> · Rozvoz od 4 jídel do 10 km zdarma<br/>
+            <em>Seznam alergenů dle značení k dispozici u obsluhy</em>
+          </div>
         </div>
       </div>
 
@@ -148,13 +256,128 @@ const allDailyItems = [
           <p class="lead">Nápojový lístek · Ceny včetně DPH</p>
           <button class="btn btn-ghost btn-sm" onclick="window.print()"><i class="fa-solid fa-print"></i> Vytisknout</button>
         </div>
-        <div class="menu-image-container reveal">
-          <picture>
-            <source srcset={`${getUrl('/images/drinks-mobile.webp')} 480w`} type="image/webp" media="(max-width: 480px)" />
-            <source srcset={`${getUrl('/images/drinks-tablet.webp')} 768w`} type="image/webp" media="(max-width: 768px)" />
-            <source srcset={`${getUrl('/images/drinks.webp')}`} type="image/webp" />
-            <img src={getUrl('/images/drinks.png')} alt="Nápojový lístek" class="shimmer-img menu-sheet" loading="lazy" onload="this.classList.add('loaded')" />
-          </picture>
+        <div class="menu-card">
+
+          <div class="menu-category">
+            <div class="menu-category-title"><i class="fa-solid fa-beer-mug-empty"></i> Piva na čepu</div>
+            <div class="menu-item"><div><div class="menu-item-name">Velkopopovický Kozel 11°, světlý ležák</div><div class="menu-item-desc">0,3 l</div></div><div class="menu-item-price">33 Kč</div></div>
+            <div class="menu-item"><div><div class="menu-item-name">Velkopopovický Kozel 11°, světlý ležák</div><div class="menu-item-desc">0,5 l</div></div><div class="menu-item-price">45 Kč</div></div>
+            <div class="menu-item"><div><div class="menu-item-name">Plzeňský Prazdroj 12°</div><div class="menu-item-desc">0,3 l</div></div><div class="menu-item-price">44 Kč</div></div>
+            <div class="menu-item"><div><div class="menu-item-name">Plzeňský Prazdroj 12°</div><div class="menu-item-desc">0,5 l</div></div><div class="menu-item-price">62 Kč</div></div>
+            <div class="menu-item"><div><div class="menu-item-name">Velkopopovický Kozel Černý, tmavé výčepní pivo – lahev</div><div class="menu-item-desc">0,3 l</div></div><div class="menu-item-price">55 Kč</div></div>
+            <div class="menu-item"><div><div class="menu-item-name">Frisco, Cider – lahev</div><div class="menu-item-desc">0,33 l</div></div><div class="menu-item-price">59 Kč</div></div>
+          </div>
+
+          <div class="menu-category">
+            <div class="menu-category-title"><i class="fa-solid fa-beer-mug-empty"></i> Nealko piva</div>
+            <div class="menu-item menu-item-small"><div><div class="menu-item-name">Birell, světlé nealkoholické pivo</div><div class="menu-item-desc">0,3 l</div></div><div class="menu-item-price">36 Kč</div></div>
+            <div class="menu-item menu-item-small"><div><div class="menu-item-name">Birell, světlé nealkoholické pivo</div><div class="menu-item-desc">0,5 l</div></div><div class="menu-item-price">55 Kč</div></div>
+            <div class="menu-item menu-item-small"><div><div class="menu-item-name">Birell Pomelo a Grep – míč. nápoj z nealko piva</div><div class="menu-item-desc">0,3 l</div></div><div class="menu-item-price">36 Kč</div></div>
+            <div class="menu-item menu-item-small"><div><div class="menu-item-name">Birell Pomelo a Grep – míč. nápoj z nealko piva</div><div class="menu-item-desc">0,5 l</div></div><div class="menu-item-price">55 Kč</div></div>
+          </div>
+
+          <div class="menu-category">
+            <div class="menu-category-title"><i class="fa-solid fa-wine-glass"></i> Vína rozlévaná, Sekty</div>
+            <div class="menu-item"><div><div class="menu-item-name">Přítluky Rulandské šedé, Pálava, Rulandské rosé, Cabernet Moravia</div><div class="menu-item-desc">0,2 l</div></div><div class="menu-item-price">68 Kč</div></div>
+            <div class="menu-item"><div><div class="menu-item-name">Demi, Brut</div><div class="menu-item-desc">0,75 l</div></div><div class="menu-item-price">279 Kč</div></div>
+            <div class="menu-item"><div><div class="menu-item-name">Cinzano PINOT CHARDONNAY cuvée</div><div class="menu-item-desc">0,75 l</div></div><div class="menu-item-price">299 Kč</div></div>
+            <div class="menu-item"><div><div class="menu-item-name">MIONETTO PROSECCO Brut</div><div class="menu-item-desc">0,75 l</div></div><div class="menu-item-price">399 Kč</div></div>
+          </div>
+
+          <div class="menu-category">
+            <div class="menu-category-title"><i class="fa-solid fa-martini-glass-citrus"></i> Aperitivy</div>
+            <div class="menu-item menu-item-small"><div><div class="menu-item-name">Cinzano Bianco</div><div class="menu-item-desc">0,1 l</div></div><div class="menu-item-price">59 Kč</div></div>
+            <div class="menu-item menu-item-small"><div><div class="menu-item-name">Campari Bitter</div><div class="menu-item-desc">0,05 l</div></div><div class="menu-item-price">59 Kč</div></div>
+            <div class="menu-item menu-item-small"><div><div class="menu-item-name">APEROL Spritz</div><div class="menu-item-desc">0,25 l</div></div><div class="menu-item-price">129 Kč</div></div>
+          </div>
+
+          <div class="menu-category">
+            <div class="menu-category-title"><i class="fa-solid fa-glass-water"></i> Nealkoholické nápoje</div>
+            <div class="menu-item menu-item-small"><div><div class="menu-item-name">Coca Cola, LIGHT, ZERO</div><div class="menu-item-desc">0,33 l</div></div><div class="menu-item-price">59 Kč</div></div>
+            <div class="menu-item menu-item-small"><div><div class="menu-item-name">Sprite</div><div class="menu-item-desc">0,33 l</div></div><div class="menu-item-price">59 Kč</div></div>
+            <div class="menu-item menu-item-small"><div><div class="menu-item-name">FUZE TEA (dle nabídky)</div><div class="menu-item-desc">0,25 l</div></div><div class="menu-item-price">59 Kč</div></div>
+            <div class="menu-item menu-item-small"><div><div class="menu-item-name">Fanta</div><div class="menu-item-desc">0,33 l</div></div><div class="menu-item-price">59 Kč</div></div>
+            <div class="menu-item menu-item-small"><div><div class="menu-item-name">Kinley Tonic, GINGER, ROSE</div><div class="menu-item-desc">0,33 l</div></div><div class="menu-item-price">59 Kč</div></div>
+            <div class="menu-item menu-item-small"><div><div class="menu-item-name">Cappy juice (dle nabídky)</div><div class="menu-item-desc">0,25 l</div></div><div class="menu-item-price">59 Kč</div></div>
+            <div class="menu-item menu-item-small"><div><div class="menu-item-name">NATURA (perlivá, jemně perlivá, neperlivá)</div><div class="menu-item-desc">0,3 l</div></div><div class="menu-item-price">35 Kč</div></div>
+            <div class="menu-item menu-item-small"><div><div class="menu-item-name">Red Bull</div><div class="menu-item-desc">0,25 l</div></div><div class="menu-item-price">65 Kč</div></div>
+            <div class="menu-item menu-item-small"><div><div class="menu-item-name">Karafa s vodou a citronem</div><div class="menu-item-desc">1,5 l</div></div><div class="menu-item-price">90 Kč</div></div>
+            <div class="menu-item menu-item-small"><div><div class="menu-item-name">Točená KOFOLA, MALINOVKA</div><div class="menu-item-desc">0,1 l</div></div><div class="menu-item-price">11 Kč</div></div>
+          </div>
+
+          <div class="menu-category">
+            <div class="menu-category-title"><i class="fa-solid fa-mug-hot"></i> Teplé nápoje</div>
+            <div class="menu-item menu-item-small"><div><div class="menu-item-name">Grog z originál</div></div><div class="menu-item-price">54 Kč</div></div>
+            <div class="menu-item menu-item-small"><div><div class="menu-item-name">Horká Griotka</div></div><div class="menu-item-price">54 Kč</div></div>
+            <div class="menu-item menu-item-small"><div><div class="menu-item-name">Svařené víno</div></div><div class="menu-item-price">78 Kč</div></div>
+            <div class="menu-item menu-item-small"><div><div class="menu-item-name">Espresso, Ristretto, Lungo s mlékem CAFE RESERVA</div></div><div class="menu-item-price">54 Kč</div></div>
+            <div class="menu-item menu-item-small"><div><div class="menu-item-name">Cappuccino CAFE RESERVA</div></div><div class="menu-item-price">64 Kč</div></div>
+            <div class="menu-item menu-item-small"><div><div class="menu-item-name">Caffé Latté CAFE RESERVA</div></div><div class="menu-item-price">68 Kč</div></div>
+            <div class="menu-item menu-item-small"><div><div class="menu-item-name">Turecká káva CAFE RESERVA</div></div><div class="menu-item-price">44 Kč</div></div>
+            <div class="menu-item menu-item-small"><div><div class="menu-item-name">Vídeňská káva CAFE RESERVA</div></div><div class="menu-item-price">68 Kč</div></div>
+            <div class="menu-item menu-item-small"><div><div class="menu-item-name">Irská káva CAFE RESERVA</div></div><div class="menu-item-price">119 Kč</div></div>
+            <div class="menu-item menu-item-small"><div><div class="menu-item-name">Alžírská káva CAFE RESERVA</div></div><div class="menu-item-price">99 Kč</div></div>
+            <div class="menu-item menu-item-small"><div><div class="menu-item-name">Ledová káva s vanilkovou zmrzlinou a šlehačkou CAFE RESERVA</div></div><div class="menu-item-price">119 Kč</div></div>
+            <div class="menu-item menu-item-small"><div><div class="menu-item-name">Horká čokoláda se šlehačkou, Hot Drink (dle nabídky)</div></div><div class="menu-item-price">79 Kč</div></div>
+            <div class="menu-item menu-item-small"><div><div class="menu-item-name">Čaj AHMAD (dle nabídky)</div></div><div class="menu-item-price">49 Kč</div></div>
+            <div class="menu-item menu-item-small"><div><div class="menu-item-name">Čaj WHITE PEONY (dle nabídky) s medem a citrónem</div></div><div class="menu-item-price">79 Kč</div></div>
+            <div class="menu-item menu-item-small"><div><div class="menu-item-name">Medík k čaji</div></div><div class="menu-item-price">9 Kč</div></div>
+          </div>
+
+          <div class="menu-category">
+            <div class="menu-category-title"><i class="fa-solid fa-whiskey-glass"></i> Destiláty</div>
+            <div class="menu-item menu-item-small"><div><div class="menu-item-name">Božkov vodka</div><div class="menu-item-desc">0,04 l</div></div><div class="menu-item-price">45 Kč</div></div>
+            <div class="menu-item menu-item-small"><div><div class="menu-item-name">Vodka Ruský Standard</div><div class="menu-item-desc">0,04 l</div></div><div class="menu-item-price">65 Kč</div></div>
+            <div class="menu-item menu-item-small"><div><div class="menu-item-name">Vodka Finlandia</div><div class="menu-item-desc">0,04 l</div></div><div class="menu-item-price">65 Kč</div></div>
+            <div class="menu-item menu-item-small"><div><div class="menu-item-name">Hruškovice, Slivovice GOLDEN</div><div class="menu-item-desc">0,04 l</div></div><div class="menu-item-price">65 Kč</div></div>
+            <div class="menu-item menu-item-small"><div><div class="menu-item-name">Pircher WILLIAMS</div><div class="menu-item-desc">0,04 l</div></div><div class="menu-item-price">99 Kč</div></div>
+            <div class="menu-item menu-item-small"><div><div class="menu-item-name">Gin HENDRICKS</div><div class="menu-item-desc">0,04 l</div></div><div class="menu-item-price">129 Kč</div></div>
+            <div class="menu-item menu-item-small"><div><div class="menu-item-name">Gin BOMBAY SAPPHIRE</div><div class="menu-item-desc">0,04 l</div></div><div class="menu-item-price">99 Kč</div></div>
+            <div class="menu-item menu-item-small"><div><div class="menu-item-name">Gin GORDONS (pink)</div><div class="menu-item-desc">0,04 l</div></div><div class="menu-item-price">65 Kč</div></div>
+            <div class="menu-item menu-item-small"><div><div class="menu-item-name">Tequila Gold, Silver</div><div class="menu-item-desc">0,04 l</div></div><div class="menu-item-price">79 Kč</div></div>
+          </div>
+
+          <div class="menu-category">
+            <div class="menu-category-title"><i class="fa-solid fa-whiskey-glass"></i> Brandy a Koňak</div>
+            <div class="menu-item menu-item-small"><div><div class="menu-item-name">Hennessy V.S.</div><div class="menu-item-desc">0,04 l</div></div><div class="menu-item-price">139 Kč</div></div>
+            <div class="menu-item menu-item-small"><div><div class="menu-item-name">Hennessy V.S.O.P.</div><div class="menu-item-desc">0,04 l</div></div><div class="menu-item-price">199 Kč</div></div>
+            <div class="menu-item menu-item-small"><div><div class="menu-item-name">Metaxa *****</div><div class="menu-item-desc">0,04 l</div></div><div class="menu-item-price">65 Kč</div></div>
+            <div class="menu-item menu-item-small"><div><div class="menu-item-name">Metaxa 12*</div><div class="menu-item-desc">0,04 l</div></div><div class="menu-item-price">139 Kč</div></div>
+          </div>
+
+          <div class="menu-category">
+            <div class="menu-category-title"><i class="fa-solid fa-whiskey-glass"></i> Whisky a Bourbon</div>
+            <div class="menu-item menu-item-small"><div><div class="menu-item-name">Jameson</div><div class="menu-item-desc">0,04 l</div></div><div class="menu-item-price">70 Kč</div></div>
+            <div class="menu-item menu-item-small"><div><div class="menu-item-name">Tullamore Dew</div><div class="menu-item-desc">0,04 l</div></div><div class="menu-item-price">70 Kč</div></div>
+            <div class="menu-item menu-item-small"><div><div class="menu-item-name">Jack Daniel's</div><div class="menu-item-desc">0,04 l</div></div><div class="menu-item-price">99 Kč</div></div>
+          </div>
+
+          <div class="menu-category">
+            <div class="menu-category-title"><i class="fa-solid fa-martini-glass"></i> Likéry</div>
+            <div class="menu-item menu-item-small"><div><div class="menu-item-name">Fernet Stock</div><div class="menu-item-desc">0,04 l</div></div><div class="menu-item-price">45 Kč</div></div>
+            <div class="menu-item menu-item-small"><div><div class="menu-item-name">Fernet Stock Citrus</div><div class="menu-item-desc">0,04 l</div></div><div class="menu-item-price">45 Kč</div></div>
+            <div class="menu-item menu-item-small"><div><div class="menu-item-name">Becherovka</div><div class="menu-item-desc">0,04 l</div></div><div class="menu-item-price">50 Kč</div></div>
+            <div class="menu-item menu-item-small"><div><div class="menu-item-name">Jägermeister</div><div class="menu-item-desc">0,04 l</div></div><div class="menu-item-price">70 Kč</div></div>
+            <div class="menu-item menu-item-small"><div><div class="menu-item-name">Božkov Griotte</div><div class="menu-item-desc">0,04 l</div></div><div class="menu-item-price">45 Kč</div></div>
+            <div class="menu-item menu-item-small"><div><div class="menu-item-name">Božkov Peprmint</div><div class="menu-item-desc">0,04 l</div></div><div class="menu-item-price">45 Kč</div></div>
+            <div class="menu-item menu-item-small"><div><div class="menu-item-name">Amundsen Green Apple</div><div class="menu-item-desc">0,04 l</div></div><div class="menu-item-price">45 Kč</div></div>
+            <div class="menu-item menu-item-small"><div><div class="menu-item-name">Vaječný likér</div><div class="menu-item-desc">0,04 l</div></div><div class="menu-item-price">45 Kč</div></div>
+            <div class="menu-item menu-item-small"><div><div class="menu-item-name">Carolans</div><div class="menu-item-desc">0,04 l</div></div><div class="menu-item-price">70 Kč</div></div>
+            <div class="menu-item menu-item-small"><div><div class="menu-item-name">Baileys</div><div class="menu-item-desc">0,04 l</div></div><div class="menu-item-price">70 Kč</div></div>
+          </div>
+
+          <div class="menu-category">
+            <div class="menu-category-title"><i class="fa-solid fa-whiskey-glass"></i> Rumy</div>
+            <div class="menu-item menu-item-small"><div><div class="menu-item-name">BRUGAL 1888</div><div class="menu-item-desc">0,04 l</div></div><div class="menu-item-price">139 Kč</div></div>
+            <div class="menu-item menu-item-small"><div><div class="menu-item-name">DIPLOMATICO 12 YO</div><div class="menu-item-desc">0,04 l</div></div><div class="menu-item-price">139 Kč</div></div>
+            <div class="menu-item menu-item-small"><div><div class="menu-item-name">RON ZACAPA 23 años</div><div class="menu-item-desc">0,04 l</div></div><div class="menu-item-price">139 Kč</div></div>
+            <div class="menu-item menu-item-small"><div><div class="menu-item-name">Havana 3 años</div><div class="menu-item-desc">0,04 l</div></div><div class="menu-item-price">65 Kč</div></div>
+            <div class="menu-item menu-item-small"><div><div class="menu-item-name">LEGENDARIO Elixír</div><div class="menu-item-desc">0,04 l</div></div><div class="menu-item-price">99 Kč</div></div>
+            <div class="menu-item menu-item-small"><div><div class="menu-item-name">Rum REPUBLICA</div><div class="menu-item-desc">0,04 l</div></div><div class="menu-item-price">65 Kč</div></div>
+            <div class="menu-item menu-item-small"><div><div class="menu-item-name">Captain Morgan</div><div class="menu-item-desc">0,04 l</div></div><div class="menu-item-price">65 Kč</div></div>
+            <div class="menu-item menu-item-small"><div><div class="menu-item-name">Božkov originál</div><div class="menu-item-desc">0,04 l</div></div><div class="menu-item-price">45 Kč</div></div>
+          </div>
+
         </div>
       </div>
     </div>
@@ -184,21 +407,12 @@ const allDailyItems = [
   .daily-placeholder { text-align:center; padding:var(--space-3xl); background:var(--clr-surface); border:1px solid var(--clr-border); border-radius:var(--radius-lg); }
   .placeholder-icon { font-size:3rem; margin-bottom:var(--space-lg); }
   
-  .menu-image-container {
-    width: 100%;
-    max-width: 900px;
-    margin: 0 auto;
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-    box-shadow: var(--shadow-lg);
-    background: var(--clr-surface);
-    border: 1px solid var(--clr-border);
-  }
-  .menu-sheet {
-    width: 100%;
-    height: auto;
-    display: block;
-  }
+  .menu-item-desc { font-size: .82rem; color: var(--clr-text-muted); margin-top: 2px; }
+  .menu-item-small { padding: .35rem 0; }
+  .menu-item-small .menu-item-name { font-size: .9rem; }
+  .menu-item-small .menu-item-price { font-size: .9rem; min-width: 4.5rem; }
+  .menu-item-info { padding: .5rem .75rem; margin-top: .25rem; background: rgba(201,168,76,.06); border-left: 3px solid var(--clr-gold); border-radius: var(--radius-sm); font-size: .82rem; color: var(--clr-text-muted); display: flex; align-items: center; gap: .5rem; }
+  .menu-item-info i { color: var(--clr-gold); flex-shrink: 0; }
 
   @media (max-width:600px) {
     .menu-card { padding:var(--space-lg); }
