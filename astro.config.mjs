@@ -4,6 +4,6 @@ import { defineConfig } from 'astro/config';
 // https://astro.build/config
 export default defineConfig({
   site: 'https://MadeByEmKo.github.io',
-  base: process.env.GITHUB_ACTIONS ? '/hostines-ab' : '/',
+  base: process.env.GITHUB_ACTIONS ? '/hostinec-ab' : '/',
   output: 'static',
 });
