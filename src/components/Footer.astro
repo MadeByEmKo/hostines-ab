@@ -1,5 +1,7 @@
 ---
 // Footer.astro
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const getUrl = (path) => path === '/' ? (base || '/') : `${base}${path}`;
 ---
 
 <footer class="site-footer no-print">
@@ -8,8 +10,8 @@
       <div class="footer-grid">
         <!-- Brand -->
         <div class="footer-brand">
-          <a href="/" class="footer-logo-link" id="footer-logo-link" aria-label="Hostinec AB">
-            <img src="/images/logo.png" alt="Hostinec Antonín Barták" class="footer-logo-img" loading="lazy" />
+          <a href={getUrl('/')} class="footer-logo-link" id="footer-logo-link" aria-label="Hostinec AB">
+            <img src={getUrl('/images/logo.png')} alt="Hostinec Antonín Barták" class="footer-logo-img" loading="lazy" />
           </a>
           <a
             href="https://www.facebook.com/Hostinec-Anton%C3%ADn-Bart%C3%A1k-822946991392710"
@@ -30,14 +32,14 @@
         <div class="footer-col">
           <h3 class="footer-heading">Navigace</h3>
           <ul class="footer-links" role="list">
-            <li><a href="/" id="footer-nav-home">Úvod</a></li>
-            <li><a href="/menu" id="footer-nav-menu">Jídelní lístek</a></li>
-            <li><a href="/ubytovani" id="footer-nav-ubytovani">Ubytování</a></li>
-            <li><a href="/skupiny" id="footer-nav-skupiny">Skupinové akce</a></li>
-            <li><a href="/galerie" id="footer-nav-galerie">Fotogalerie</a></li>
-            <li><a href="/o-nas" id="footer-nav-o-nas">O nás</a></li>
-            <li><a href="/kontakt" id="footer-nav-kontakt">Kontakt</a></li>
-            <li><a href="/objednat" id="footer-nav-objednat">🛍️ Objednat s sebou</a></li>
+            <li><a href={getUrl('/')} id="footer-nav-home">Úvod</a></li>
+            <li><a href={getUrl('/menu')} id="footer-nav-menu">Jídelní lístek</a></li>
+            <li><a href={getUrl('/ubytovani')} id="footer-nav-ubytovani">Ubytování</a></li>
+            <li><a href={getUrl('/skupiny')} id="footer-nav-skupiny">Skupinové akce</a></li>
+            <li><a href={getUrl('/galerie')} id="footer-nav-galerie">Fotogalerie</a></li>
+            <li><a href={getUrl('/o-nas')} id="footer-nav-o-nas">O nás</a></li>
+            <li><a href={getUrl('/kontakt')} id="footer-nav-kontakt">Kontakt</a></li>
+            <li><a href={getUrl('/objednat')} id="footer-nav-objednat">🛍️ Objednat s sebou</a></li>
           </ul>
         </div>
 
@@ -79,7 +81,7 @@
       <p class="footer-copy">
         &copy; {new Date().getFullYear()} Hostinec Antonín Barták · Všechna práva vyhrazena
       </p>
-      <a href="/rezervace" class="btn btn-outline btn-sm" id="footer-rezervace-btn">Zamluvit stůl</a>
+      <a href={getUrl('/rezervace')} class="btn btn-outline btn-sm" id="footer-rezervace-btn">Zamluvit stůl</a>
     </div>
   </div>
 </footer>
@@ -95,26 +97,26 @@
 
   .footer-grid {
     display: grid;
-    grid-template-columns: 1.4fr 1fr 1fr 1fr;
-    gap: var(--space-2xl);
+    grid-template-columns: 1.3fr 1fr 1fr 1fr;
+    gap: 48px;
+    align-items: start;
+  }
+
+  .footer-brand {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
   }
 
   .footer-logo-link { display: inline-block; margin-bottom: var(--space-lg); }
   .footer-logo-img {
-    height: 90px;
+    height: 140px;
     width: auto;
     object-fit: contain;
-    filter: drop-shadow(0 2px 12px rgba(0,0,0,0.4));
+    filter: drop-shadow(0 2px 14px rgba(0,0,0,0.5));
     transition: transform 0.3s ease;
   }
-  .footer-logo-link:hover .footer-logo-img { transform: scale(1.03); }
-  .footer-desc {
-    font-size: 0.88rem;
-    color: var(--clr-text-muted);
-    line-height: 1.7;
-    max-width: 28ch;
-    margin-bottom: var(--space-lg);
-  }
+  .footer-logo-link:hover .footer-logo-img { transform: scale(1.04); }
   .social-link {
     display: inline-flex;
     align-items: center;
