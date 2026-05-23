@@ -507,3 +507,56 @@ img.shimmer-img.loaded {
   100% { background-position: -200% 0; }
 }
 
+/* ── Mobile Sticky Footer CTA ── */
+.mobile-sticky-cta {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 9999;
+  display: none; /* Hidden on desktop */
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+  padding: 0.75rem var(--space-md);
+  background: rgba(15, 28, 20, 0.85); /* Dark green matching --clr-bg */
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-top: 1px solid var(--clr-border);
+  box-shadow: 0 -4px 30px rgba(0, 0, 0, 0.4);
+}
+
+.mobile-sticky-cta .btn-sticky {
+  padding: 0.65rem 0.5rem;
+  font-size: 0.8rem;
+  letter-spacing: 0.02em;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  border-radius: var(--radius-sm);
+  width: 100%;
+}
+
+.mobile-sticky-cta .btn-primary.btn-sticky {
+  background: linear-gradient(135deg, var(--clr-gold), var(--clr-gold-dark));
+  color: #FFFFFF;
+}
+
+.mobile-sticky-cta .btn-outline.btn-sticky {
+  border: 1.5px solid var(--clr-gold);
+  color: var(--clr-cream);
+  background: rgba(201, 168, 76, 0.05);
+}
+
+/* Adjust page padding on mobile so content isn't hidden behind the sticky footer */
+@media (max-width: 768px) {
+  body {
+    padding-bottom: 70px;
+  }
+  .mobile-sticky-cta {
+    display: grid;
+  }
+}
+
+

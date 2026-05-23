@@ -172,9 +172,19 @@ const staleLístek = [
               </div>
             </div>
 
-            <div class="cart-total" id="cart-total-row" style="display:none">
-              <span>Celkem</span>
-              <strong id="cart-total-price">0 Kč</strong>
+            <div class="cart-summary-block" id="cart-total-row" style="display:none">
+              <div class="summary-row">
+                <span>Mezisoučet (jídlo):</span>
+                <span id="summary-subtotal">0 Kč</span>
+              </div>
+              <div class="summary-row">
+                <span>Doručení:</span>
+                <span id="summary-delivery">Zdarma</span>
+              </div>
+              <div class="summary-row total-row">
+                <span>Celkem k úhradě:</span>
+                <strong id="cart-total-price">0 Kč</strong>
+              </div>
             </div>
 
             <!-- Formulář -->
@@ -194,14 +204,42 @@ const staleLístek = [
                 <input type="tel" id="t-telefon" name="telefon" placeholder="+420 123 456 789" required />
               </div>
 
+              <!-- Způsob převzetí -->
               <div class="form-group">
-                <label for="t-cas">Čas vyzvednutí *</label>
-                <select id="t-cas" name="cas" required>
-                  <option value="co-nejdrive">Co nejdříve (~30 min)</option>
-                  <option value="za-30">Za 30 minut</option>
-                  <option value="za-60">Za 1 hodinu</option>
-                  <option value="vlastni">Vlastní čas</option>
-                </select>
+                <label>Způsob převzetí *</label>
+                <div class="radio-group">
+                  <label class="radio-label">
+                    <input type="radio" name="zpusob_doruceni" value="osobne" checked required />
+                    <span>Vyzvednu osobně (zdarma, 30–45 min)</span>
+                  </label>
+                  <label class="radio-label">
+                    <input type="radio" name="zpusob_doruceni" value="dovoz" required />
+                    <span>Doručení domů (+50 Kč, do 45 min)</span>
+                  </label>
+                </div>
+              </div>
+
+              <!-- Čas převzetí -->
+              <div class="form-group">
+                <label>Čas převzetí *</label>
+                <div class="radio-group">
+                  <label class="radio-label">
+                    <input type="radio" name="cas_prevzeti" value="co-nejdrive" checked required />
+                    <span>Nyní (do 30 minut)</span>
+                  </label>
+                  <label class="radio-label">
+                    <input type="radio" name="cas_prevzeti" value="za-30" required />
+                    <span>Za 30 minut</span>
+                  </label>
+                  <label class="radio-label">
+                    <input type="radio" name="cas_prevzeti" value="za-60" required />
+                    <span>Za 1 hodinu</span>
+                  </label>
+                  <label class="radio-label">
+                    <input type="radio" name="cas_prevzeti" value="vlastni" required />
+                    <span>Vlastní čas</span>
+                  </label>
+                </div>
               </div>
               <div class="form-group" id="vlastni-cas-group" style="display:none">
                 <label for="t-vlastni-cas">Konkrétní čas</label>
@@ -209,8 +247,8 @@ const staleLístek = [
               </div>
 
               <div class="form-group">
-                <label for="t-poznamka">Poznámky (alergie, úpravy…)</label>
-                <textarea id="t-poznamka" name="poznamka" rows="2"></textarea>
+                <label for="t-poznamka">Poznámky (alergie, úpravy, adresa pro doručení…)</label>
+                <textarea id="t-poznamka" name="poznamka" rows="2" placeholder="např. bez cibule, adresa: Hlavní 123..."></textarea>
               </div>
 
               <div class="gdpr-check">
@@ -356,16 +394,97 @@ const staleLístek = [
   .cart-item-qty { font-weight: 700; color: var(--clr-gold); min-width: 16px; text-align: center; }
   .cart-item-price { color: var(--clr-text-muted); font-size: 0.78rem; white-space: nowrap; }
 
-  .cart-total {
+  /* Radio Group */
+  .radio-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 0.35rem;
+    background: rgba(255,255,255,0.02);
+    padding: 0.75rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--clr-border);
+  }
+  .radio-label {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    cursor: pointer;
+    font-size: 0.85rem;
+    color: var(--clr-cream);
+    user-select: none;
+  }
+  .radio-label input[type="radio"] {
+    appearance: none;
+    background-color: transparent;
+    margin: 0;
+    font: inherit;
+    color: var(--clr-gold);
+    width: 18px;
+    height: 18px;
+    border: 2px solid rgba(255,255,255,0.2);
+    border-radius: 50%;
+    display: grid;
+    place-content: center;
+    cursor: pointer;
+    transition: border-color 0.2s, background-color 0.2s;
+  }
+  .radio-label input[type="radio"]::before {
+    content: "";
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    transform: scale(0);
+    transition: 120ms transform ease-in-out;
+    background-color: var(--clr-gold);
+  }
+  .radio-label input[type="radio"]:checked {
+    border-color: var(--clr-gold);
+  }
+  .radio-label input[type="radio"]:checked::before {
+    transform: scale(1);
+  }
+  .radio-label span {
+    line-height: 1.2;
+  }
+
+  /* Cart Summary Block */
+  .cart-summary-block {
+    padding: var(--space-md) var(--space-xl);
+    border-top: 1px solid var(--clr-border);
+    font-size: 0.88rem;
+    color: var(--clr-text-muted);
+  }
+  .summary-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: var(--space-md) var(--space-xl);
-    border-top: 1px solid var(--clr-border);
-    font-size: 0.95rem;
+    margin-bottom: 0.35rem;
+  }
+  .summary-row span {
     color: var(--clr-text-muted);
   }
-  .cart-total strong { color: var(--clr-gold); font-family: var(--font-display); font-size: 1.2rem; }
+  .summary-row #summary-subtotal,
+  .summary-row #summary-delivery {
+    color: var(--clr-cream);
+    font-weight: 500;
+  }
+  .summary-row.total-row {
+    border-top: 1px solid rgba(255,255,255,0.08);
+    margin-top: 0.5rem;
+    padding-top: 0.5rem;
+    font-size: 0.95rem;
+  }
+  .summary-row.total-row span {
+    color: var(--clr-cream);
+    font-weight: 600;
+  }
+  .summary-row.total-row strong {
+    color: var(--clr-gold);
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: 700;
+  }
 
   .cart-form { padding: var(--space-xl); border-top: 1px solid var(--clr-border); }
   .cart-form .form-group { margin-bottom: var(--space-md); }
@@ -404,6 +523,8 @@ const staleLístek = [
     const totalPrice = document.getElementById('cart-total-price')!;
     const cartCount  = document.getElementById('cart-count')!;
     const formEl    = document.querySelector('.cart-form') as HTMLElement;
+    const subtotalEl = document.getElementById('summary-subtotal')!;
+    const deliveryEl = document.getElementById('summary-delivery')!;
 
     if (cart.length === 0) {
       emptyEl.style.display = '';
@@ -415,14 +536,14 @@ const staleLístek = [
     }
 
     emptyEl.style.display = 'none';
-    totalRow.style.display = 'flex';
+    totalRow.style.display = 'block';
     if (formEl) formEl.style.display = 'block';
 
     itemsEl.querySelectorAll('.cart-item').forEach(el => el.remove());
 
-    let total = 0;
+    let foodTotal = 0;
     cart.forEach((item, i) => {
-      total += item.price * item.qty;
+      foodTotal += item.price * item.qty;
       const row = document.createElement('div');
       row.className = 'cart-item';
       row.innerHTML = `
@@ -437,12 +558,31 @@ const staleLístek = [
       itemsEl.appendChild(row);
     });
 
-    totalPrice.textContent = fmt(total);
+    // Check delivery cost
+    const isDelivery = (document.querySelector('input[name="zpusob_doruceni"]:checked') as HTMLInputElement)?.value === 'dovoz';
+    const deliveryFee = isDelivery ? 50 : 0;
+    const finalTotal = foodTotal + deliveryFee;
+
+    subtotalEl.textContent = fmt(foodTotal);
+    deliveryEl.textContent = deliveryFee > 0 ? fmt(deliveryFee) : 'Zdarma';
+    totalPrice.textContent = fmt(finalTotal);
+
     const count = cart.reduce((s, i) => s + i.qty, 0);
     cartCount.textContent = `${count} ${count === 1 ? 'položka' : count < 5 ? 'položky' : 'položek'}`;
 
-    const summary = cart.map(i => `${i.name} ×${i.qty} (${fmt(i.price * i.qty)})`).join(', ');
-    (document.getElementById('hidden-order') as HTMLInputElement).value = `${summary} | Celkem: ${fmt(total)}`;
+    // Get time text
+    const selectedTimeEl = document.querySelector('input[name="cas_prevzeti"]:checked') as HTMLInputElement;
+    let timeText = selectedTimeEl ? selectedTimeEl.nextElementSibling?.textContent?.trim() || selectedTimeEl.value : '';
+    if (selectedTimeEl?.value === 'vlastni') {
+      const vlastniCasVal = (document.getElementById('t-vlastni-cas') as HTMLInputElement).value;
+      timeText += ` (${vlastniCasVal || '--:--'})`;
+    }
+
+    const deliveryMethodText = isDelivery ? 'Doručení domů (+50 Kč)' : 'Vyzvednu osobně (Zdarma)';
+
+    const itemsSummary = cart.map(i => `${i.name} ×${i.qty} (${fmt(i.price * i.qty)})`).join(', ');
+    (document.getElementById('hidden-order') as HTMLInputElement).value = 
+      `Jídla: ${itemsSummary} | Převzetí: ${deliveryMethodText} | Čas: ${timeText} | Mezisoučet: ${fmt(foodTotal)} | Celkem: ${fmt(finalTotal)}`;
   }
 
   function addItem(name: string, priceStr: string) {
@@ -486,12 +626,26 @@ const staleLístek = [
     renderCart();
   });
 
-  // Custom time toggle
-  document.getElementById('t-cas')?.addEventListener('change', e => {
-    const val = (e.target as HTMLSelectElement).value;
-    const g   = document.getElementById('vlastni-cas-group') as HTMLElement;
-    g.style.display = val === 'vlastni' ? 'block' : 'none';
+  // Delivery options events
+  document.querySelectorAll('input[name="zpusob_doruceni"]').forEach(radio => {
+    radio.addEventListener('change', renderCart);
   });
+
+  // Time options events
+  document.querySelectorAll('input[name="cas_prevzeti"]').forEach(radio => {
+    radio.addEventListener('change', (e) => {
+      const val = (e.target as HTMLInputElement).value;
+      const g = document.getElementById('vlastni-cas-group') as HTMLElement;
+      g.style.display = val === 'vlastni' ? 'block' : 'none';
+      if (val === 'vlastni') {
+        document.getElementById('t-vlastni-cas')?.setAttribute('required', 'true');
+      } else {
+        document.getElementById('t-vlastni-cas')?.removeAttribute('required');
+      }
+      renderCart();
+    });
+  });
+  document.getElementById('t-vlastni-cas')?.addEventListener('change', renderCart);
 
   // Form submit
   document.getElementById('takeaway-form')?.addEventListener('submit', async e => {

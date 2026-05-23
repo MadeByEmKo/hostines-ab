@@ -50,9 +50,21 @@ const allDailyItems = [
   <section class="section" id="denni">
     <div class="container">
       <div class="menu-tabs reveal">
-        <button class="tab-btn active" id="tab-denni"   data-tab="denni"><i class="fa-solid fa-utensils"></i> Denní menu</button>
-        <button class="tab-btn"        id="tab-jidelni" data-tab="jidelni"><i class="fa-solid fa-scroll"></i> Jídelní lístek</button>
-        <button class="tab-btn"        id="tab-napoje"  data-tab="napoje"><i class="fa-solid fa-beer-mug-empty"></i> Nápojový lístek</button>
+        <button class="tab-btn active" id="tab-denni"   data-tab="denni">
+          <i class="fa-solid fa-calendar-days"></i>
+          <span class="tab-label-desktop">Denní menu</span>
+          <span class="tab-label-mobile">Denní</span>
+        </button>
+        <button class="tab-btn"        id="tab-jidelni" data-tab="jidelni">
+          <i class="fa-solid fa-utensils"></i>
+          <span class="tab-label-desktop">Jídelní lístek</span>
+          <span class="tab-label-mobile">Jídelní</span>
+        </button>
+        <button class="tab-btn"        id="tab-napoje"  data-tab="napoje">
+          <i class="fa-solid fa-wine-bottle"></i>
+          <span class="tab-label-desktop">Nápojový lístek</span>
+          <span class="tab-label-mobile">Nápoje</span>
+        </button>
       </div>
 
       <!-- DENNÍ MENU -->
@@ -120,91 +132,13 @@ const allDailyItems = [
           <p class="lead">Stálý jídelní lístek · Ceny včetně DPH</p>
           <button class="btn btn-ghost btn-sm" onclick="window.print()"><i class="fa-solid fa-print"></i> Vytisknout</button>
         </div>
-        <div class="menu-card">
-          {[
-            { icon: 'fa-solid fa-carrot', title:'Předkrmy', items:[
-              {name:'Nakládaný hermelín v oleji',          desc:'Paprika, cibule, česnek, bylinky',                    price:'89 Kč'},
-              {name:'Utopenec',                            desc:'Pikantní naložený párek v octě',                      price:'65 Kč'},
-              {name:'Tatarský biftek 100g',                desc:'Topinky, česnek',                                     price:'149 Kč'},
-            ]},
-            { icon: 'fa-solid fa-beer-mug-empty', title:'Chuťovky k pivu', items:[
-              {name:'Smažené žampiony',                    desc:'Tatarská omáčka',                                     price:'99 Kč'},
-              {name:'Nakládané okurčičky',                 desc:'Domácí nakládané',                                    price:'55 Kč'},
-              {name:'Pečivo s máslem',                     desc:'',                                                    price:'25 Kč'},
-            ]},
-            { icon: 'fa-solid fa-bowl-food', title:'Polévky', items:[
-              {name:'Hovězí vývar s nudlemi',              desc:'Domácí vývar, játrové knedlíčky',                     price:'59 Kč'},
-              {name:'Gulášová polévka',                    desc:'Hovězí maso, paprika, brambory',                      price:'65 Kč'},
-              {name:'Česnečka se sýrem a krutony',         desc:'',                                                    price:'59 Kč'},
-            ]},
-            { icon: 'fa-solid fa-seedling', title:'Bezmasé pokrmy', items:[
-              {name:'120g Smažený sýr GOUDA',              desc:'Petrželkový brambor, tatarská omáčka',                price:'199 Kč'},
-              {name:'350g Italské krémové zeleninové rizoto',desc:'Žampióny, parmazán',                                price:'189 Kč'},
-              {name:'200g Těstoviny se zeleninou',          desc:'Sezónní zelenina, parmazán',                         price:'169 Kč'},
-            ]},
-            { icon: 'fa-solid fa-utensils', title:'Staročeské speciality i klasika', items:[
-              {name:'150g Svíčková hovězí na smetaně',     desc:'Karlovarský knedlík, brusinkový terč, šlehačka',     price:'229 Kč'},
-              {name:'200g Vepřový guláš',                  desc:'Houskový knedlík',                                   price:'169 Kč'},
-              {name:'150g Vepřové výpečky',                desc:'Bramborový knedlík, listový špenát',                 price:'199 Kč'},
-              {name:'200g Smažený vepřový řízek',          desc:'Bramborový salát nebo hranolky, citrón',             price:'199 Kč'},
-              {name:'200g Smažený holandský řízek',        desc:'Bramborová kaše, okurka',                            price:'199 Kč'},
-              {name:'1/4ks Pečená kachna',                 desc:'Variace knedlíků, dušené zelí',                      price:'269 Kč'},
-            ]},
-            { icon: 'fa-solid fa-child', title:'Dětská jídla', items:[
-              {name:'100g Smažený kuřecí řízek',           desc:'Hranolky, kečup',                                    price:'129 Kč'},
-              {name:'Špagety s kečupem',                   desc:'Parmazán',                                           price:'99 Kč'},
-              {name:'Palačinky s džemem',                  desc:'Šlehačka',                                           price:'89 Kč'},
-            ]},
-            { icon: 'fa-solid fa-fire', title:'Šťavnaté steaky z grilu', items:[
-              {name:'200g Hovězí FLANK steak',             desc:'Pepřová omáčka, hranolky',                           price:'319 Kč'},
-              {name:'180g Kuřecí plněné prsíčko SOUS-VIDE',desc:'Rokforová omáčka, bramborová kaše',                  price:'219 Kč'},
-              {name:'200g Asijský vepřový bůček',          desc:'Sezam, jasmínová rýže',                              price:'209 Kč'},
-              {name:'350g MAXIWRAP',                       desc:'Kuřecí stripsy, zelenina, franc. dip, hranolky',     price:'219 Kč'},
-            ]},
-            { icon: 'fa-solid fa-globe', title:'Minutková jídla, mezinárodní kuchyně', items:[
-              {name:'350g Boloňské špagety',               desc:'Masové ragú, sýr',                                   price:'189 Kč'},
-              {name:'350g Italské rizoto se žampióny',     desc:'Parmazán, krémová omáčka',                           price:'189 Kč'},
-            ]},
-            { icon: 'fa-solid fa-leaf', title:'Zeleninové variace a saláty', items:[
-              {name:'350g Caesar salát s kuřecím',         desc:'Angl. slanina, dip, krutony, parmazán',              price:'229 Kč'},
-              {name:'150g Coleslaw',                       desc:'Domácí zelný salát',                                 price:'59 Kč'},
-            ]},
-            { icon: 'fa-solid fa-spoon', title:'Omáčky (příloha)', items:[
-              {name:'Pepřová omáčka',                      desc:'',                                                   price:'39 Kč'},
-              {name:'Tatarská omáčka',                     desc:'',                                                   price:'29 Kč'},
-              {name:'Česneková omáčka',                    desc:'',                                                   price:'29 Kč'},
-            ]},
-            { icon: 'fa-solid fa-cake-candles', title:'Dezerty', items:[
-              {name:'Tiramisu',                            desc:'',                                                   price:'79 Kč'},
-              {name:'1ks Panna cotta s lesním ovocem',     desc:'',                                                   price:'79 Kč'},
-              {name:'Zákusek / dort dle nabídky',          desc:'',                                                   price:'79 Kč'},
-              {name:'1ks Jablečný závin',                  desc:'Šlehačka, cukr, rozinky',                            price:'79 Kč'},
-            ]},
-            { icon: 'fa-solid fa-cookie', title:'Přílohy', items:[
-              {name:'Hranolky',     desc:'',  price:'45 Kč'},
-              {name:'Brambory',     desc:'',  price:'35 Kč'},
-              {name:'Rýže',         desc:'',  price:'35 Kč'},
-              {name:'Knedlík houskový (2ks)',  desc:'', price:'35 Kč'},
-              {name:'Knedlík bramborový (2ks)',desc:'', price:'35 Kč'},
-            ]},
-          ].map(cat=>(
-            <div class="menu-category">
-              <div class="menu-category-title"><i class={cat.icon}></i> {cat.title}</div>
-              {cat.items.map(item=>(
-                <div class="menu-item">
-                  <div>
-                    <div class="menu-item-name">{item.name}</div>
-                    {item.desc && <div class="menu-item-desc">{item.desc}</div>}
-                  </div>
-                  <div class="menu-item-price">{item.price}</div>
-                </div>
-              ))}
-            </div>
-          ))}
-          <div class="menu-note">
-            Objednávky na tel. <strong>737 484 116</strong> · Rozvoz od 4 jídel do 10 km zdarma<br/>
-            <em>Seznam alergenů dle značení k dispozici u obsluhy</em>
-          </div>
+        <div class="menu-image-container reveal">
+          <picture>
+            <source srcset={`${getUrl('/images/menu-mobile.webp')} 480w`} type="image/webp" media="(max-width: 480px)" />
+            <source srcset={`${getUrl('/images/menu-tablet.webp')} 768w`} type="image/webp" media="(max-width: 768px)" />
+            <source srcset={`${getUrl('/images/menu.webp')}`} type="image/webp" />
+            <img src={getUrl('/images/menu.png')} alt="Jídelní lístek" class="shimmer-img menu-sheet" loading="lazy" onload="this.classList.add('loaded')" />
+          </picture>
         </div>
       </div>
 
@@ -214,93 +148,13 @@ const allDailyItems = [
           <p class="lead">Nápojový lístek · Ceny včetně DPH</p>
           <button class="btn btn-ghost btn-sm" onclick="window.print()"><i class="fa-solid fa-print"></i> Vytisknout</button>
         </div>
-        <div class="menu-card">
-          {[
-            { icon: 'fa-solid fa-beer-mug-empty', title:'Piva na čepu', items:[
-              {name:'Gambrinus 11° světlé výčepní',  desc:'0,5 l', price:'45 Kč'},
-              {name:'Gambrinus 11° světlé výčepní',  desc:'0,3 l', price:'30 Kč'},
-              {name:'Pilsner Urquell 12° ležák',     desc:'0,5 l', price:'55 Kč'},
-              {name:'Pilsner Urquell 12° ležák',     desc:'0,3 l', price:'38 Kč'},
-              {name:'Kozel černý 10°',               desc:'0,5 l', price:'48 Kč'},
-              {name:'Kozel černý 10°',               desc:'0,3 l', price:'32 Kč'},
-            ]},
-            { icon: 'fa-solid fa-beer-mug-empty', title:'Nealko piva', items:[
-              {name:'Birell světlý',   desc:'0,5 l', price:'40 Kč'},
-              {name:'Birell světlý',   desc:'0,3 l', price:'28 Kč'},
-              {name:'Birell tmavý',    desc:'0,5 l', price:'40 Kč'},
-            ]},
-            { icon: 'fa-solid fa-wine-glass', title:'Vína rozlévaná, Sekty', items:[
-              {name:'Víno bílé',           desc:'0,2 l', price:'55 Kč'},
-              {name:'Víno červené',        desc:'0,2 l', price:'55 Kč'},
-              {name:'Víno rosé',           desc:'0,2 l', price:'55 Kč'},
-              {name:'Prosecco / Sekt',     desc:'0,1 l', price:'65 Kč'},
-              {name:'Víno lahvové',        desc:'0,75 l',price:'dle nabídky'},
-            ]},
-            { icon: 'fa-solid fa-martini-glass-citrus', title:'Aperitivy', items:[
-              {name:'Aperol Spritz',       desc:'0,3 l', price:'115 Kč'},
-              {name:'Campari',             desc:'0,04 l',price:'55 Kč'},
-              {name:'Martini Bianco/Rosso',desc:'0,05 l',price:'55 Kč'},
-            ]},
-            { icon: 'fa-solid fa-glass-water', title:'Nealkoholické nápoje', items:[
-              {name:'Kofola',                     desc:'0,3 l', price:'35 Kč'},
-              {name:'Coca-Cola',                  desc:'0,3 l', price:'38 Kč'},
-              {name:'Fanta / Sprite',             desc:'0,3 l', price:'38 Kč'},
-              {name:'Tonic / Sodovka',            desc:'0,2 l', price:'28 Kč'},
-              {name:'Džus (pomeranč/jablko)',     desc:'0,2 l', price:'32 Kč'},
-              {name:'Mattoni / Aquila',           desc:'0,33 l',price:'28 Kč'},
-              {name:'Mattoni / Aquila',           desc:'0,75 l',price:'45 Kč'},
-              {name:'Energetický nápoj',          desc:'0,25 l',price:'55 Kč'},
-            ]},
-            { icon: 'fa-solid fa-mug-hot', title:'Teplé nápoje', items:[
-              {name:'Espresso',            desc:'',       price:'42 Kč'},
-              {name:'Cappuccino',          desc:'0,15 l', price:'52 Kč'},
-              {name:'Latte macchiato',     desc:'0,3 l',  price:'59 Kč'},
-              {name:'Čaj (výběr druhů)',   desc:'',       price:'35 Kč'},
-              {name:'Horká čokoláda',      desc:'0,2 l',  price:'52 Kč'},
-              {name:'Svařené víno',        desc:'0,2 l',  price:'49 Kč'},
-              {name:'Grog',               desc:'0,2 l',  price:'55 Kč'},
-            ]},
-            { icon: 'fa-solid fa-whiskey-glass', title:'Destiláty', items:[
-              {name:'Slivovice (domácí)',   desc:'0,04 l',price:'50 Kč'},
-              {name:'Becherovka',           desc:'0,04 l',price:'45 Kč'},
-              {name:'Fernet Stock',         desc:'0,04 l',price:'45 Kč'},
-              {name:'Tuzemský rum',         desc:'0,04 l',price:'40 Kč'},
-              {name:'Vodka',               desc:'0,04 l',price:'45 Kč'},
-              {name:'Gin',                 desc:'0,04 l',price:'55 Kč'},
-            ]},
-            { icon: 'fa-solid fa-whiskey-glass', title:'Brandy a Koňak', items:[
-              {name:'Metaxa 5*',           desc:'0,04 l',price:'65 Kč'},
-              {name:'Arménský koňak',      desc:'0,04 l',price:'75 Kč'},
-            ]},
-            { icon: 'fa-solid fa-whiskey-glass', title:'Whisky a Bourbon', items:[
-              {name:'Jameson',             desc:'0,04 l',price:'75 Kč'},
-              {name:'Jack Daniel\'s',      desc:'0,04 l',price:'79 Kč'},
-              {name:'Johnnie Walker Red',  desc:'0,04 l',price:'79 Kč'},
-            ]},
-            { icon: 'fa-solid fa-martini-glass', title:'Likéry', items:[
-              {name:'Baileys',             desc:'0,04 l',price:'65 Kč'},
-              {name:'Jägermeister',        desc:'0,04 l',price:'55 Kč'},
-              {name:'Amaretto',            desc:'0,04 l',price:'60 Kč'},
-            ]},
-            { icon: 'fa-solid fa-whiskey-glass', title:'Rumy', items:[
-              {name:'Havana Club 3y',      desc:'0,04 l',price:'55 Kč'},
-              {name:'Diplomatico',         desc:'0,04 l',price:'79 Kč'},
-              {name:'Bacardi',             desc:'0,04 l',price:'55 Kč'},
-            ]},
-          ].map(cat=>(
-            <div class="menu-category">
-              <div class="menu-category-title"><i class={cat.icon}></i> {cat.title}</div>
-              {cat.items.map(item=>(
-                <div class="menu-item">
-                  <div>
-                    <div class="menu-item-name">{item.name}</div>
-                    {item.desc && <div class="menu-item-desc">{item.desc}</div>}
-                  </div>
-                  <div class="menu-item-price">{item.price}</div>
-                </div>
-              ))}
-            </div>
-          ))}
+        <div class="menu-image-container reveal">
+          <picture>
+            <source srcset={`${getUrl('/images/drinks-mobile.webp')} 480w`} type="image/webp" media="(max-width: 480px)" />
+            <source srcset={`${getUrl('/images/drinks-tablet.webp')} 768w`} type="image/webp" media="(max-width: 768px)" />
+            <source srcset={`${getUrl('/images/drinks.webp')}`} type="image/webp" />
+            <img src={getUrl('/images/drinks.png')} alt="Nápojový lístek" class="shimmer-img menu-sheet" loading="lazy" onload="this.classList.add('loaded')" />
+          </picture>
         </div>
       </div>
     </div>
@@ -311,10 +165,11 @@ const allDailyItems = [
 
 <style>
   .menu-tabs { display:flex; gap:var(--space-sm); border-bottom:2px solid var(--clr-border); margin-bottom:var(--space-2xl); flex-wrap:wrap; }
-  .tab-btn { padding:.75rem 1.5rem; background:none; border:none; color:var(--clr-text-muted); font-family:var(--font-body); font-size:.9rem; font-weight:600; cursor:pointer; border-bottom:2px solid transparent; margin-bottom:-2px; transition:color .2s,border-color .2s; }
+  .tab-btn { padding:.75rem 1.5rem; background:none; border:none; color:var(--clr-text-muted); font-family:var(--font-body); font-size:.9rem; font-weight:600; cursor:pointer; border-bottom:2px solid transparent; margin-bottom:-2px; transition:color .2s,border-color .2s; display:inline-flex; align-items:center; gap:0.5rem; }
   .tab-btn:hover { color:var(--clr-cream); }
   .tab-btn.active { color:var(--clr-gold); border-bottom-color:var(--clr-gold); }
   .hidden { display:none!important; }
+  .tab-label-mobile { display:none; }
   .daily-header { display:flex; justify-content:space-between; align-items:flex-start; gap:var(--space-lg); margin-bottom:var(--space-xl); flex-wrap:wrap; }
   .daily-badge-wrap { display:flex; align-items:center; gap:var(--space-sm); flex-wrap:wrap; }
   .daily-price-badge { background:linear-gradient(135deg,var(--clr-gold),var(--clr-gold-dark)); color:var(--clr-bg); font-weight:700; font-size:1.05rem; padding:.4rem 1rem; border-radius:var(--radius-sm); font-family:var(--font-display); }
@@ -328,9 +183,29 @@ const allDailyItems = [
   .menu-print-bar { display:flex; justify-content:space-between; align-items:center; margin-bottom:var(--space-xl); flex-wrap:wrap; gap:var(--space-md); }
   .daily-placeholder { text-align:center; padding:var(--space-3xl); background:var(--clr-surface); border:1px solid var(--clr-border); border-radius:var(--radius-lg); }
   .placeholder-icon { font-size:3rem; margin-bottom:var(--space-lg); }
+  
+  .menu-image-container {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+    background: var(--clr-surface);
+    border: 1px solid var(--clr-border);
+  }
+  .menu-sheet {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
   @media (max-width:600px) {
     .menu-card { padding:var(--space-lg); }
     .daily-header { flex-direction:column; }
+    .tab-label-desktop { display:none; }
+    .tab-label-mobile { display:inline; }
+    .menu-image-container { border-radius: var(--radius-md); }
     .menu-tabs {
       flex-wrap: nowrap;
       overflow-x: auto;
@@ -344,6 +219,7 @@ const allDailyItems = [
       text-align: center;
       white-space: nowrap;
       padding: 0.75rem 1rem;
+      justify-content: center;
     }
   }
 </style>

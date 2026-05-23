@@ -53,6 +53,18 @@ const fullTitle = title === 'Hostinec AB' ? title : `${title} | Hostinec AB`;
     <slot />
     <slot name="footer-after" />
 
+    <!-- Mobile Sticky Footer -->
+    <div class="mobile-sticky-cta no-print" id="mobile-sticky-footer">
+      <a href={getUrl('/rezervace')} class="btn btn-primary btn-sticky">
+        <i class="fa-solid fa-calendar-days"></i>
+        <span>Rezervace stolu</span>
+      </a>
+      <a href={getUrl('/menu')} class="btn btn-outline btn-sticky">
+        <i class="fa-solid fa-utensils"></i>
+        <span>Zobrazit menu</span>
+      </a>
+    </div>
+
     <!-- Scroll reveal animation -->
     <script>
       const observer = new IntersectionObserver(
