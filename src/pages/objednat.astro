@@ -88,6 +88,18 @@ const staleLístek = [
 
   <section class="section">
     <div class="container">
+
+      <!-- MOBILE: Mini košík (plovoucí nad sticky footer) -->
+      <div class="mobile-minicart no-print" id="mobile-minicart" style="display:none">
+        <div class="minicart-info">
+          <span id="mc-count">0 položek</span>
+          <strong id="mc-total">0 Kč</strong>
+        </div>
+        <a href="#cart-anchor" class="btn btn-primary btn-sm" id="mc-scroll-btn">
+          <i class="fa-solid fa-bag-shopping"></i> Zobrazit objednávku
+        </a>
+      </div>
+
       <div class="takeaway-layout">
 
         <!-- MENU SEKCE -->
@@ -160,7 +172,7 @@ const staleLístek = [
         </div>
 
         <!-- KOŠÍK + FORMULÁŘ -->
-        <aside class="cart-sidebar">
+        <aside class="cart-sidebar" id="cart-anchor">
           <div class="cart-box sticky-cart reveal">
             <div class="cart-header">
               🛒 Košík <span class="cart-count" id="cart-count">0 položek</span>
@@ -500,9 +512,35 @@ const staleLístek = [
 
   @media (max-width: 900px) {
     .takeaway-layout { grid-template-columns: 1fr; }
-    .cart-sidebar { order: -1; }
+    /* Na mobilu se košík zobrazí POD menu (přirozené pořadí) */
+    .cart-sidebar { order: 2; }
+    .menu-section { order: 1; }
     .sticky-cart { position: static; }
     .cart-items { max-height: 200px; }
+  }
+
+  /* Plovoucí mini košík na mobilu */
+  .mobile-minicart {
+    position: fixed;
+    bottom: 72px; /* nad sticky CTA footer */
+    left: 0;
+    right: 0;
+    z-index: 9000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.6rem var(--space-md);
+    background: var(--clr-surface-2);
+    border-top: 2px solid var(--clr-gold);
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.4);
+    backdrop-filter: blur(12px);
+  }
+  .minicart-info { display: flex; flex-direction: column; gap: 1px; }
+  .minicart-info span { font-size: .75rem; color: var(--clr-text-muted); }
+  .minicart-info strong { font-size: 1rem; color: var(--clr-gold); font-family: var(--font-display); }
+  @media (min-width: 901px) {
+    .mobile-minicart { display: none !important; }
   }
 </style>
 
@@ -569,6 +607,20 @@ const staleLístek = [
 
     const count = cart.reduce((s, i) => s + i.qty, 0);
     cartCount.textContent = `${count} ${count === 1 ? 'položka' : count < 5 ? 'položky' : 'položek'}`;
+
+    // ── Mobilní mini-košík ──────────────────────────────────────────
+    const miniCart = document.getElementById('mobile-minicart') as HTMLElement | null;
+    if (miniCart) {
+      if (cart.length > 0 && window.innerWidth <= 900) {
+        miniCart.style.display = 'flex';
+        const mcCount = document.getElementById('mc-count');
+        const mcTotal = document.getElementById('mc-total');
+        if (mcCount) mcCount.textContent = `${count} ${count === 1 ? 'položka' : count < 5 ? 'položky' : 'položek'}`;
+        if (mcTotal) mcTotal.textContent = fmt(finalTotal);
+      } else {
+        miniCart.style.display = 'none';
+      }
+    }
 
     // Get time text
     const selectedTimeEl = document.querySelector('input[name="cas_prevzeti"]:checked') as HTMLInputElement;
