@@ -3,6 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import '../styles/global.css';
+import { getUrl } from '../utils/paths.js';
 
 const rooms = [
   {
@@ -12,7 +13,7 @@ const rooms = [
     capacity: 1,
     beds: '1 jednolůžko',
     price: 500,
-    img: '/images/rooms/placeholder.png',
+    img: getUrl('/images/rooms/placeholder.png'),
     desc: 'Útulný jednolůžkový pokoj ideální pro sólové cestovatele nebo jednodenní výlety. Klidná atmosféra a komfortní prostředí.',
     features: ['Soukromá koupelna', 'TV', 'WiFi zdarma', 'Klimatizace'],
   },
@@ -23,7 +24,7 @@ const rooms = [
     capacity: 2,
     beds: '1 manželská postel',
     price: 800,
-    img: '/images/rooms/placeholder.png',
+    img: getUrl('/images/rooms/placeholder.png'),
     desc: 'Klasický dvoulůžkový pokoj pro páry nebo přátele. Rustikální výzdoba a veškerý komfort moderního ubytování.',
     features: ['Soukromá koupelna', 'TV', 'WiFi zdarma', 'Minibar'],
   },
@@ -34,7 +35,7 @@ const rooms = [
     capacity: 4,
     beds: '2 oddělené ložnice',
     price: 1200,
-    img: '/images/rooms/placeholder.png',
+    img: getUrl('/images/rooms/placeholder.png'),
     desc: 'Prostorný rodinný pokoj pro 4 osoby se dvěma ložnicemi. Ideální volba pro rodiny s dětmi i skupiny přátel.',
     features: ['2 koupelny', 'TV', 'WiFi zdarma', 'Lednička', 'Dětská postýlka na vyžádání'],
   },
@@ -45,7 +46,7 @@ const rooms = [
     capacity: 2,
     beds: '1 king-size postel + obývák',
     price: 1500,
-    img: '/images/rooms/placeholder.png',
+    img: getUrl('/images/rooms/placeholder.png'),
     desc: 'Luxusní dvoulůžkový pokoj s oddělenou obývací částí. Romantická atmosféra a prémiové vybavení.',
     features: ['Whirlpool vana', 'TV', 'WiFi zdarma', 'Minibar', 'Obývací část', 'Klimatizace'],
     badge: 'Nejoblíbenější',
@@ -57,7 +58,7 @@ const rooms = [
     capacity: 4,
     beds: '2 ložnice + terasa',
     price: 1800,
-    img: '/images/rooms/penthouse.png',
+    img: getUrl('/images/rooms/penthouse.png'),
     desc: 'Náš nejprostornější apartmán se soukromou terasou a výhledem do zahrady. Výjimečný zážitek pro výjimečné příležitosti.',
     features: ['2 koupelny', 'Soukromá terasa', 'WiFi zdarma', 'Plně vybavená kuchyňka', 'TV', 'Klimatizace', 'Minibar'],
     badge: 'Prémiový',
@@ -79,7 +80,7 @@ const rooms = [
       <p class="lead mt-md">5 pokojů · WiFi zdarma · Parkování zdarma · Snídaně na vyžádání</p>
       <div class="flex gap-md flex-wrap mt-xl" style="justify-content:center">
         <a href="#pokoje" class="btn btn-primary" id="ubyt-hero-pokoje-btn">Prohlédnout pokoje</a>
-        <a href="/rezervace-pokoje" class="btn btn-outline" id="ubyt-hero-rez-btn">Rezervovat pobyt</a>
+        <a href={getUrl('/rezervace-pokoje')} class="btn btn-outline" id="ubyt-hero-rez-btn">Rezervovat pobyt</a>
       </div>
     </div>
   </div>
@@ -152,7 +153,7 @@ const rooms = [
                 ))}
               </div>
               <a
-                href={`/rezervace-pokoje?pokoj=${room.id}&cena=${room.price}`}
+                href={getUrl(`/rezervace-pokoje?pokoj=${room.id}&cena=${room.price}`)}
                 class="btn btn-primary mt-lg room-btn"
                 id={`room-btn-${room.id}`}
               >
@@ -222,7 +223,7 @@ const rooms = [
       <h2>Připraveni zarezervovat?</h2>
       <p class="lead mt-md">Vyplňte rezervační formulář nebo nám zavolejte.</p>
       <div class="flex gap-md flex-wrap items-center mt-xl" style="justify-content:center">
-        <a href="/rezervace-pokoje" class="btn btn-primary" id="ubyt-cta-rez-btn">Rezervovat pokoj</a>
+        <a href={getUrl('/rezervace-pokoje')} class="btn btn-primary" id="ubyt-cta-rez-btn">Rezervovat pokoj</a>
         <a href="tel:+420737484116" class="btn btn-outline" id="ubyt-cta-phone-btn">+420 737 484 116</a>
       </div>
     </div>

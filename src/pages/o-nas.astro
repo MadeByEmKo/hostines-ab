@@ -3,6 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import '../styles/global.css';
+import { getUrl } from '../utils/paths.js';
 ---
 
 <BaseLayout title="O nás" description="Příběh Hostince Antonín Barták v Městečku. Tradiční česká hospoda s domácí kuchyní, přátelským prostředím a letní zahrádkou od roku 1990.">
@@ -42,7 +43,7 @@ import '../styles/global.css';
           </p>
         </div>
         <div class="story-img reveal">
-          <img src="/images/interior.png" alt="Interiér hostince" loading="lazy" />
+          <img src={getUrl('/images/interior.png')} alt="Interiér hostince" loading="lazy" />
         </div>
       </div>
     </div>
@@ -81,8 +82,8 @@ import '../styles/global.css';
       <h2>Přijďte nás navštívit</h2>
       <p class="lead mt-md">Těšíme se na Vás v Hostinci Antonín Barták!</p>
       <div class="flex gap-md flex-wrap items-center mt-xl" style="justify-content:center">
-        <a href="/rezervace" class="btn btn-primary" id="onas-rezervace-btn">Rezervace stolu</a>
-        <a href="/kontakt"   class="btn btn-outline" id="onas-kontakt-btn">Jak nás najít</a>
+        <a href={getUrl('/rezervace')} class="btn btn-primary" id="onas-rezervace-btn">Rezervace stolu</a>
+        <a href={getUrl('/kontakt')}   class="btn btn-outline" id="onas-kontakt-btn">Jak nás najít</a>
       </div>
     </div>
   </section>

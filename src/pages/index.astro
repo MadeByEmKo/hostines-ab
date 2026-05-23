@@ -3,6 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import '../styles/global.css';
+import { getUrl } from '../utils/paths.js';
 ---
 
 <BaseLayout title="Hostinec AB" description="Tradiční česká kuchyně v Městečku u Nespek. Denní menu od 99 Kč, skupinové akce, rezervace stolů. Čepujeme Prazdroj, Gambrinus a Kozel.">
@@ -11,7 +12,7 @@ import '../styles/global.css';
   <!-- HERO -->
   <section class="hero" aria-label="Úvodní banner">
     <div class="hero-bg">
-      <img src="/images/restaurant/Image_in2.JPG" alt="Hostinec AB interiér" class="hero-img" fetchpriority="high" />
+      <img src={getUrl('/images/restaurant/Image_in2.JPG')} alt="Hostinec AB interiér" class="hero-img" fetchpriority="high" />
       <div class="hero-overlay"></div>
     </div>
     <div class="hero-content container">
@@ -27,11 +28,11 @@ import '../styles/global.css';
         Denní menu, skupinové akce, letní zahrádka s grilem.
       </p>
       <div class="hero-ctas">
-        <a href="/rezervace" class="btn btn-primary" id="hero-rezervace-btn">
+        <a href={getUrl('/rezervace')} class="btn btn-primary" id="hero-rezervace-btn">
           <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
           Rezervace stolu
         </a>
-        <a href="/menu" class="btn btn-outline" id="hero-menu-btn">
+        <a href={getUrl('/menu')} class="btn btn-outline" id="hero-menu-btn">
           <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
           Zobrazit menu
         </a>
@@ -53,7 +54,7 @@ import '../styles/global.css';
   <section class="section-sm quick-cards" aria-label="Rychlé akce">
     <div class="container">
       <div class="qc-grid reveal">
-        <a href="/menu#denni" class="qc-card" id="qc-denni-menu">
+        <a href={getUrl('/menu#denni')} class="qc-card" id="qc-denni-menu">
           <div class="qc-icon">🍽️</div>
           <div>
             <div class="qc-title">Denní menu</div>
@@ -61,7 +62,7 @@ import '../styles/global.css';
           </div>
           <svg class="qc-arrow" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
         </a>
-        <a href="/skupiny" class="qc-card" id="qc-skupiny">
+        <a href={getUrl('/skupiny')} class="qc-card" id="qc-skupiny">
           <div class="qc-icon">🎉</div>
           <div>
             <div class="qc-title">Skupinové akce</div>
@@ -69,7 +70,7 @@ import '../styles/global.css';
           </div>
           <svg class="qc-arrow" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
         </a>
-        <a href="/rezervace" class="qc-card" id="qc-rezervace">
+        <a href={getUrl('/rezervace')} class="qc-card" id="qc-rezervace">
           <div class="qc-icon">📅</div>
           <div>
             <div class="qc-title">Rezervace</div>
@@ -86,8 +87,8 @@ import '../styles/global.css';
     <div class="container">
       <div class="about-grid">
         <div class="about-imgs reveal">
-          <img src="/images/interior.png" alt="Interiér restaurace" class="about-img-main" loading="lazy" />
-          <img src="/images/zahrada.png"  alt="Letní zahrádka"     class="about-img-sec"  loading="lazy" />
+          <img src={getUrl('/images/interior.png')} alt="Interiér restaurace" class="about-img-main" loading="lazy" />
+          <img src={getUrl('/images/zahrada.png')}  alt="Letní zahrádka"     class="about-img-sec"  loading="lazy" />
         </div>
         <div class="about-text reveal">
           <span class="gold-line" aria-hidden="true"></span>
@@ -117,8 +118,8 @@ import '../styles/global.css';
             </div>
           </div>
           <div class="mt-xl flex gap-md flex-wrap">
-            <a href="/o-nas" class="btn btn-outline" id="about-home-more-btn">Více o nás</a>
-            <a href="/menu" class="btn btn-ghost" id="about-home-menu-btn">Jídelní lístek</a>
+            <a href={getUrl('/o-nas')} class="btn btn-outline" id="about-home-more-btn">Více o nás</a>
+            <a href={getUrl('/menu')} class="btn btn-ghost" id="about-home-menu-btn">Jídelní lístek</a>
           </div>
         </div>
       </div>
@@ -135,28 +136,28 @@ import '../styles/global.css';
       </div>
       <div class="food-grid reveal">
         <div class="food-card">
-          <img src="/images/svickova.png" alt="Svíčková na smetaně" loading="lazy" />
+          <img src={getUrl('/images/svickova.png')} alt="Svíčková na smetaně" loading="lazy" />
           <div class="food-card-body">
             <div class="food-card-name">Svíčková na smetaně</div>
             <div class="food-card-price text-gold">od 179 Kč</div>
           </div>
         </div>
         <div class="food-card food-card-large">
-          <img src="/images/grill.png" alt="Grilovaná žebírka" loading="lazy" />
+          <img src={getUrl('/images/grill.png')} alt="Grilovaná žebírka" loading="lazy" />
           <div class="food-card-body">
             <div class="food-card-name">Grilovaná žebírka</div>
             <div class="food-card-price text-gold">od 229 Kč</div>
           </div>
         </div>
         <div class="food-card">
-          <img src="/images/rizek.png" alt="Smažený řízek" loading="lazy" />
+          <img src={getUrl('/images/rizek.png')} alt="Smažený řízek" loading="lazy" />
           <div class="food-card-body">
             <div class="food-card-name">Smažený řízek</div>
             <div class="food-card-price text-gold">od 159 Kč</div>
           </div>
         </div>
         <div class="food-card">
-          <img src="/images/polevka.png" alt="Hovězí vývar" loading="lazy" />
+          <img src={getUrl('/images/polevka.png')} alt="Hovězí vývar" loading="lazy" />
           <div class="food-card-body">
             <div class="food-card-name">Hovězí vývar</div>
             <div class="food-card-price text-gold">od 45 Kč</div>
@@ -164,7 +165,7 @@ import '../styles/global.css';
         </div>
       </div>
       <div class="text-center mt-xl reveal">
-        <a href="/menu" class="btn btn-primary" id="food-section-menu-btn">Celý jídelní lístek</a>
+        <a href={getUrl('/menu')} class="btn btn-primary" id="food-section-menu-btn">Celý jídelní lístek</a>
       </div>
     </div>
   </section>
@@ -174,7 +175,7 @@ import '../styles/global.css';
     <div class="container">
       <div class="beer-grid">
         <div class="beer-img reveal">
-          <img src="/images/pivo.png" alt="Čepované pivo" loading="lazy" />
+          <img src={getUrl('/images/pivo.png')} alt="Čepované pivo" loading="lazy" />
         </div>
         <div class="beer-text reveal">
           <span class="gold-line" aria-hidden="true"></span>
@@ -196,7 +197,7 @@ import '../styles/global.css';
               </div>
             ))}
           </div>
-          <a href="/menu#napoje" class="btn btn-outline mt-xl" id="beer-napojovy-btn">Nápojový lístek</a>
+          <a href={getUrl('/menu#napoje')} class="btn btn-outline mt-xl" id="beer-napojovy-btn">Nápojový lístek</a>
         </div>
       </div>
     </div>
@@ -210,8 +211,8 @@ import '../styles/global.css';
         Nabízíme prostory pro až 50 hostů, vlastní catering a kompletní organizaci.
       </p>
       <div class="flex gap-md flex-wrap items-center mt-xl" style="justify-content:center">
-        <a href="/skupiny" class="btn btn-primary" id="cta-skupiny-btn">Skupinové akce</a>
-        <a href="/rezervace?typ=akce" class="btn btn-outline" id="cta-akce-btn">Poptat akci</a>
+        <a href={getUrl('/skupiny')} class="btn btn-primary" id="cta-skupiny-btn">Skupinové akce</a>
+        <a href={getUrl('/rezervace?typ=akce')} class="btn btn-outline" id="cta-akce-btn">Poptat akci</a>
       </div>
     </div>
   </section>

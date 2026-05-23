@@ -3,6 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import '../styles/global.css';
+import { getUrl } from '../utils/paths.js';
 ---
 
 <BaseLayout title="Kontakt" description="Kontakt na Hostinec AB – adresa Městečko 257 22 Nespeky, telefon +420 737 484 116, e-mail, otevírací doba a mapa.">
@@ -113,7 +114,7 @@ import '../styles/global.css';
               <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
               Navigovat
             </a>
-            <a href="/rezervace" class="btn btn-outline" id="map-rezervace-btn">Rezervace stolu</a>
+            <a href={getUrl('/rezervace')} class="btn btn-outline" id="map-rezervace-btn">Rezervace stolu</a>
           </div>
         </div>
       </div>

@@ -1,7 +1,6 @@
 ---
 // Header.astro - Navigation header
-const base = import.meta.env.BASE_URL.replace(/\/$/, '');
-const getUrl = (path) => path === '/' ? (base || '/') : `${base}${path}`;
+import { getUrl, base } from '../utils/paths.js';
 
 const navLinks = [
   { href: getUrl('/'),            label: 'Úvod'          },

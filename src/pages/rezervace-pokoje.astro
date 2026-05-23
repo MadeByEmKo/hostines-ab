@@ -3,6 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import '../styles/global.css';
+import { getUrl } from '../utils/paths.js';
 
 const rooms = [
   { id: 'srdce',      name: 'Pokoj Srdce',      price: 500,  capacity: 1 },
@@ -143,7 +144,7 @@ const rooms = [
               <div class="success-icon">🛏️</div>
               <h3>Rezervace přijata!</h3>
               <p>Potvrzení Vám zašleme na zadaný email do 24 hodin. Těšíme se na Vaši návštěvu!</p>
-              <a href="/ubytovani" class="btn btn-outline mt-lg">Zpět na ubytování</a>
+              <a href={getUrl('/ubytovani')} class="btn btn-outline mt-lg">Zpět na ubytování</a>
             </div>
           </div>
         </div>

@@ -3,16 +3,17 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import '../styles/global.css';
+import { getUrl } from '../utils/paths.js';
 
 const photos = [
-  { src: '/images/interior.png', alt: 'Interiér restaurace' },
-  { src: '/images/zahrada.png',  alt: 'Letní zahrádka' },
-  { src: '/images/svickova.png', alt: 'Svíčková na smetaně' },
-  { src: '/images/grill.png',    alt: 'Grilovaná žebra' },
-  { src: '/images/rizek.png',    alt: 'Smažený řízek' },
-  { src: '/images/polevka.png',  alt: 'Hovězí vývar' },
-  { src: '/images/pivo.png',     alt: 'Čepované pivo' },
-  { src: '/images/hero.png',     alt: 'Exteriér hostince' },
+  { src: getUrl('/images/interior.png'), alt: 'Interiér restaurace' },
+  { src: getUrl('/images/zahrada.png'),  alt: 'Letní zahrádka' },
+  { src: getUrl('/images/svickova.png'), alt: 'Svíčková na smetaně' },
+  { src: getUrl('/images/grill.png'),    alt: 'Grilovaná žebra' },
+  { src: getUrl('/images/rizek.png'),    alt: 'Smažený řízek' },
+  { src: getUrl('/images/polevka.png'),  alt: 'Hovězí vývar' },
+  { src: getUrl('/images/pivo.png'),     alt: 'Čepované pivo' },
+  { src: getUrl('/images/hero.png'),     alt: 'Exteriér hostince' },
 ];
 ---
 
@@ -159,15 +160,17 @@ const photos = [
 </style>
 
 <script>
+  const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+  const getUrl = (path) => path === '/' ? (base || '/') : `${base}${path}`;
   const photos = [
-    { src: '/images/interior.png', alt: 'Interiér restaurace' },
-    { src: '/images/zahrada.png',  alt: 'Letní zahrádka' },
-    { src: '/images/svickova.png', alt: 'Svíčková na smetaně' },
-    { src: '/images/grill.png',    alt: 'Grilovaná žebra' },
-    { src: '/images/rizek.png',    alt: 'Smažený řízek' },
-    { src: '/images/polevka.png',  alt: 'Hovězí vývar' },
-    { src: '/images/pivo.png',     alt: 'Čepované pivo' },
-    { src: '/images/hero.png',     alt: 'Exteriér hostince' },
+    { src: getUrl('/images/interior.png'), alt: 'Interiér restaurace' },
+    { src: getUrl('/images/zahrada.png'),  alt: 'Letní zahrádka' },
+    { src: getUrl('/images/svickova.png'), alt: 'Svíčková na smetaně' },
+    { src: getUrl('/images/grill.png'),    alt: 'Grilovaná žebra' },
+    { src: getUrl('/images/rizek.png'),    alt: 'Smažený řízek' },
+    { src: getUrl('/images/polevka.png'),  alt: 'Hovězí vývar' },
+    { src: getUrl('/images/pivo.png'),     alt: 'Čepované pivo' },
+    { src: getUrl('/images/hero.png'),     alt: 'Exteriér hostince' },
   ];
 
   let current = 0;

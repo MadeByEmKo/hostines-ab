@@ -3,6 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import '../styles/global.css';
+import { getUrl } from '../utils/paths.js';
 ---
 
 <BaseLayout title="Skupinové akce" description="Hostinec AB nabízí prostory pro skupinové akce – oslavy narozenin, firemní večírky, teambuildingy, svatby a rodinná setkání. Kapacita až 50 osob.">
@@ -14,7 +15,7 @@ import '../styles/global.css';
       <h1 class="mt-md">Skupinové akce<br /><em>a soukromé oslavy</em></h1>
       <p class="lead mt-md">Oslavy, firemní akce, teambuildingy, svatby · Kapacita až 50 osob</p>
       <div class="flex gap-md flex-wrap mt-xl" style="justify-content:center">
-        <a href="/rezervace?typ=akce" class="btn btn-primary" id="skupiny-hero-cta">Poptat akci</a>
+        <a href={getUrl('/rezervace?typ=akce')} class="btn btn-primary" id="skupiny-hero-cta">Poptat akci</a>
         <a href="tel:+420737484116"   class="btn btn-outline" id="skupiny-hero-phone">+420 737 484 116</a>
       </div>
     </div>
@@ -73,7 +74,7 @@ import '../styles/global.css';
           </div>
         </div>
         <div class="capacity-img reveal">
-          <img src="/images/interior.png" alt="Sál hostince" loading="lazy" />
+          <img src={getUrl('/images/interior.png')} alt="Sál hostince" loading="lazy" />
           <div class="cap-badge">
             <span>50</span>
             <small>max. osob</small>
@@ -112,7 +113,7 @@ import '../styles/global.css';
       <h2>Připraveni začít plánovat?</h2>
       <p class="lead mt-md">Kontaktujte nás a společně připravíme Vaši dokonalou akci.</p>
       <div class="flex gap-md flex-wrap items-center mt-xl" style="justify-content:center">
-        <a href="/rezervace?typ=akce" class="btn btn-primary" id="skupiny-cta-form-btn">Vyplnit poptávku</a>
+        <a href={getUrl('/rezervace?typ=akce')} class="btn btn-primary" id="skupiny-cta-form-btn">Vyplnit poptávku</a>
         <a href="tel:+420737484116"   class="btn btn-outline" id="skupiny-cta-phone-btn">Zavolat nám</a>
       </div>
     </div>

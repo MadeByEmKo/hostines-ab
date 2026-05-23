@@ -3,6 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import '../styles/global.css';
+import { getUrl } from '../utils/paths.js';
 import { readFileSync } from 'fs';
 import { join } from 'path';
 
@@ -63,7 +64,7 @@ const allDailyItems = [
           </div>
           <div class="daily-badge-wrap">
             <span class="daily-price-badge">od 59 Kč</span>
-            <a href="/objednat" class="btn btn-primary btn-sm no-print" id="menu-order-btn">🛍️ Objednat s sebou</a>
+            <a href={getUrl('/objednat')} class="btn btn-primary btn-sm no-print" id="menu-order-btn">🛍️ Objednat s sebou</a>
             <button class="btn btn-ghost btn-sm no-print" id="menu-print-btn" onclick="window.print()">🖨️ Tisk</button>
           </div>
         </div>
@@ -90,7 +91,7 @@ const allDailyItems = [
                     </div>
                     <div class="menu-item-right">
                       <div class="menu-item-price">{item.price}</div>
-                      <a href={`/objednat?item=${encodeURIComponent(item.name)}&price=${encodeURIComponent(item.price)}`}
+                      <a href={getUrl(`/objednat?item=${encodeURIComponent(item.name)}&price=${encodeURIComponent(item.price)}`)}
                          class="order-badge" title="Objednat s sebou">🛍️</a>
                     </div>
                   </div>

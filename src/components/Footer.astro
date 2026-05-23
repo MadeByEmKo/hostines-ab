@@ -1,7 +1,6 @@
 ---
 // Footer.astro
-const base = import.meta.env.BASE_URL.replace(/\/$/, '');
-const getUrl = (path) => path === '/' ? (base || '/') : `${base}${path}`;
+import { getUrl } from '../utils/paths.js';
 ---
 
 <footer class="site-footer no-print">
