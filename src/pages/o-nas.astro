@@ -57,16 +57,16 @@ import { getUrl } from '../utils/paths.js';
       </div>
       <div class="grid-3 reveal">
         {[
-          { icon: '🏡', title: 'Domácí atmosféra',   desc: 'Útulné prostředí, kde se každý cítí jako doma. Přátelská obsluha a příjemná atmosféra.' },
-          { icon: '🍳', title: 'Poctivá kuchyně',    desc: 'Tradiční česká jídla z čerstvých surovin. Žádná polotovary – vše připravujeme čerstvé.' },
-          { icon: '🤝', title: 'Osobní přístup',     desc: 'Ke každému hostovi přistupujeme individuálně. Vaše přání jsou pro nás prioritou.' },
-          { icon: '💰', title: 'Dostupné ceny',      desc: 'Denní menu již od 99 Kč. Kvalitní jídlo a pití za férové ceny.' },
-          { icon: '🌳', title: 'Letní zahrádka',     desc: 'Venkovní zahrádka s grilem – ideální místo pro léto v příjemném prostředí Městečka.' },
-          { icon: '📍', title: 'Snadná dostupnost',  desc: 'Nacházíme se v centru Městečka u Nespek, s vlastním parkovištěm.' },
+          { icon: 'fa-solid fa-house-chimney', title: 'Domácí atmosféra',   desc: 'Útulné prostředí, kde se každý cítí jako doma. Přátelská obsluha a příjemná atmosféra.' },
+          { icon: 'fa-solid fa-egg', title: 'Poctivá kuchyně',    desc: 'Tradiční česká jídla z čerstvých surovin. Žádná polotovary – vše připravujeme čerstvé.' },
+          { icon: 'fa-solid fa-handshake', title: 'Osobní přístup',     desc: 'Ke každému hostovi přistupujeme individuálně. Vaše přání jsou pro nás prioritou.' },
+          { icon: 'fa-solid fa-tags', title: 'Dostupné ceny',      desc: 'Denní menu již od 99 Kč. Kvalitní jídlo a pití za férové ceny.' },
+          { icon: 'fa-solid fa-tree', title: 'Letní zahrádka',     desc: 'Venkovní zahrádka s grilem – ideální místo pro léto v příjemném prostředí Městečka.' },
+          { icon: 'fa-solid fa-location-dot', title: 'Snadná dostupnost',  desc: 'Nacházíme se v centru Městečka u Nespek, s vlastním parkovištěm.' },
         ].map(v => (
           <div class="value-card card">
             <div class="card-body">
-              <div class="value-icon">{v.icon}</div>
+              <div class="value-icon"><i class={v.icon}></i></div>
               <h3 class="mt-md">{v.title}</h3>
               <p class="mt-sm" style="font-size:0.92rem">{v.desc}</p>
             </div>

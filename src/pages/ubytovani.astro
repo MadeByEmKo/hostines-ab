@@ -9,7 +9,7 @@ const rooms = [
   {
     id: 'srdce',
     name: 'Pokoj Srdce',
-    emoji: '❤️',
+    emoji: 'fa-solid fa-heart',
     capacity: 1,
     beds: '1 jednolůžko',
     price: 500,
@@ -20,18 +20,18 @@ const rooms = [
   {
     id: 'klasik',
     name: 'Pokoj Klasik',
-    emoji: '🏠',
+    emoji: 'fa-solid fa-house',
     capacity: 2,
     beds: '1 manželská postel',
     price: 800,
     img: getUrl('/images/rooms/placeholder.png'),
-    desc: 'Klasický dvoulůžkový pokoj pro páry nebo přátele. Rustikální výzdoba a veškerý komfort moderního ubytování.',
+    desc: 'Klasický dvoulůžkový pokoj pro páry nebo přátele. Rustikální výzdoba a vešarté komfort moderního ubytování.',
     features: ['Soukromá koupelna', 'TV', 'WiFi zdarma', 'Minibar'],
   },
   {
     id: 'familiarni',
     name: 'Pokoj Familiární',
-    emoji: '👨‍👩‍👧‍👦',
+    emoji: 'fa-solid fa-people-group',
     capacity: 4,
     beds: '2 oddělené ložnice',
     price: 1200,
@@ -42,7 +42,7 @@ const rooms = [
   {
     id: 'luxus',
     name: 'Pokoj Luxus',
-    emoji: '✨',
+    emoji: 'fa-solid fa-wand-magic-sparkles',
     capacity: 2,
     beds: '1 king-size postel + obývák',
     price: 1500,
@@ -54,7 +54,7 @@ const rooms = [
   {
     id: 'penthouse',
     name: 'Penthouse',
-    emoji: '🌟',
+    emoji: 'fa-solid fa-crown',
     capacity: 4,
     beds: '2 ložnice + terasa',
     price: 1800,
@@ -90,15 +90,15 @@ const rooms = [
     <div class="container">
       <div class="perks-grid reveal">
         {[
-          { icon: '🅿️', title: 'Parkování zdarma', sub: 'Vlastní parkoviště' },
-          { icon: '📶', title: 'WiFi zdarma',       sub: 'Vysokorychlostní' },
-          { icon: '🍳', title: 'Snídaně',           sub: 'Na vyžádání +150 Kč' },
-          { icon: '🔑', title: 'Check-in 14:00',    sub: 'Check-out 11:00' },
-          { icon: '🐾', title: 'Domácí mazlíčci',   sub: 'Po domluvě' },
-          { icon: '🏠', title: 'Recepce',           sub: 'Po–Ne 8:00–22:00' },
+          { icon: 'fa-solid fa-square-parking', title: 'Parkování zdarma', sub: 'Vlastní parkoviště' },
+          { icon: 'fa-solid fa-wifi',           title: 'WiFi zdarma',       sub: 'Vysokorychlostní' },
+          { icon: 'fa-solid fa-egg',            title: 'Snídaně',           sub: 'Na vyžádání +150 Kč' },
+          { icon: 'fa-solid fa-key',            title: 'Check-in 14:00',    sub: 'Check-out 11:00' },
+          { icon: 'fa-solid fa-paw',            title: 'Domácí mazlíčci',   sub: 'Po domluvě' },
+          { icon: 'fa-solid fa-hotel',          title: 'Recepce',           sub: 'Po–Ne 8:00–22:00' },
         ].map(p => (
           <div class="perk-item">
-            <span class="perk-icon">{p.icon}</span>
+            <span class="perk-icon"><i class={p.icon}></i></span>
             <div>
               <div class="perk-title">{p.title}</div>
               <div class="perk-sub">{p.sub}</div>
@@ -134,10 +134,10 @@ const rooms = [
             <div class="room-body">
               <div class="room-header-row">
                 <div>
-                  <div class="room-emoji">{room.emoji}</div>
+                  <div class="room-emoji"><i class={room.emoji}></i></div>
                   <h3 class="room-name">{room.name}</h3>
                   <div class="room-capacity">
-                    <span class="cap-icon">👤</span>
+                    <span class="cap-icon"><i class="fa-solid fa-user icon-gray"></i></span>
                     {room.capacity} {room.capacity === 1 ? 'osoba' : room.capacity < 5 ? 'osoby' : 'osob'} · {room.beds}
                   </div>
                 </div>
@@ -171,7 +171,7 @@ const rooms = [
     <div class="container">
       <div class="discount-card">
         <div class="discount-title">
-          <span>🎁</span> Slevy za delší pobyt
+          <i class="fa-solid fa-gift"></i> Slevy za delší pobyt
         </div>
         <div class="discount-grid">
           <div class="discount-item">
@@ -196,7 +196,7 @@ const rooms = [
     <div class="container">
       <div class="grid-2 reveal">
         <div class="info-box">
-          <h3>⏰ Check-in / Check-out</h3>
+          <h3><i class="fa-solid fa-clock"></i> Check-in / Check-out</h3>
           <div class="info-rows">
             <div class="info-row"><span>Check-in</span><strong>od 14:00</strong></div>
             <div class="info-row"><span>Check-out</span><strong>do 11:00</strong></div>
@@ -205,7 +205,7 @@ const rooms = [
           </div>
         </div>
         <div class="info-box">
-          <h3>📋 Storno podmínky</h3>
+          <h3><i class="fa-solid fa-clipboard-list"></i> Storno podmínky</h3>
           <div class="info-rows">
             <div class="info-row"><span>Bezplatné storno</span><strong>48 h předem</strong></div>
             <div class="info-row"><span>Storno 24–48 h</span><strong>50 % ceny</strong></div>

@@ -421,3 +421,71 @@ p  { color: var(--clr-text); max-width: 70ch; }
   .btn { width: 100%; justify-content: center; }
   .menu-item { flex-direction: column; gap: var(--space-xs); }
 }
+
+/* ── Font Awesome Unification ── */
+i.fa-solid,
+i.fa-regular,
+i.fa-brands,
+i[class*="fa-"] {
+  color: #D4AF37; /* Primary Gold */
+  transition: color 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+i.fa-solid:hover,
+i.fa-regular:hover,
+i.fa-brands:hover,
+i[class*="fa-"]:hover {
+  color: #E8C547; /* Hover light gold */
+}
+
+/* Button icons inherit text color */
+.btn i.fa-solid,
+.btn i.fa-regular,
+.btn i.fa-brands,
+.btn i[class*="fa-"] {
+  color: inherit;
+}
+.btn:hover i.fa-solid,
+.btn:hover i.fa-regular,
+.btn:hover i.fa-brands,
+.btn:hover i[class*="fa-"] {
+  color: inherit;
+}
+
+/* Secondary (white) icon class */
+.icon-white,
+i.icon-white[class*="fa-"] {
+  color: #FFFFFF !important;
+}
+.icon-white:hover,
+i.icon-white[class*="fa-"]:hover {
+  color: #E8E2D5 !important;
+}
+
+/* Tertiary (gray) icon class */
+.icon-gray,
+i.icon-gray[class*="fa-"] {
+  color: #AAAAAA !important;
+}
+
+/* Social icons layout */
+.social-link i {
+  color: #D4AF37;
+  background-color: rgba(212, 175, 55, 0.1);
+  padding: 0.5rem;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+.social-link:hover i {
+  color: #0f1c14 !important;
+  background-color: #D4AF37;
+}
+

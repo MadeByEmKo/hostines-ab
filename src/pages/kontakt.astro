@@ -25,7 +25,7 @@ import { getUrl } from '../utils/paths.js';
         <div class="kontakt-info reveal">
           <div class="info-cards">
             <div class="info-card">
-              <div class="info-icon">📍</div>
+              <div class="info-icon"><i class="fa-solid fa-location-dot"></i></div>
               <div>
                 <h3>Adresa</h3>
                 <address>
@@ -40,7 +40,7 @@ import { getUrl } from '../utils/paths.js';
             </div>
 
             <div class="info-card">
-              <div class="info-icon">📞</div>
+              <div class="info-icon"><i class="fa-solid fa-phone"></i></div>
               <div>
                 <h3>Telefon</h3>
                 <a href="tel:+420737484116" class="info-phone" id="kontakt-phone">+420 737 484 116</a>
@@ -49,7 +49,7 @@ import { getUrl } from '../utils/paths.js';
             </div>
 
             <div class="info-card">
-              <div class="info-icon">✉️</div>
+              <div class="info-icon"><i class="fa-solid fa-envelope"></i></div>
               <div>
                 <h3>E-mail</h3>
                 <a href="mailto:info@hostinecab.cz" class="info-link" id="kontakt-email">info@hostinecab.cz</a>
@@ -58,7 +58,7 @@ import { getUrl } from '../utils/paths.js';
             </div>
 
             <div class="info-card">
-              <div class="info-icon">👍</div>
+              <div class="info-icon"><i class="fa-brands fa-facebook"></i></div>
               <div>
                 <h3>Facebook</h3>
                 <a href="https://www.facebook.com/Hostinec-Anton%C3%ADn-Bart%C3%A1k-822946991392710" target="_blank" rel="noopener" class="info-link" id="kontakt-fb">
@@ -71,7 +71,7 @@ import { getUrl } from '../utils/paths.js';
 
           <!-- Otevírací doba -->
           <div class="hours-box mt-xl">
-            <h3>⏰ Otevírací doba</h3>
+            <h3><i class="fa-solid fa-clock"></i> Otevírací doba</h3>
             <div class="hours-grid mt-lg">
               {[
                 { day: 'Pondělí',   time: '11:00 – 22:00', today: false },
@@ -111,7 +111,7 @@ import { getUrl } from '../utils/paths.js';
           </div>
           <div class="map-ctas">
             <a href="https://maps.google.com/?q=Hostinec+Antonín+Barták,Městečko,Nespeky" target="_blank" rel="noopener" class="btn btn-primary" id="map-navigate-btn">
-              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
+              <i class="fa-solid fa-location-arrow"></i>
               Navigovat
             </a>
             <a href={getUrl('/rezervace')} class="btn btn-outline" id="map-rezervace-btn">Rezervace stolu</a>

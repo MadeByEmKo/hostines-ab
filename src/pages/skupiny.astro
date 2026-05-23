@@ -30,16 +30,16 @@ import { getUrl } from '../utils/paths.js';
       </div>
       <div class="grid-3 reveal">
         {[
-          { icon: '🎂', title: 'Narozeninové oslavy',    desc: 'Narozeniny, výročí, jubilea – zajistíme sál, catering i dort. Dekorace dle Vašeho přání.' },
-          { icon: '👔', title: 'Firemní akce',           desc: 'Firemní večírky, teambuildingové akce, obchodní večeře. Diskrétní a profesionální prostředí.' },
-          { icon: '💒', title: 'Svatby a zásnuby',       desc: 'Romantické prostředí pro Váš velký den. Přizpůsobíme menu, výzdobu i harmonogram.' },
-          { icon: '🎓', title: 'Promoce a maturity',     desc: 'Oslava úspěchu se třídou nebo rodinou. Sál pro skupinu i předpřipravený raut.' },
-          { icon: '👨‍👩‍👧‍👦', title: 'Rodinná setkání',       desc: 'Setkání rodiny u dobrého jídla. Klidné prostředí, dětský koutek, domácí kuchyně.' },
-          { icon: '🏫', title: 'Srazy tříd a spolků',   desc: 'Vzpomínkové srazy, ročníkové setkání, spolkové schůze. Ideální venkovní zázemí.' },
+          { icon: 'fa-solid fa-cake-candles',     title: 'Narozeninové oslavy',    desc: 'Narozeniny, výročí, jubilea – zajistíme sál, catering i dort. Dekorace dle Vašeho přání.' },
+          { icon: 'fa-solid fa-user-tie',         title: 'Firemní akce',           desc: 'Firemní večírky, teambuildingové akce, obchodní večeře. Diskrétní a profesionální prostředí.' },
+          { icon: 'fa-solid fa-ring',             title: 'Svatby a zásnuby',       desc: 'Romantické prostředí pro Váš velký den. Přizpůsobíme menu, výzdobu i harmonogram.' },
+          { icon: 'fa-solid fa-graduation-cap',   title: 'Promoce a maturity',     desc: 'Oslava úspěchu se třídou nebo rodinou. Sál pro skupinu i předpřipravený raut.' },
+          { icon: 'fa-solid fa-people-group',     title: 'Rodinná setkání',       desc: 'Setkání rodiny u dobrého jídla. Klidné prostředí, dětský koutek, domácí kuchyně.' },
+          { icon: 'fa-solid fa-school',           title: 'Srazy tříd a spolků',   desc: 'Vzpomínkové srazy, ročníkové setkání, spolkové schůze. Ideální venkovní zázemí.' },
         ].map(item => (
           <div class="akce-card card">
             <div class="card-body">
-              <div class="akce-icon">{item.icon}</div>
+              <div class="akce-icon"><i class={item.icon}></i></div>
               <h3 class="mt-md">{item.title}</h3>
               <p class="mt-md">{item.desc}</p>
             </div>
