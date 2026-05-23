@@ -6,46 +6,66 @@ import '../styles/global.css';
 import { readFileSync } from 'fs';
 import { join } from 'path';
 
-// Load daily menu
-let dailyDate  = '';
-let dailySoups: {name:string,price:string}[] = [];
-let dailyMains: {name:string,price:string}[] = [];
-
+// Load daily menu with all sections
+let dm = { date:'', soups:[], bezlepkova:[], bezmasa:[], hotova:[], gril:[], salaty:[], dezerty:[] };
 try {
-  const raw  = readFileSync(join(process.cwd(),'content/daily-menu.md'),'utf8');
-  const fm   = raw.match(/^---\n([\s\S]*?)\n---/);
-  if (fm) {
-    fm[1].split('\n').forEach(l => { if (l.startsWith('date:')) dailyDate = l.replace('date:','').trim().replace(/"/g,''); });
-    const parseItems = (block:string|undefined) => block
-      ? block.split('\n').filter(l=>l.trim().startsWith('-')).map(l => {
-          const [name,price] = l.replace(/^\s*-\s*/,'').split('|').map(s=>s.trim());
-          return {name, price: price||''};
-        })
-      : [];
-    dailySoups = parseItems(raw.match(/soups:([\s\S]*?)(?=mains:|---)/)?.[1]);
-    dailyMains = parseItems(raw.match(/mains:([\s\S]*?)(?=---|$)/)?.[1]);
-  }
-} catch(_) {}
+  const raw = readFileSync(join(process.cwd(),'content/daily-menu.md'),'utf8');
+  const fm = raw.match(/^---\n([\s\S]*?)\n---/);
+  const parseSection = (key: string) => {
+    const m = raw.match(new RegExp(key+':\n([\\s\\S]*?)(?=\\w+:|---)'));
+    return m ? m[1].split('\n').filter(l=>l.trim().startsWith('-')).map(l=>{
+      const [name,price]=l.replace(/^\s*-\s*/,'').split('|').map(s=>s.trim());
+      return {name,price:price||''};
+    }) : [];
+  };
+  if(fm) fm[1].split('\n').forEach(l=>{if(l.startsWith('date:'))dm.date=l.replace('date:','').trim().replace(/"/g,'');});
+  dm.soups=parseSection('soups');
+  dm.bezlepkova=parseSection('bezlepkova');
+  dm.bezmasa=parseSection('bezmasa');
+  dm.hotova=parseSection('hotova');
+  dm.gril=parseSection('gril');
+  dm.salaty=parseSection('salaty');
+  dm.dezerty=parseSection('dezerty');
+} catch(e){}
+
+const hasDailyItems = [
+  ...dm.soups, ...dm.bezlepkova, ...dm.bezmasa, ...dm.hotova, ...dm.gril, ...dm.salaty, ...dm.dezerty
+].length > 0;
 
 // Stálý lístek
 const staleLístek = [
-  { cat:'🥣 Polévky', items:[
-    { name:'Hovězí vývar s nudlemi', price:'45 Kč' },
-    { name:'Gulášová polévka',       price:'55 Kč' },
-    { name:'Česnečka se sýrem',      price:'50 Kč' },
+  { cat: '🥗 Předkrmy & chuťovky', items: [
+    { name: 'Nakládaný hermelín v oleji', price: '89 Kč' },
+    { name: 'Utopenec pikantní', price: '65 Kč' },
+    { name: 'Tatarský biftek 100g', price: '149 Kč' },
+    { name: 'Smažené žampiony s tatarkou', price: '99 Kč' },
   ]},
-  { cat:'🍽️ Hlavní jídla', items:[
-    { name:'Svíčková na smetaně',    price:'179 Kč' },
-    { name:'Smažený vepřový řízek',  price:'159 Kč' },
-    { name:'Guláš s knedlíkem',      price:'149 Kč' },
-    { name:'Smažený sýr',            price:'139 Kč' },
-    { name:'Grilovaná žebra',        price:'229 Kč' },
-    { name:'Kuřecí steak na másle',  price:'169 Kč' },
+  { cat: '🥣 Polévky stálé', items: [
+    { name: 'Hovězí vývar s nudlemi', price: '59 Kč' },
+    { name: 'Gulášová polévka stálá', price: '65 Kč' },
+    { name: 'Česnečka se sýrem a krutony', price: '59 Kč' },
   ]},
-  { cat:'🌱 Bezmasá jídla', items:[
-    { name:'Smažený sýr (bezmasý)',  price:'139 Kč' },
-    { name:'Těstoviny se zeleninou', price:'129 Kč' },
+  { cat: '🍽️ Staročeská klasika', items: [
+    { name: 'Svíčková hovězí na smetaně, knedlík', price: '229 Kč' },
+    { name: 'Vepřový guláš, houskový knedlík', price: '169 Kč' },
+    { name: 'Vepřové výpečky, špenát, knedlík', price: '199 Kč' },
+    { name: 'Smažený vepřový řízek', price: '199 Kč' },
+    { name: 'Smažený holandský řízek, kaše', price: '199 Kč' },
+    { name: 'Staročeská pečená kachna, zelí, knedlík', price: '269 Kč' },
   ]},
+  { cat: '🌱 Bezmasá jídla stálá', items: [
+    { name: 'Smažený sýr GOUDA, brambor, tatarka', price: '199 Kč' },
+    { name: 'Italské krémové zeleninové rizoto', price: '189 Kč' },
+  ]},
+  { cat: '👶 Dětská jídla', items: [
+    { name: 'Kuřecí řízek dětský, hranolky', price: '129 Kč' },
+    { name: 'Špagety s kečupem a parmazánem', price: '99 Kč' },
+  ]},
+  { cat: '🍰 Dezerty', items: [
+    { name: 'Tiramisu', price: '79 Kč' },
+    { name: 'Panna cotta s lesním ovocem', price: '79 Kč' },
+    { name: 'Jablečný závin', price: '79 Kč' },
+  ]}
 ];
 ---
 
@@ -59,7 +79,7 @@ const staleLístek = [
     <div class="container">
       <span class="badge">Takeaway</span>
       <h1 class="mt-md">🛍️ Objednat s sebou</h1>
-      <p class="lead mt-md">Vyberte si jídlo, zadejte čas vyzvednutí · Vydáváme 11:00–21:00</p>
+      <p class="lead mt-md">Vyberte si jídlo, zadejte čas vyzvednutí · Vyzvednutí na místě v Městečku</p>
     </div>
   </div>
 
@@ -74,42 +94,35 @@ const staleLístek = [
           <div class="menu-block">
             <div class="menu-block-header">
               <h2>🗓️ Denní menu</h2>
-              {dailyDate && <span class="menu-date-badge">Platné {dailyDate}</span>}
+              {dm.date && <span class="menu-date-badge">Platné {dm.date}</span>}
             </div>
-            {dailySoups.length > 0 || dailyMains.length > 0 ? (
+            
+            {hasDailyItems ? (
               <div>
-                {dailySoups.length > 0 && (
+                {[
+                  {key:'soups',    emoji:'🥣', title:'Polévky',        items:dm.soups},
+                  {key:'bezlepkova',emoji:'🌾',title:'Bezlepková jídla',items:dm.bezlepkova},
+                  {key:'bezmasa',  emoji:'🌱', title:'Bezmasá jídla',  items:dm.bezmasa},
+                  {key:'hotova',   emoji:'🍽️', title:'Hotová jídla',   items:dm.hotova},
+                  {key:'gril',     emoji:'🔥', title:'Jídla z grilu a wok', items:dm.gril},
+                  {key:'salaty',   emoji:'🥗', title:'Saláty',         items:dm.salaty},
+                  {key:'dezerty',  emoji:'🍰', title:'Dezerty',        items:dm.dezerty},
+                ].filter(s=>s.items.length>0).map(sec=>(
                   <div class="menu-category">
-                    <div class="menu-category-title">🥣 Polévky</div>
-                    {dailySoups.map(item => (
+                    <div class="menu-category-title">{sec.emoji} {sec.title}</div>
+                    {sec.items.map(item => (
                       <div class="takeaway-item">
                         <div class="ti-info">
                           <div class="ti-name">{item.name}</div>
                           <div class="ti-price">{item.price}</div>
                         </div>
-                        <button class="add-btn" data-name={item.name} data-price={item.price} id={`add-soup-${item.name.slice(0,10).replace(/\s/g,'-')}`}>
+                        <button class="add-btn" data-name={item.name} data-price={item.price} id={`add-daily-${item.name.slice(0,12).replace(/\s/g,'-')}`}>
                           + Přidat
                         </button>
                       </div>
                     ))}
                   </div>
-                )}
-                {dailyMains.length > 0 && (
-                  <div class="menu-category">
-                    <div class="menu-category-title">🍽️ Hlavní jídla</div>
-                    {dailyMains.map(item => (
-                      <div class="takeaway-item">
-                        <div class="ti-info">
-                          <div class="ti-name">{item.name}</div>
-                          <div class="ti-price">{item.price}</div>
-                        </div>
-                        <button class="add-btn" data-name={item.name} data-price={item.price} id={`add-main-${item.name.slice(0,10).replace(/\s/g,'-')}`}>
-                          + Přidat
-                        </button>
-                      </div>
-                    ))}
-                  </div>
-                )}
+                ))}
               </div>
             ) : (
               <div class="no-daily">
@@ -133,7 +146,7 @@ const staleLístek = [
                       <div class="ti-name">{item.name}</div>
                       <div class="ti-price">{item.price}</div>
                     </div>
-                    <button class="add-btn" data-name={item.name} data-price={item.price} id={`add-stale-${item.name.slice(0,10).replace(/\s/g,'-')}`}>
+                    <button class="add-btn" data-name={item.name} data-price={item.price} id={`add-stale-${item.name.slice(0,12).replace(/\s/g,'-')}`}>
                       + Přidat
                     </button>
                   </div>
@@ -282,7 +295,7 @@ const staleLístek = [
   .no-daily { text-align: center; padding: var(--space-xl); color: var(--clr-text-muted); font-size: 0.9rem; }
 
   /* Cart */
-  .sticky-cart { position: sticky; top: 88px; }
+  .sticky-cart { position: sticky; top: 120px; }
   .cart-box {
     background: var(--clr-surface);
     border: 1px solid var(--clr-border);
@@ -382,7 +395,6 @@ const staleLístek = [
       emptyEl.style.display = '';
       totalRow.style.display = 'none';
       if (formEl) formEl.style.display = 'none';
-      // Remove all cart-item rows
       itemsEl.querySelectorAll('.cart-item').forEach(el => el.remove());
       cartCount.textContent = '0 položek';
       return;
@@ -415,7 +427,6 @@ const staleLístek = [
     const count = cart.reduce((s, i) => s + i.qty, 0);
     cartCount.textContent = `${count} ${count === 1 ? 'položka' : count < 5 ? 'položky' : 'položek'}`;
 
-    // Update hidden order field
     const summary = cart.map(i => `${i.name} ×${i.qty} (${fmt(i.price * i.qty)})`).join(', ');
     (document.getElementById('hidden-order') as HTMLInputElement).value = `${summary} | Celkem: ${fmt(total)}`;
   }
@@ -426,6 +437,14 @@ const staleLístek = [
     if (existing) existing.qty++;
     else cart.push({ name, price, priceStr, qty: 1 });
     renderCart();
+  }
+
+  // Pre-fill query param helper
+  const urlParams = new URLSearchParams(window.location.search);
+  const prefillItem = urlParams.get('item');
+  const prefillPrice = urlParams.get('price');
+  if (prefillItem && prefillPrice) {
+    addItem(prefillItem, prefillPrice);
   }
 
   // Add buttons
@@ -440,7 +459,7 @@ const staleLístek = [
     });
   });
 
-  // Cart qty buttons (delegated)
+  // Cart qty buttons
   document.getElementById('cart-items')?.addEventListener('click', e => {
     const btn = (e.target as HTMLElement).closest('.qty-btn') as HTMLElement;
     if (!btn) return;
