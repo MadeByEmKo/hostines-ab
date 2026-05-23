@@ -1,0 +1,39 @@
+backend:
+  name: github
+  repo: MadeByEmKo/hostines-ab
+  branch: main
+
+media_folder: "public/images"
+public_folder: "/images"
+
+locale: cs
+
+collections:
+  - name: "daily-menu"
+    label: "📅 Denní menu"
+    files:
+      - label: "Dnešní menu"
+        name: "daily-menu"
+        file: "content/daily-menu.md"
+        fields:
+          - { label: "Datum (zobrazovaný)", name: "date", widget: "string", hint: "Např. 23. května 2026" }
+          - label: "🥣 Polévky"
+            name: "soups"
+            widget: "list"
+            hint: "Formát: Název polévky | Cena Kč"
+            field: { label: "Polévka", name: "item", widget: "string" }
+          - label: "🍽️ Hlavní jídla"
+            name: "mains"
+            widget: "list"
+            hint: "Formát: Název jídla | Cena Kč"
+            field: { label: "Jídlo", name: "item", widget: "string" }
+
+  - name: "gallery"
+    label: "📷 Fotogalerie"
+    folder: "public/images"
+    create: true
+    media_folder: ""
+    public_folder: ""
+    fields:
+      - { label: "Fotografie", name: "image", widget: "image" }
+      - { label: "Popis", name: "alt", widget: "string" }

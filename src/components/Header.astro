@@ -1,0 +1,273 @@
+---
+// Header.astro - Navigation header
+const navLinks = [
+  { href: '/',          label: 'Úvod'         },
+  { href: '/menu',      label: 'Menu'          },
+  { href: '/skupiny',   label: 'Skupinové akce'},
+  { href: '/galerie',   label: 'Fotogalerie'   },
+  { href: '/o-nas',     label: 'O nás'         },
+  { href: '/kontakt',   label: 'Kontakt'       },
+];
+
+const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
+---
+
+<header id="main-header" class="site-header">
+  <div class="header-inner container">
+    <!-- Logo -->
+    <a href="/" class="logo" id="site-logo" aria-label="Hostinec AB - zpět na úvod">
+      <div class="logo-emblem" aria-hidden="true">
+        <span class="logo-initials">AB</span>
+      </div>
+      <div class="logo-text">
+        <span class="logo-name">Hostinec</span>
+        <span class="logo-sub">Antonín Barták</span>
+      </div>
+    </a>
+
+    <!-- Desktop Navigation -->
+    <nav class="main-nav" aria-label="Hlavní navigace">
+      <ul role="list">
+        {navLinks.map((link) => {
+          const isActive = link.href === '/'
+            ? currentPath === '/'
+            : currentPath.startsWith(link.href);
+          return (
+            <li>
+              <a
+                href={link.href}
+                class:list={['nav-link', { active: isActive }]}
+                aria-current={isActive ? 'page' : undefined}
+              >
+                {link.label}
+              </a>
+            </li>
+          );
+        })}
+      </ul>
+    </nav>
+
+    <!-- CTA + Hamburger -->
+    <div class="header-actions">
+      <a href="/rezervace" class="btn btn-primary btn-sm no-print" id="header-rezervace-btn">
+        Zamluvit stůl
+      </a>
+      <button
+        class="hamburger no-print"
+        id="hamburger-btn"
+        aria-label="Otevřít menu"
+        aria-expanded="false"
+        aria-controls="mobile-nav"
+      >
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile Navigation -->
+  <nav class="mobile-nav" id="mobile-nav" aria-label="Mobilní navigace" aria-hidden="true">
+    <ul role="list">
+      {navLinks.map((link) => (
+        <li>
+          <a href={link.href} class="mobile-nav-link">{link.label}</a>
+        </li>
+      ))}
+      <li>
+        <a href="/rezervace" class="btn btn-primary mt-md" id="mobile-rezervace-btn">
+          Zamluvit stůl
+        </a>
+      </li>
+    </ul>
+  </nav>
+</header>
+
+<style>
+  .site-header {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 1000;
+    background: rgba(15, 28, 20, 0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(201,168,76,0.12);
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+  }
+  .site-header.scrolled {
+    background: rgba(15, 28, 20, 0.97);
+    box-shadow: 0 4px 30px rgba(0,0,0,0.4);
+  }
+
+  .header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 72px;
+    gap: 1.5rem;
+  }
+
+  /* Logo */
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    text-decoration: none;
+    flex-shrink: 0;
+  }
+  .logo-emblem {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #c9a84c, #a07c30);
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 0 20px rgba(201,168,76,0.3);
+  }
+  .logo-initials {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #0f1c14;
+    letter-spacing: 0.05em;
+  }
+  .logo-text { display: flex; flex-direction: column; line-height: 1.2; }
+  .logo-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #f5f0e8;
+    letter-spacing: 0.02em;
+  }
+  .logo-sub {
+    font-size: 0.65rem;
+    color: #c9a84c;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  /* Nav */
+  .main-nav ul {
+    display: flex;
+    list-style: none;
+    gap: 0.25rem;
+  }
+  .nav-link {
+    display: block;
+    padding: 0.45rem 0.85rem;
+    font-size: 0.88rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    color: #9a9080;
+    border-radius: 6px;
+    transition: color 0.2s, background 0.2s;
+    position: relative;
+  }
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 2px; left: 50%; right: 50%;
+    height: 1.5px;
+    background: #c9a84c;
+    transition: left 0.25s ease, right 0.25s ease;
+  }
+  .nav-link:hover,
+  .nav-link.active {
+    color: #f5f0e8;
+  }
+  .nav-link:hover::after,
+  .nav-link.active::after {
+    left: 0.85rem;
+    right: 0.85rem;
+  }
+  .nav-link.active { color: #c9a84c; }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-shrink: 0;
+  }
+  .btn-sm {
+    padding: 0.55rem 1.2rem;
+    font-size: 0.82rem;
+  }
+
+  /* Hamburger */
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 6px;
+  }
+  .hamburger span {
+    display: block;
+    width: 22px; height: 2px;
+    background: #f5f0e8;
+    border-radius: 2px;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+  }
+  .hamburger[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .hamburger[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+  .hamburger[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  /* Mobile nav */
+  .mobile-nav {
+    display: none;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease, padding 0.3s ease;
+    border-top: 1px solid rgba(201,168,76,0.1);
+    background: rgba(15, 28, 20, 0.98);
+  }
+  .mobile-nav.open {
+    display: block;
+    max-height: 420px;
+    padding-bottom: 1rem;
+  }
+  .mobile-nav ul { list-style: none; padding: 0.5rem 1.5rem; }
+  .mobile-nav li { border-bottom: 1px solid rgba(255,255,255,0.05); }
+  .mobile-nav-link {
+    display: block;
+    padding: 0.9rem 0;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #e8e2d5;
+    transition: color 0.2s, padding-left 0.2s;
+  }
+  .mobile-nav-link:hover { color: #c9a84c; padding-left: 0.5rem; }
+
+  @media (max-width: 900px) {
+    .main-nav { display: none; }
+    .hamburger { display: flex; }
+    .header-actions .btn:not(.hamburger) { display: none; }
+  }
+</style>
+
+<script>
+  // Scroll effect
+  const header = document.getElementById('main-header');
+  const updateScroll = () => {
+    header?.classList.toggle('scrolled', window.scrollY > 40);
+  };
+  window.addEventListener('scroll', updateScroll, { passive: true });
+  updateScroll();
+
+  // Hamburger toggle
+  const btn  = document.getElementById('hamburger-btn');
+  const mNav = document.getElementById('mobile-nav');
+  btn?.addEventListener('click', () => {
+    const open = btn.getAttribute('aria-expanded') === 'true';
+    btn.setAttribute('aria-expanded', String(!open));
+    mNav?.setAttribute('aria-hidden', String(open));
+    mNav?.classList.toggle('open', !open);
+  });
+
+  // Close mobile nav on link click
+  mNav?.querySelectorAll('a').forEach((a) => {
+    a.addEventListener('click', () => {
+      btn?.setAttribute('aria-expanded', 'false');
+      mNav.setAttribute('aria-hidden', 'true');
+      mNav.classList.remove('open');
+    });
+  });
+</script>

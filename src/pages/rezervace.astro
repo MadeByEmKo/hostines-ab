@@ -1,0 +1,366 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import '../styles/global.css';
+---
+
+<BaseLayout title="Rezervace" description="Online rezervace stolu v Hostinci AB. Zamluvte si stůl nebo poptejte skupinovou akci, narozeninovou oslavu, firemní večírek nebo svatbu.">
+  <Header />
+
+  <div class="page-hero">
+    <div class="container">
+      <span class="badge">Rezervace</span>
+      <h1 class="mt-md">Zamluvte si stůl</h1>
+      <p class="lead mt-md">Rezervace stolu i skupinových akcí · Odpovídáme do 24 hodin</p>
+    </div>
+  </div>
+
+  <section class="section">
+    <div class="container">
+      <div class="rezervace-grid">
+
+        <!-- FORM -->
+        <div class="rezervace-form-wrap reveal">
+          <!-- Type selector -->
+          <div class="rez-type-selector" role="group" aria-label="Typ rezervace">
+            <button class="rez-type-btn active" id="btn-stul"  data-type="stul">
+              🪑 Rezervace stolu
+            </button>
+            <button class="rez-type-btn"        id="btn-akce"  data-type="akce">
+              🎉 Skupinová akce
+            </button>
+          </div>
+
+          <!-- STŮL FORM -->
+          <form
+            id="form-stul"
+            class="rez-form"
+            action="https://formspree.io/f/XXXXXXXX"
+            method="POST"
+          >
+            <input type="hidden" name="_subject" value="Nová rezervace stolu – Hostinec AB" />
+            <input type="hidden" name="typ"      value="Rezervace stolu" />
+
+            <div class="grid-2-form">
+              <div class="form-group">
+                <label for="stul-jmeno">Jméno a příjmení *</label>
+                <input type="text" id="stul-jmeno" name="jmeno" placeholder="Jan Novák" required />
+              </div>
+              <div class="form-group">
+                <label for="stul-telefon">Telefon *</label>
+                <input type="tel" id="stul-telefon" name="telefon" placeholder="+420 123 456 789" required />
+              </div>
+              <div class="form-group">
+                <label for="stul-email">E-mail</label>
+                <input type="email" id="stul-email" name="email" placeholder="jan@email.cz" />
+              </div>
+              <div class="form-group">
+                <label for="stul-osoby">Počet osob *</label>
+                <select id="stul-osoby" name="osoby" required>
+                  <option value="">Vyberte...</option>
+                  {[1,2,3,4,5,6,7,8,9,10].map(n => <option value={n}>{n} {n === 1 ? 'osoba' : n < 5 ? 'osoby' : 'osob'}</option>)}
+                  <option value="10+">10 a více</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="stul-datum">Datum *</label>
+                <input type="date" id="stul-datum" name="datum" required />
+              </div>
+              <div class="form-group">
+                <label for="stul-cas">Čas příchodu *</label>
+                <select id="stul-cas" name="cas" required>
+                  <option value="">Vyberte...</option>
+                  {['11:00','11:30','12:00','12:30','13:00','13:30','14:00','15:00','16:00','17:00','18:00','19:00','20:00','21:00'].map(t => <option value={t}>{t}</option>)}
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="stul-poznamka">Poznámka</label>
+              <textarea id="stul-poznamka" name="poznamka" placeholder="Speciální přání, alergie, potřeby..."></textarea>
+            </div>
+
+            <div class="gdpr-check">
+              <input type="checkbox" id="stul-gdpr" name="gdpr" required />
+              <label for="stul-gdpr">Souhlasím se zpracováním osobních údajů za účelem vyřízení rezervace.</label>
+            </div>
+
+            <button type="submit" class="btn btn-primary submit-btn" id="stul-submit-btn">
+              <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+              Odeslat rezervaci
+            </button>
+          </form>
+
+          <!-- AKCE FORM -->
+          <form
+            id="form-akce"
+            class="rez-form hidden"
+            action="https://formspree.io/f/XXXXXXXX"
+            method="POST"
+          >
+            <input type="hidden" name="_subject" value="Poptávka skupinové akce – Hostinec AB" />
+            <input type="hidden" name="typ"      value="Skupinová akce" />
+
+            <div class="grid-2-form">
+              <div class="form-group">
+                <label for="akce-jmeno">Jméno a příjmení *</label>
+                <input type="text" id="akce-jmeno" name="jmeno" placeholder="Jana Nováková" required />
+              </div>
+              <div class="form-group">
+                <label for="akce-telefon">Telefon *</label>
+                <input type="tel" id="akce-telefon" name="telefon" placeholder="+420 123 456 789" required />
+              </div>
+              <div class="form-group">
+                <label for="akce-email">E-mail *</label>
+                <input type="email" id="akce-email" name="email" placeholder="jana@email.cz" required />
+              </div>
+              <div class="form-group">
+                <label for="akce-typ">Typ akce *</label>
+                <select id="akce-typ" name="typ_akce" required>
+                  <option value="">Vyberte...</option>
+                  <option>Narozeninová oslava</option>
+                  <option>Rodinné setkání</option>
+                  <option>Firemní večírek</option>
+                  <option>Teambuilding</option>
+                  <option>Svatba / zásnuby</option>
+                  <option>Promoce / maturita</option>
+                  <option>Sraz třídy</option>
+                  <option>Jiné</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="akce-datum">Datum akce *</label>
+                <input type="date" id="akce-datum" name="datum" required />
+              </div>
+              <div class="form-group">
+                <label for="akce-osoby">Počet hostů (orientačně) *</label>
+                <select id="akce-osoby" name="osoby" required>
+                  <option value="">Vyberte...</option>
+                  <option>10–20 osob</option>
+                  <option>20–30 osob</option>
+                  <option>30–40 osob</option>
+                  <option>40–50 osob</option>
+                  <option>50+ osob</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="akce-popis">Popis akce a přání</label>
+              <textarea id="akce-popis" name="popis" rows="5" placeholder="Popište Vaši akci – čas, tematika, catering, speciální přání..."></textarea>
+            </div>
+
+            <div class="gdpr-check">
+              <input type="checkbox" id="akce-gdpr" name="gdpr" required />
+              <label for="akce-gdpr">Souhlasím se zpracováním osobních údajů za účelem vyřízení poptávky.</label>
+            </div>
+
+            <button type="submit" class="btn btn-primary submit-btn" id="akce-submit-btn">
+              <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+              Odeslat poptávku
+            </button>
+          </form>
+
+          <!-- SUCCESS -->
+          <div class="form-success hidden" id="form-success">
+            <div class="success-icon">✅</div>
+            <h3>Rezervace odeslána!</h3>
+            <p>Ozveme se Vám do 24 hodin na zadaný kontakt. Těšíme se na Vaši návštěvu!</p>
+          </div>
+        </div>
+
+        <!-- SIDEBAR -->
+        <aside class="rez-sidebar reveal">
+          <div class="sidebar-card">
+            <h3>📞 Preferujete telefon?</h3>
+            <p>Rádi Vám rezervaci potvrdíme přímo po telefonu.</p>
+            <a href="tel:+420737484116" class="btn btn-primary mt-lg" id="sidebar-phone-btn">+420 737 484 116</a>
+          </div>
+
+          <div class="sidebar-card mt-lg">
+            <h3>⏰ Otevírací doba</h3>
+            <div class="hours-grid mt-md">
+              <div class="hours-row"><span class="hours-day">Po – Pá</span><span class="hours-time">11–22 hod</span></div>
+              <div class="hours-row"><span class="hours-day">Sobota</span><span class="hours-time">11–23 hod</span></div>
+              <div class="hours-row"><span class="hours-day">Neděle</span><span class="hours-time">11–21 hod</span></div>
+            </div>
+          </div>
+
+          <div class="sidebar-card mt-lg">
+            <h3>ℹ️ Důležité informace</h3>
+            <ul class="info-list">
+              <li>Rezervace potvrzujeme do 24 hodin</li>
+              <li>Stůl vyhrazujeme na 15 minut po dohodnutém čase</li>
+              <li>Skupinové akce doporučujeme rezervovat 2–4 týdny předem</li>
+              <li>Kapacita sálu: až 50 osob</li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .rezervace-grid {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: var(--space-2xl);
+    align-items: start;
+  }
+
+  .rez-type-selector {
+    display: flex;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-xl);
+    background: var(--clr-surface);
+    border: 1px solid var(--clr-border);
+    border-radius: var(--radius-md);
+    padding: 6px;
+  }
+  .rez-type-btn {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    background: none;
+    border: none;
+    border-radius: calc(var(--radius-md) - 4px);
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--clr-text-muted);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .rez-type-btn.active {
+    background: linear-gradient(135deg, var(--clr-gold), var(--clr-gold-dark));
+    color: var(--clr-bg);
+  }
+
+  .rez-form {
+    background: var(--clr-surface);
+    border: 1px solid var(--clr-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-2xl);
+  }
+
+  .grid-2-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-md);
+  }
+
+  .gdpr-check {
+    display: flex;
+    gap: var(--space-sm);
+    align-items: flex-start;
+    margin-bottom: var(--space-xl);
+  }
+  .gdpr-check input { margin-top: 3px; accent-color: var(--clr-gold); flex-shrink: 0; }
+  .gdpr-check label { font-size: 0.82rem; color: var(--clr-text-muted); cursor: pointer; }
+
+  .submit-btn { width: 100%; justify-content: center; }
+
+  .form-success {
+    text-align: center;
+    padding: var(--space-3xl);
+    background: var(--clr-surface);
+    border: 1px solid rgba(201,168,76,0.3);
+    border-radius: var(--radius-lg);
+  }
+  .success-icon { font-size: 3rem; margin-bottom: var(--space-lg); }
+
+  .sidebar-card {
+    background: var(--clr-surface);
+    border: 1px solid var(--clr-border);
+    border-radius: var(--radius-md);
+    padding: var(--space-xl);
+  }
+  .sidebar-card h3 { font-size: 1.05rem; margin-bottom: var(--space-sm); }
+  .sidebar-card p  { font-size: 0.9rem; color: var(--clr-text-muted); }
+
+  .info-list {
+    list-style: none;
+    padding: 0;
+    margin-top: var(--space-md);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+  .info-list li {
+    font-size: 0.87rem;
+    color: var(--clr-text-muted);
+    padding-left: 1.2rem;
+    position: relative;
+  }
+  .info-list li::before {
+    content: '›';
+    position: absolute;
+    left: 0;
+    color: var(--clr-gold);
+    font-weight: 700;
+  }
+
+  .hidden { display: none !important; }
+
+  @media (max-width: 900px) {
+    .rezervace-grid { grid-template-columns: 1fr; }
+    .grid-2-form { grid-template-columns: 1fr; }
+    .rez-sidebar { order: -1; }
+  }
+</style>
+
+<script>
+  // Type toggle
+  const typeBtns = document.querySelectorAll('.rez-type-btn');
+  const formStul = document.getElementById('form-stul');
+  const formAkce = document.getElementById('form-akce');
+
+  typeBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      typeBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      if (btn.dataset.type === 'stul') {
+        formStul?.classList.remove('hidden');
+        formAkce?.classList.add('hidden');
+      } else {
+        formStul?.classList.add('hidden');
+        formAkce?.classList.remove('hidden');
+      }
+    });
+  });
+
+  // If URL has ?typ=akce, switch to akce form
+  if (new URLSearchParams(window.location.search).get('typ') === 'akce') {
+    document.getElementById('btn-akce')?.click();
+  }
+
+  // Set min date for inputs
+  const today = new Date().toISOString().split('T')[0];
+  document.querySelectorAll('input[type="date"]').forEach(input => {
+    (input as HTMLInputElement).min = today;
+  });
+
+  // Show success on form submit (Formspree redirect or AJAX)
+  document.querySelectorAll('.rez-form').forEach(form => {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const f = e.target as HTMLFormElement;
+      try {
+        const res = await fetch(f.action, {
+          method: 'POST',
+          body: new FormData(f),
+          headers: { Accept: 'application/json' },
+        });
+        if (res.ok) {
+          f.classList.add('hidden');
+          document.getElementById('form-success')?.classList.remove('hidden');
+        }
+      } catch {
+        f.submit(); // Fallback
+      }
+    });
+  });
+</script>

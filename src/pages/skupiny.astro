@@ -1,0 +1,203 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import '../styles/global.css';
+---
+
+<BaseLayout title="Skupinové akce" description="Hostinec AB nabízí prostory pro skupinové akce – oslavy narozenin, firemní večírky, teambuildingy, svatby a rodinná setkání. Kapacita až 50 osob.">
+  <Header />
+
+  <div class="page-hero">
+    <div class="container">
+      <span class="badge">Pro skupiny</span>
+      <h1 class="mt-md">Skupinové akce<br /><em>a soukromé oslavy</em></h1>
+      <p class="lead mt-md">Oslavy, firemní akce, teambuildingy, svatby · Kapacita až 50 osob</p>
+      <div class="flex gap-md flex-wrap mt-xl" style="justify-content:center">
+        <a href="/rezervace?typ=akce" class="btn btn-primary" id="skupiny-hero-cta">Poptat akci</a>
+        <a href="tel:+420737484116"   class="btn btn-outline" id="skupiny-hero-phone">+420 737 484 116</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- TYPY AKCÍ -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header text-center reveal">
+        <h2>Co nabízíme</h2>
+        <p class="lead">Pro každou příležitost máme připravenou nabídku na míru</p>
+      </div>
+      <div class="grid-3 reveal">
+        {[
+          { icon: '🎂', title: 'Narozeninové oslavy',    desc: 'Narozeniny, výročí, jubilea – zajistíme sál, catering i dort. Dekorace dle Vašeho přání.' },
+          { icon: '👔', title: 'Firemní akce',           desc: 'Firemní večírky, teambuildingové akce, obchodní večeře. Diskrétní a profesionální prostředí.' },
+          { icon: '💒', title: 'Svatby a zásnuby',       desc: 'Romantické prostředí pro Váš velký den. Přizpůsobíme menu, výzdobu i harmonogram.' },
+          { icon: '🎓', title: 'Promoce a maturity',     desc: 'Oslava úspěchu se třídou nebo rodinou. Sál pro skupinu i předpřipravený raut.' },
+          { icon: '👨‍👩‍👧‍👦', title: 'Rodinná setkání',       desc: 'Setkání rodiny u dobrého jídla. Klidné prostředí, dětský koutek, domácí kuchyně.' },
+          { icon: '🏫', title: 'Srazy tříd a spolků',   desc: 'Vzpomínkové srazy, ročníkové setkání, spolkové schůze. Ideální venkovní zázemí.' },
+        ].map(item => (
+          <div class="akce-card card">
+            <div class="card-body">
+              <div class="akce-icon">{item.icon}</div>
+              <h3 class="mt-md">{item.title}</h3>
+              <p class="mt-md">{item.desc}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- KAPACITA & VYBAVENÍ -->
+  <section class="section capacity-section">
+    <div class="container">
+      <div class="capacity-grid">
+        <div class="capacity-text reveal">
+          <span class="gold-line" aria-hidden="true"></span>
+          <h2>Prostory a vybavení</h2>
+          <p class="lead mt-md">Nabízíme útulný sál s možností úpravy dle Vašich potřeb.</p>
+          <div class="capacity-items mt-xl">
+            {[
+              { label: 'Kapacita sálu',        value: 'až 50 osob' },
+              { label: 'Letní zahrádka',        value: 'až 30 osob' },
+              { label: 'Venkovní gril',         value: 'k dispozici' },
+              { label: 'Vlastní catering',      value: 'možný' },
+              { label: 'Hudební aparatura',     value: 'k dispozici' },
+              { label: 'Parkoviště',            value: 'zdarma' },
+            ].map(item => (
+              <div class="cap-item">
+                <span class="cap-label">{item.label}</span>
+                <span class="cap-value">{item.value}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div class="capacity-img reveal">
+          <img src="/images/interior.png" alt="Sál hostince" loading="lazy" />
+          <div class="cap-badge">
+            <span>50</span>
+            <small>max. osob</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- JAK TO FUNGUJE -->
+  <section class="section how-section">
+    <div class="container">
+      <div class="section-header text-center reveal">
+        <h2>Jak to funguje</h2>
+        <p class="lead">Tři jednoduché kroky k nezapomenutelné akci</p>
+      </div>
+      <div class="steps reveal">
+        {[
+          { n: '01', title: 'Poptávka',   desc: 'Vyplňte formulář nebo nám zavolejte. Sdělte nám typ akce, datum a počet hostů.' },
+          { n: '02', title: 'Nabídka',    desc: 'Do 24 hodin Vás kontaktujeme s připravenou nabídkou, ceníkem a termínem.' },
+          { n: '03', title: 'Oslava',     desc: 'Přijďte a vychutnejte si akci. O vše ostatní se postaráme.' },
+        ].map(step => (
+          <div class="step">
+            <div class="step-num">{step.n}</div>
+            <h3 class="mt-md">{step.title}</h3>
+            <p class="mt-sm">{step.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-banner reveal">
+    <div class="container text-center">
+      <h2>Připraveni začít plánovat?</h2>
+      <p class="lead mt-md">Kontaktujte nás a společně připravíme Vaši dokonalou akci.</p>
+      <div class="flex gap-md flex-wrap items-center mt-xl" style="justify-content:center">
+        <a href="/rezervace?typ=akce" class="btn btn-primary" id="skupiny-cta-form-btn">Vyplnit poptávku</a>
+        <a href="tel:+420737484116"   class="btn btn-outline" id="skupiny-cta-phone-btn">Zavolat nám</a>
+      </div>
+    </div>
+  </section>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .page-hero em { font-style: italic; color: var(--clr-gold); display: block; }
+
+  .akce-card { transition: all var(--transition); }
+  .akce-icon { font-size: 2.5rem; }
+
+  .capacity-section { background: var(--clr-bg-2); border-top: 1px solid var(--clr-border); border-bottom: 1px solid var(--clr-border); }
+  .capacity-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-3xl);
+    align-items: center;
+  }
+  .capacity-items { display: flex; flex-direction: column; gap: var(--space-sm); }
+  .cap-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-md) var(--space-lg);
+    background: var(--clr-surface);
+    border: 1px solid var(--clr-border);
+    border-radius: var(--radius-sm);
+  }
+  .cap-label { color: var(--clr-text-muted); font-size: 0.9rem; }
+  .cap-value { color: var(--clr-gold); font-weight: 600; font-size: 0.95rem; }
+  .capacity-img { position: relative; }
+  .capacity-img img {
+    width: 100%;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+  }
+  .cap-badge {
+    position: absolute;
+    bottom: -1rem;
+    right: -1rem;
+    background: linear-gradient(135deg, var(--clr-gold), var(--clr-gold-dark));
+    color: var(--clr-bg);
+    width: 90px; height: 90px;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow-md);
+  }
+  .cap-badge span { font-family: var(--font-display); font-size: 1.8rem; font-weight: 700; line-height: 1; }
+  .cap-badge small { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.06em; }
+
+  .how-section { background: var(--clr-surface); border-top: 1px solid var(--clr-border); }
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-xl);
+    margin-top: var(--space-2xl);
+  }
+  .step { text-align: center; }
+  .step-num {
+    font-family: var(--font-display);
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: transparent;
+    -webkit-text-stroke: 2px var(--clr-gold);
+    line-height: 1;
+    opacity: 0.6;
+  }
+  .step h3 { color: var(--clr-cream); }
+  .step p   { color: var(--clr-text-muted); margin: 0 auto; font-size: 0.93rem; }
+
+  .cta-banner {
+    padding: var(--space-3xl) 0;
+    background: linear-gradient(135deg, rgba(201,168,76,0.08), rgba(44,90,61,0.15));
+    border-top: 1px solid var(--clr-border);
+  }
+
+  @media (max-width: 900px) {
+    .capacity-grid { grid-template-columns: 1fr; }
+    .cap-badge { right: 1rem; }
+    .steps { grid-template-columns: 1fr; }
+  }
+</style>

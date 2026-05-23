@@ -1,0 +1,201 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import '../styles/global.css';
+---
+
+<BaseLayout title="Kontakt" description="Kontakt na Hostinec AB – adresa Městečko 257 22 Nespeky, telefon +420 737 484 116, e-mail, otevírací doba a mapa.">
+  <Header />
+
+  <div class="page-hero">
+    <div class="container">
+      <span class="badge">Kde nás najdete</span>
+      <h1 class="mt-md">Kontakt</h1>
+      <p class="lead mt-md">Jsme tu pro Vás – osobně, telefonicky i online</p>
+    </div>
+  </div>
+
+  <section class="section">
+    <div class="container">
+      <div class="kontakt-grid">
+
+        <!-- INFO KARTY -->
+        <div class="kontakt-info reveal">
+          <div class="info-cards">
+            <div class="info-card">
+              <div class="info-icon">📍</div>
+              <div>
+                <h3>Adresa</h3>
+                <address>
+                  Hostinec Antonín Barták<br />
+                  Městečko<br />
+                  257 22 Nespeky
+                </address>
+                <a href="https://maps.google.com/?q=Hostinec+Antonín+Barták,Městečko,Nespeky" target="_blank" rel="noopener" class="info-link" id="kontakt-maps-link">
+                  Otevřít v Mapách →
+                </a>
+              </div>
+            </div>
+
+            <div class="info-card">
+              <div class="info-icon">📞</div>
+              <div>
+                <h3>Telefon</h3>
+                <a href="tel:+420737484116" class="info-phone" id="kontakt-phone">+420 737 484 116</a>
+                <p class="info-note">Rádi Vám poradíme nebo zamluvíme stůl</p>
+              </div>
+            </div>
+
+            <div class="info-card">
+              <div class="info-icon">✉️</div>
+              <div>
+                <h3>E-mail</h3>
+                <a href="mailto:info@hostinecab.cz" class="info-link" id="kontakt-email">info@hostinecab.cz</a>
+                <p class="info-note">Odpovídáme do 24 hodin</p>
+              </div>
+            </div>
+
+            <div class="info-card">
+              <div class="info-icon">👍</div>
+              <div>
+                <h3>Facebook</h3>
+                <a href="https://www.facebook.com/Hostinec-Anton%C3%ADn-Bart%C3%A1k-822946991392710" target="_blank" rel="noopener" class="info-link" id="kontakt-fb">
+                  Sledujte aktuální nabídku
+                </a>
+                <p class="info-note">Denní menu a novinky</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Otevírací doba -->
+          <div class="hours-box mt-xl">
+            <h3>⏰ Otevírací doba</h3>
+            <div class="hours-grid mt-lg">
+              {[
+                { day: 'Pondělí',   time: '11:00 – 22:00', today: false },
+                { day: 'Úterý',     time: '11:00 – 22:00', today: false },
+                { day: 'Středa',    time: '11:00 – 22:00', today: false },
+                { day: 'Čtvrtek',   time: '11:00 – 22:00', today: false },
+                { day: 'Pátek',     time: '11:00 – 23:00', today: false },
+                { day: 'Sobota',    time: '11:00 – 23:00', today: false },
+                { day: 'Neděle',    time: '11:00 – 21:00', today: false },
+              ].map(h => (
+                <div class:list={['hours-row', { today: h.today }]}>
+                  <span class="hours-day">{h.day}</span>
+                  <span class="hours-time">{h.time}</span>
+                </div>
+              ))}
+              <div class="hours-row" style="border-top:1px solid var(--clr-border); margin-top:0.5rem; padding-top:0.75rem">
+                <span class="hours-day" style="color:var(--clr-gold)">Denní menu</span>
+                <span class="hours-time" style="color:var(--clr-gold)">11:00 – 14:00</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- MAPA -->
+        <div class="map-wrap reveal">
+          <div class="map-frame">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2578.4!2d14.684!3d49.876!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x470c3a0000000001%3A0x1!2sMěstečko%2C+257+22+Nespeky!5e0!3m2!1scs!2scz!4v1680000000000!5m2!1scs!2scz"
+              width="100%"
+              height="100%"
+              style="border:0"
+              allowfullscreen=""
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+              title="Mapa – Hostinec Antonín Barták, Městečko"
+            ></iframe>
+          </div>
+          <div class="map-ctas">
+            <a href="https://maps.google.com/?q=Hostinec+Antonín+Barták,Městečko,Nespeky" target="_blank" rel="noopener" class="btn btn-primary" id="map-navigate-btn">
+              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
+              Navigovat
+            </a>
+            <a href="/rezervace" class="btn btn-outline" id="map-rezervace-btn">Zamluvit stůl</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .kontakt-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-2xl);
+    align-items: start;
+  }
+
+  .info-cards { display: flex; flex-direction: column; gap: var(--space-md); }
+  .info-card {
+    display: flex;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    background: var(--clr-surface);
+    border: 1px solid var(--clr-border);
+    border-radius: var(--radius-md);
+    transition: border-color var(--transition);
+  }
+  .info-card:hover { border-color: rgba(201,168,76,0.4); }
+  .info-icon { font-size: 1.8rem; flex-shrink: 0; }
+  .info-card h3 { font-size: 1rem; margin-bottom: var(--space-xs); }
+  .info-card address { font-style: normal; color: var(--clr-text-muted); font-size: 0.9rem; line-height: 1.6; }
+  .info-phone {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    color: var(--clr-gold);
+    font-weight: 600;
+    transition: color 0.2s;
+  }
+  .info-phone:hover { color: var(--clr-gold-light); }
+  .info-link { color: var(--clr-gold); font-size: 0.9rem; transition: color 0.2s; }
+  .info-link:hover { color: var(--clr-gold-light); }
+  .info-note { font-size: 0.8rem; color: var(--clr-text-muted); margin-top: var(--space-xs); }
+
+  .hours-box {
+    background: var(--clr-surface);
+    border: 1px solid var(--clr-border);
+    border-radius: var(--radius-md);
+    padding: var(--space-xl);
+  }
+  .hours-box h3 { font-size: 1.05rem; }
+
+  .map-wrap { position: sticky; top: 100px; }
+  .map-frame {
+    width: 100%;
+    height: 450px;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    border: 1px solid var(--clr-border);
+    box-shadow: var(--shadow-md);
+    background: var(--clr-surface);
+  }
+  .map-ctas {
+    display: flex;
+    gap: var(--space-md);
+    margin-top: var(--space-lg);
+    flex-wrap: wrap;
+  }
+
+  @media (max-width: 900px) {
+    .kontakt-grid { grid-template-columns: 1fr; }
+    .map-wrap { position: static; }
+    .map-frame { height: 300px; }
+  }
+</style>
+
+<script>
+  // Highlight today's opening hours row
+  const days = ['Neděle','Pondělí','Úterý','Středa','Čtvrtek','Pátek','Sobota'];
+  const today = days[new Date().getDay()];
+  document.querySelectorAll('.hours-row').forEach(row => {
+    if (row.querySelector('.hours-day')?.textContent?.trim() === today) {
+      row.classList.add('today');
+    }
+  });
+</script>

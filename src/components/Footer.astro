@@ -1,0 +1,231 @@
+---
+// Footer.astro
+---
+
+<footer class="site-footer no-print">
+  <div class="footer-top">
+    <div class="container">
+      <div class="footer-grid">
+        <!-- Brand -->
+        <div class="footer-brand">
+          <div class="footer-logo">
+            <div class="logo-emblem-sm" aria-hidden="true">AB</div>
+            <div>
+              <div class="footer-logo-name">Hostinec AB</div>
+              <div class="footer-logo-sub">Antonín Barták · Městečko</div>
+            </div>
+          </div>
+          <p class="footer-desc">
+            Tradiční česká hospoda v srdci Městečka u Nespek. Čepujeme Gambrinus,
+            Prazdroj, Kozel. Vaříme poctivou domácí kuchyni.
+          </p>
+          <a
+            href="https://www.facebook.com/Hostinec-Anton%C3%ADn-Bart%C3%A1k-822946991392710"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="social-link"
+            aria-label="Facebook stránka Hostince AB"
+            id="footer-facebook-link"
+          >
+            <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+            </svg>
+            Sledujte nás na Facebooku
+          </a>
+        </div>
+
+        <!-- Quick Links -->
+        <div class="footer-col">
+          <h3 class="footer-heading">Navigace</h3>
+          <ul class="footer-links" role="list">
+            <li><a href="/" id="footer-nav-home">Úvod</a></li>
+            <li><a href="/menu" id="footer-nav-menu">Jídelní lístek</a></li>
+            <li><a href="/skupiny" id="footer-nav-skupiny">Skupinové akce</a></li>
+            <li><a href="/galerie" id="footer-nav-galerie">Fotogalerie</a></li>
+            <li><a href="/o-nas" id="footer-nav-o-nas">O nás</a></li>
+            <li><a href="/kontakt" id="footer-nav-kontakt">Kontakt</a></li>
+          </ul>
+        </div>
+
+        <!-- Contact -->
+        <div class="footer-col">
+          <h3 class="footer-heading">Kontakt</h3>
+          <address class="footer-contact">
+            <div class="contact-item">
+              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              <span>Městečko, 257 22 Nespeky</span>
+            </div>
+            <div class="contact-item">
+              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.8 19.79 19.79 0 01.01 1.18 2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92z"/></svg>
+              <a href="tel:+420737484116" id="footer-phone">+420 737 484 116</a>
+            </div>
+            <div class="contact-item">
+              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              <a href="mailto:info@hostinecab.cz" id="footer-email">info@hostinecab.cz</a>
+            </div>
+          </address>
+        </div>
+
+        <!-- Hours -->
+        <div class="footer-col">
+          <h3 class="footer-heading">Otevírací doba</h3>
+          <div class="footer-hours">
+            <div class="fh-row"><span>Po – Pá</span><span class="fh-time">11:00 – 22:00</span></div>
+            <div class="fh-row"><span>Sobota</span><span class="fh-time">11:00 – 23:00</span></div>
+            <div class="fh-row"><span>Neděle</span><span class="fh-time">11:00 – 21:00</span></div>
+            <div class="fh-row denni-menu"><span>Denní menu</span><span class="fh-time">11:00 – 14:00</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <div class="container">
+      <p class="footer-copy">
+        &copy; {new Date().getFullYear()} Hostinec Antonín Barták · Všechna práva vyhrazena
+      </p>
+      <a href="/rezervace" class="btn btn-outline btn-sm" id="footer-rezervace-btn">Zamluvit stůl</a>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background: var(--clr-bg-2);
+    border-top: 1px solid var(--clr-border);
+    margin-top: auto;
+  }
+
+  .footer-top { padding: var(--space-3xl) 0 var(--space-2xl); }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr 1fr;
+    gap: var(--space-2xl);
+  }
+
+  .footer-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: var(--space-lg);
+  }
+  .logo-emblem-sm {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #c9a84c, #a07c30);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: #0f1c14;
+    flex-shrink: 0;
+  }
+  .footer-logo-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--clr-cream);
+  }
+  .footer-logo-sub {
+    font-size: 0.7rem;
+    color: var(--clr-gold);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .footer-desc {
+    font-size: 0.88rem;
+    color: var(--clr-text-muted);
+    line-height: 1.7;
+    max-width: 28ch;
+    margin-bottom: var(--space-lg);
+  }
+  .social-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--clr-text-muted);
+    transition: color 0.2s;
+  }
+  .social-link:hover { color: var(--clr-gold); }
+
+  .footer-heading {
+    font-family: var(--font-display);
+    font-size: 0.9rem;
+    color: var(--clr-gold);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: var(--space-lg);
+  }
+
+  .footer-links {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  .footer-links a {
+    font-size: 0.9rem;
+    color: var(--clr-text-muted);
+    transition: color 0.2s, padding-left 0.2s;
+  }
+  .footer-links a:hover { color: var(--clr-cream); padding-left: 4px; }
+
+  .footer-contact {
+    font-style: normal;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .contact-item {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.88rem;
+    color: var(--clr-text-muted);
+  }
+  .contact-item svg { color: var(--clr-gold); flex-shrink: 0; }
+  .contact-item a { color: var(--clr-text-muted); transition: color 0.2s; }
+  .contact-item a:hover { color: var(--clr-gold); }
+
+  .footer-hours { display: flex; flex-direction: column; gap: 0.5rem; }
+  .fh-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.87rem;
+    color: var(--clr-text-muted);
+    padding: 0.25rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+  .fh-time { color: var(--clr-cream); font-weight: 500; }
+  .fh-row.denni-menu .fh-time { color: var(--clr-gold); }
+
+  .footer-bottom {
+    border-top: 1px solid var(--clr-border);
+    padding: 1.25rem 0;
+  }
+  .footer-bottom .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-md);
+    flex-wrap: wrap;
+  }
+  .footer-copy {
+    font-size: 0.8rem;
+    color: var(--clr-text-muted);
+    max-width: none;
+  }
+
+  @media (max-width: 900px) {
+    .footer-grid { grid-template-columns: 1fr 1fr; gap: var(--space-xl); }
+    .footer-brand { grid-column: 1 / -1; }
+  }
+  @media (max-width: 560px) {
+    .footer-grid { grid-template-columns: 1fr; }
+    .footer-bottom .container { flex-direction: column; text-align: center; }
+    .btn-sm { width: auto; }
+  }
+</style>

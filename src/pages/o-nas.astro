@@ -1,0 +1,118 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import '../styles/global.css';
+---
+
+<BaseLayout title="O nás" description="Příběh Hostince Antonín Barták v Městečku. Tradiční česká hospoda s domácí kuchyní, přátelským prostředím a letní zahrádkou od roku 1990.">
+  <Header />
+
+  <div class="page-hero">
+    <div class="container">
+      <span class="badge">Náš příběh</span>
+      <h1 class="mt-md">O Hostinci Antonín Barták</h1>
+      <p class="lead mt-md">Tradiční hospoda v srdci Městečka u Nespek</p>
+    </div>
+  </div>
+
+  <!-- PŘÍBĚH -->
+  <section class="section">
+    <div class="container">
+      <div class="story-grid">
+        <div class="story-text reveal">
+          <span class="gold-line" aria-hidden="true"></span>
+          <h2>Naše filozofie</h2>
+          <p class="lead mt-md">
+            Hostinec Antonín Barták je pro Vás otevřen s jedním cílem – poskytnout Vám
+            příjemné prostředí, poctivé jídlo a srdečnou obsluhu.
+          </p>
+          <p class="mt-lg">
+            Naše kuchyně staví na tradičních českých recepturách připravovaných
+            z čerstvých, kvalitních surovin. Denně připravujeme polední menu, hotová jídla,
+            bezmasé alternativy i grilovaná jídla – pro každého si přijde na své.
+          </p>
+          <p class="mt-md">
+            Jakmile počasí dovolí, otevíráme oblíbenou <strong>venkovní zahrádku s grilem</strong>,
+            kde si v příjemném prostředí vychutnáte letní atmosféru Městečka.
+          </p>
+          <p class="mt-md">
+            Čepujeme <strong>Gambrinus 11°, Pilsner Urquell 12°, Kozel černý</strong> a
+            nealkoholický <strong>Birell</strong> – vždy čerstvé a správně vychlazené.
+          </p>
+        </div>
+        <div class="story-img reveal">
+          <img src="/images/interior.png" alt="Interiér hostince" loading="lazy" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HODNOTY -->
+  <section class="section values-section">
+    <div class="container">
+      <div class="section-header text-center reveal">
+        <h2>Proč si nás hosté oblíbili</h2>
+      </div>
+      <div class="grid-3 reveal">
+        {[
+          { icon: '🏡', title: 'Domácí atmosféra',   desc: 'Útulné prostředí, kde se každý cítí jako doma. Přátelská obsluha a příjemná atmosféra.' },
+          { icon: '🍳', title: 'Poctivá kuchyně',    desc: 'Tradiční česká jídla z čerstvých surovin. Žádná polotovary – vše připravujeme čerstvé.' },
+          { icon: '🤝', title: 'Osobní přístup',     desc: 'Ke každému hostovi přistupujeme individuálně. Vaše přání jsou pro nás prioritou.' },
+          { icon: '💰', title: 'Dostupné ceny',      desc: 'Denní menu již od 99 Kč. Kvalitní jídlo a pití za férové ceny.' },
+          { icon: '🌳', title: 'Letní zahrádka',     desc: 'Venkovní zahrádka s grilem – ideální místo pro léto v příjemném prostředí Městečka.' },
+          { icon: '📍', title: 'Snadná dostupnost',  desc: 'Nacházíme se v centru Městečka u Nespek, s vlastním parkovištěm.' },
+        ].map(v => (
+          <div class="value-card card">
+            <div class="card-body">
+              <div class="value-icon">{v.icon}</div>
+              <h3 class="mt-md">{v.title}</h3>
+              <p class="mt-sm" style="font-size:0.92rem">{v.desc}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- KONTAKT CTA -->
+  <section class="cta-banner reveal">
+    <div class="container text-center">
+      <h2>Přijďte nás navštívit</h2>
+      <p class="lead mt-md">Těšíme se na Vás v Hostinci Antonín Barták!</p>
+      <div class="flex gap-md flex-wrap items-center mt-xl" style="justify-content:center">
+        <a href="/rezervace" class="btn btn-primary" id="onas-rezervace-btn">Zamluvit stůl</a>
+        <a href="/kontakt"   class="btn btn-outline" id="onas-kontakt-btn">Jak nás najít</a>
+      </div>
+    </div>
+  </section>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .story-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-3xl);
+    align-items: center;
+  }
+  .story-img img {
+    width: 100%;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .values-section { background: var(--clr-bg-2); border-top: 1px solid var(--clr-border); border-bottom: 1px solid var(--clr-border); }
+  .value-icon { font-size: 2.2rem; }
+
+  .cta-banner {
+    padding: var(--space-3xl) 0;
+    background: linear-gradient(135deg, rgba(201,168,76,0.08), rgba(44,90,61,0.15));
+    border-top: 1px solid var(--clr-border);
+  }
+
+  @media (max-width: 768px) {
+    .story-grid { grid-template-columns: 1fr; gap: var(--space-xl); }
+  }
+</style>
