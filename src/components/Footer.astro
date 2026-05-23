@@ -8,13 +8,9 @@
       <div class="footer-grid">
         <!-- Brand -->
         <div class="footer-brand">
-          <div class="footer-logo">
-            <div class="logo-emblem-sm" aria-hidden="true">AB</div>
-            <div>
-              <div class="footer-logo-name">Hostinec AB</div>
-              <div class="footer-logo-sub">Antonín Barták · Městečko</div>
-            </div>
-          </div>
+          <a href="/" class="footer-logo-link" id="footer-logo-link" aria-label="Hostinec AB">
+            <img src="/images/logo.png" alt="Hostinec Antonín Barták" class="footer-logo-img" loading="lazy" />
+          </a>
           <p class="footer-desc">
             Tradiční česká hospoda v srdci Městečka u Nespek. Čepujeme Gambrinus,
             Prazdroj, Kozel. Vaříme poctivou domácí kuchyni.
@@ -40,10 +36,12 @@
           <ul class="footer-links" role="list">
             <li><a href="/" id="footer-nav-home">Úvod</a></li>
             <li><a href="/menu" id="footer-nav-menu">Jídelní lístek</a></li>
+            <li><a href="/ubytovani" id="footer-nav-ubytovani">Ubytování</a></li>
             <li><a href="/skupiny" id="footer-nav-skupiny">Skupinové akce</a></li>
             <li><a href="/galerie" id="footer-nav-galerie">Fotogalerie</a></li>
             <li><a href="/o-nas" id="footer-nav-o-nas">O nás</a></li>
             <li><a href="/kontakt" id="footer-nav-kontakt">Kontakt</a></li>
+            <li><a href="/objednat" id="footer-nav-objednat">🛍️ Objednat s sebou</a></li>
           </ul>
         </div>
 
@@ -105,35 +103,15 @@
     gap: var(--space-2xl);
   }
 
-  .footer-logo {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    margin-bottom: var(--space-lg);
+  .footer-logo-link { display: inline-block; margin-bottom: var(--space-lg); }
+  .footer-logo-img {
+    height: 90px;
+    width: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 12px rgba(0,0,0,0.4));
+    transition: transform 0.3s ease;
   }
-  .logo-emblem-sm {
-    width: 40px; height: 40px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #c9a84c, #a07c30);
-    display: flex; align-items: center; justify-content: center;
-    font-family: 'Playfair Display', serif;
-    font-weight: 700;
-    font-size: 0.9rem;
-    color: #0f1c14;
-    flex-shrink: 0;
-  }
-  .footer-logo-name {
-    font-family: 'Playfair Display', serif;
-    font-size: 1rem;
-    font-weight: 700;
-    color: var(--clr-cream);
-  }
-  .footer-logo-sub {
-    font-size: 0.7rem;
-    color: var(--clr-gold);
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-  }
+  .footer-logo-link:hover .footer-logo-img { transform: scale(1.03); }
   .footer-desc {
     font-size: 0.88rem;
     color: var(--clr-text-muted);

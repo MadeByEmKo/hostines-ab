@@ -1,0 +1,479 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import '../styles/global.css';
+import { readFileSync } from 'fs';
+import { join } from 'path';
+
+// Load daily menu
+let dailyDate  = '';
+let dailySoups: {name:string,price:string}[] = [];
+let dailyMains: {name:string,price:string}[] = [];
+
+try {
+  const raw  = readFileSync(join(process.cwd(),'content/daily-menu.md'),'utf8');
+  const fm   = raw.match(/^---\n([\s\S]*?)\n---/);
+  if (fm) {
+    fm[1].split('\n').forEach(l => { if (l.startsWith('date:')) dailyDate = l.replace('date:','').trim().replace(/"/g,''); });
+    const parseItems = (block:string|undefined) => block
+      ? block.split('\n').filter(l=>l.trim().startsWith('-')).map(l => {
+          const [name,price] = l.replace(/^\s*-\s*/,'').split('|').map(s=>s.trim());
+          return {name, price: price||''};
+        })
+      : [];
+    dailySoups = parseItems(raw.match(/soups:([\s\S]*?)(?=mains:|---)/)?.[1]);
+    dailyMains = parseItems(raw.match(/mains:([\s\S]*?)(?=---|$)/)?.[1]);
+  }
+} catch(_) {}
+
+// Stálý lístek
+const staleLístek = [
+  { cat:'🥣 Polévky', items:[
+    { name:'Hovězí vývar s nudlemi', price:'45 Kč' },
+    { name:'Gulášová polévka',       price:'55 Kč' },
+    { name:'Česnečka se sýrem',      price:'50 Kč' },
+  ]},
+  { cat:'🍽️ Hlavní jídla', items:[
+    { name:'Svíčková na smetaně',    price:'179 Kč' },
+    { name:'Smažený vepřový řízek',  price:'159 Kč' },
+    { name:'Guláš s knedlíkem',      price:'149 Kč' },
+    { name:'Smažený sýr',            price:'139 Kč' },
+    { name:'Grilovaná žebra',        price:'229 Kč' },
+    { name:'Kuřecí steak na másle',  price:'169 Kč' },
+  ]},
+  { cat:'🌱 Bezmasá jídla', items:[
+    { name:'Smažený sýr (bezmasý)',  price:'139 Kč' },
+    { name:'Těstoviny se zeleninou', price:'129 Kč' },
+  ]},
+];
+---
+
+<BaseLayout
+  title="Objednat s sebou"
+  description="Objednávky jídel s sebou z Hostince AB. Denní menu i stálý lístek. Vyzvednutí na místě."
+>
+  <Header />
+
+  <div class="page-hero">
+    <div class="container">
+      <span class="badge">Takeaway</span>
+      <h1 class="mt-md">🛍️ Objednat s sebou</h1>
+      <p class="lead mt-md">Vyberte si jídlo, zadejte čas vyzvednutí · Vydáváme 11:00–21:00</p>
+    </div>
+  </div>
+
+  <section class="section">
+    <div class="container">
+      <div class="takeaway-layout">
+
+        <!-- MENU SEKCE -->
+        <div class="menu-section reveal">
+
+          <!-- DENNÍ MENU -->
+          <div class="menu-block">
+            <div class="menu-block-header">
+              <h2>🗓️ Denní menu</h2>
+              {dailyDate && <span class="menu-date-badge">Platné {dailyDate}</span>}
+            </div>
+            {dailySoups.length > 0 || dailyMains.length > 0 ? (
+              <div>
+                {dailySoups.length > 0 && (
+                  <div class="menu-category">
+                    <div class="menu-category-title">🥣 Polévky</div>
+                    {dailySoups.map(item => (
+                      <div class="takeaway-item">
+                        <div class="ti-info">
+                          <div class="ti-name">{item.name}</div>
+                          <div class="ti-price">{item.price}</div>
+                        </div>
+                        <button class="add-btn" data-name={item.name} data-price={item.price} id={`add-soup-${item.name.slice(0,10).replace(/\s/g,'-')}`}>
+                          + Přidat
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                {dailyMains.length > 0 && (
+                  <div class="menu-category">
+                    <div class="menu-category-title">🍽️ Hlavní jídla</div>
+                    {dailyMains.map(item => (
+                      <div class="takeaway-item">
+                        <div class="ti-info">
+                          <div class="ti-name">{item.name}</div>
+                          <div class="ti-price">{item.price}</div>
+                        </div>
+                        <button class="add-btn" data-name={item.name} data-price={item.price} id={`add-main-${item.name.slice(0,10).replace(/\s/g,'-')}`}>
+                          + Přidat
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div class="no-daily">
+                <p>Dnešní denní menu ještě nebylo zveřejněno. Zavolejte nám nebo objednejte ze stálého lístku.</p>
+                <a href="tel:+420737484116" class="btn btn-outline mt-md">+420 737 484 116</a>
+              </div>
+            )}
+          </div>
+
+          <!-- STÁLÝ LÍSTEK -->
+          <div class="menu-block mt-xl">
+            <div class="menu-block-header">
+              <h2>📜 Stálý lístek</h2>
+            </div>
+            {staleLístek.map(cat => (
+              <div class="menu-category">
+                <div class="menu-category-title">{cat.cat}</div>
+                {cat.items.map(item => (
+                  <div class="takeaway-item">
+                    <div class="ti-info">
+                      <div class="ti-name">{item.name}</div>
+                      <div class="ti-price">{item.price}</div>
+                    </div>
+                    <button class="add-btn" data-name={item.name} data-price={item.price} id={`add-stale-${item.name.slice(0,10).replace(/\s/g,'-')}`}>
+                      + Přidat
+                    </button>
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <!-- KOŠÍK + FORMULÁŘ -->
+        <aside class="cart-sidebar">
+          <div class="cart-box sticky-cart reveal">
+            <div class="cart-header">
+              🛒 Košík <span class="cart-count" id="cart-count">0 položek</span>
+            </div>
+
+            <div id="cart-items" class="cart-items">
+              <div class="cart-empty" id="cart-empty">
+                <span>Přidejte položky z menu</span>
+              </div>
+            </div>
+
+            <div class="cart-total" id="cart-total-row" style="display:none">
+              <span>Celkem</span>
+              <strong id="cart-total-price">0 Kč</strong>
+            </div>
+
+            <!-- Formulář -->
+            <form id="takeaway-form" class="cart-form" style="display:none"
+              action="https://formspree.io/f/ZZZZZZZZ"
+              method="POST"
+            >
+              <input type="hidden" name="_subject" value="Objednávka s sebou – Hostinec AB" />
+              <input type="hidden" name="objednavka" id="hidden-order" />
+
+              <div class="form-group">
+                <label for="t-jmeno">Jméno *</label>
+                <input type="text" id="t-jmeno" name="jmeno" placeholder="Jan Novák" required />
+              </div>
+              <div class="form-group">
+                <label for="t-telefon">Telefon *</label>
+                <input type="tel" id="t-telefon" name="telefon" placeholder="+420 123 456 789" required />
+              </div>
+
+              <div class="form-group">
+                <label for="t-cas">Čas vyzvednutí *</label>
+                <select id="t-cas" name="cas" required>
+                  <option value="co-nejdrive">Co nejdříve (~30 min)</option>
+                  <option value="za-30">Za 30 minut</option>
+                  <option value="za-60">Za 1 hodinu</option>
+                  <option value="vlastni">Vlastní čas</option>
+                </select>
+              </div>
+              <div class="form-group" id="vlastni-cas-group" style="display:none">
+                <label for="t-vlastni-cas">Konkrétní čas</label>
+                <input type="time" id="t-vlastni-cas" name="vlastni_cas" min="11:00" max="21:00" />
+              </div>
+
+              <div class="form-group">
+                <label for="t-poznamka">Poznámky (alergie, úpravy…)</label>
+                <textarea id="t-poznamka" name="poznamka" rows="2"></textarea>
+              </div>
+
+              <div class="gdpr-check">
+                <input type="checkbox" id="t-gdpr" name="gdpr" required />
+                <label for="t-gdpr">Souhlasím se zpracováním kontaktních údajů.</label>
+              </div>
+
+              <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center" id="takeaway-submit-btn">
+                📤 Odeslat objednávku
+              </button>
+            </form>
+
+            <div class="form-success hidden" id="takeaway-success">
+              <div style="font-size:2.5rem;margin-bottom:0.75rem">✅</div>
+              <h3>Objednávka přijata!</h3>
+              <p>Zavoláme Vám pro potvrzení. Připravíme vše na domluvený čas.</p>
+              <button class="btn btn-outline mt-lg" onclick="location.reload()" id="order-again-btn">Objednat znovu</button>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .takeaway-layout {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: var(--space-2xl);
+    align-items: start;
+  }
+
+  .menu-block { background: var(--clr-surface); border: 1px solid var(--clr-border); border-radius: var(--radius-lg); padding: var(--space-xl); }
+  .menu-block-header {
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: var(--space-sm);
+    margin-bottom: var(--space-lg);
+    padding-bottom: var(--space-lg);
+    border-bottom: 1px solid var(--clr-border);
+  }
+  .menu-block-header h2 { font-size: 1.3rem; margin: 0; }
+  .menu-date-badge {
+    font-size: 0.78rem; font-weight: 600;
+    background: rgba(201,168,76,0.12);
+    border: 1px solid rgba(201,168,76,0.25);
+    color: var(--clr-gold);
+    padding: 0.25rem 0.75rem;
+    border-radius: 100px;
+    letter-spacing: 0.04em;
+  }
+
+  .takeaway-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-md);
+    padding: var(--space-md) 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+  .takeaway-item:last-child { border-bottom: none; }
+  .ti-info { flex: 1; }
+  .ti-name  { font-weight: 500; color: var(--clr-cream); font-size: 0.93rem; }
+  .ti-price { font-size: 0.82rem; color: var(--clr-gold); font-weight: 600; margin-top: 2px; }
+
+  .add-btn {
+    flex-shrink: 0;
+    padding: 0.35rem 0.85rem;
+    background: rgba(201,168,76,0.1);
+    border: 1px solid rgba(201,168,76,0.3);
+    border-radius: var(--radius-sm);
+    color: var(--clr-gold);
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+    font-family: var(--font-body);
+  }
+  .add-btn:hover { background: var(--clr-gold); color: var(--clr-bg); }
+  .add-btn.added { background: var(--clr-gold); color: var(--clr-bg); }
+
+  .no-daily { text-align: center; padding: var(--space-xl); color: var(--clr-text-muted); font-size: 0.9rem; }
+
+  /* Cart */
+  .sticky-cart { position: sticky; top: 88px; }
+  .cart-box {
+    background: var(--clr-surface);
+    border: 1px solid var(--clr-border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+  .cart-header {
+    padding: var(--space-lg) var(--space-xl);
+    background: var(--clr-surface-2);
+    border-bottom: 1px solid var(--clr-border);
+    font-weight: 700;
+    color: var(--clr-cream);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .cart-count { font-size: 0.78rem; color: var(--clr-gold); font-weight: 600; }
+  .cart-items { max-height: 280px; overflow-y: auto; padding: var(--space-md) var(--space-xl); }
+  .cart-empty { text-align: center; padding: var(--space-xl) 0; color: var(--clr-text-muted); font-size: 0.88rem; }
+  .cart-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: var(--space-sm) 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    font-size: 0.85rem;
+  }
+  .cart-item-name { flex: 1; color: var(--clr-cream); }
+  .cart-item-qty-controls { display: flex; align-items: center; gap: 6px; }
+  .qty-btn {
+    width: 24px; height: 24px;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid var(--clr-border);
+    border-radius: 4px;
+    color: var(--clr-cream);
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.15s;
+    line-height: 1;
+    font-family: var(--font-body);
+  }
+  .qty-btn:hover { background: rgba(201,168,76,0.2); }
+  .cart-item-qty { font-weight: 700; color: var(--clr-gold); min-width: 16px; text-align: center; }
+  .cart-item-price { color: var(--clr-text-muted); font-size: 0.78rem; white-space: nowrap; }
+
+  .cart-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-md) var(--space-xl);
+    border-top: 1px solid var(--clr-border);
+    font-size: 0.95rem;
+    color: var(--clr-text-muted);
+  }
+  .cart-total strong { color: var(--clr-gold); font-family: var(--font-display); font-size: 1.2rem; }
+
+  .cart-form { padding: var(--space-xl); border-top: 1px solid var(--clr-border); }
+  .cart-form .form-group { margin-bottom: var(--space-md); }
+  .cart-form label { font-size: 0.78rem; }
+  .cart-form input, .cart-form select, .cart-form textarea {
+    font-size: 0.88rem; padding: 0.6rem 0.85rem;
+  }
+  .cart-form .gdpr-check { font-size: 0.76rem; margin-bottom: var(--space-md); }
+  .cart-form .gdpr-check label { font-size: 0.76rem; }
+
+  .form-success { text-align: center; padding: var(--space-xl); }
+  .hidden { display: none !important; }
+
+  @media (max-width: 900px) {
+    .takeaway-layout { grid-template-columns: 1fr; }
+    .cart-sidebar { order: -1; }
+    .sticky-cart { position: static; }
+    .cart-items { max-height: 200px; }
+  }
+</style>
+
+<script>
+  interface CartItem { name: string; price: number; priceStr: string; qty: number; }
+  let cart: CartItem[] = [];
+
+  function parsePriceKc(str: string): number {
+    return parseInt(str.replace(/[^\d]/g, '')) || 0;
+  }
+
+  function fmt(n: number) { return n.toLocaleString('cs-CZ') + ' Kč'; }
+
+  function renderCart() {
+    const itemsEl   = document.getElementById('cart-items')!;
+    const emptyEl   = document.getElementById('cart-empty')!;
+    const totalRow  = document.getElementById('cart-total-row') as HTMLElement;
+    const totalPrice = document.getElementById('cart-total-price')!;
+    const cartCount  = document.getElementById('cart-count')!;
+    const formEl    = document.querySelector('.cart-form') as HTMLElement;
+
+    if (cart.length === 0) {
+      emptyEl.style.display = '';
+      totalRow.style.display = 'none';
+      if (formEl) formEl.style.display = 'none';
+      // Remove all cart-item rows
+      itemsEl.querySelectorAll('.cart-item').forEach(el => el.remove());
+      cartCount.textContent = '0 položek';
+      return;
+    }
+
+    emptyEl.style.display = 'none';
+    totalRow.style.display = 'flex';
+    if (formEl) formEl.style.display = 'block';
+
+    itemsEl.querySelectorAll('.cart-item').forEach(el => el.remove());
+
+    let total = 0;
+    cart.forEach((item, i) => {
+      total += item.price * item.qty;
+      const row = document.createElement('div');
+      row.className = 'cart-item';
+      row.innerHTML = `
+        <span class="cart-item-name">${item.name}</span>
+        <div class="cart-item-qty-controls">
+          <button class="qty-btn" data-idx="${i}" data-action="dec">−</button>
+          <span class="cart-item-qty">${item.qty}</span>
+          <button class="qty-btn" data-idx="${i}" data-action="inc">+</button>
+        </div>
+        <span class="cart-item-price">${fmt(item.price * item.qty)}</span>
+      `;
+      itemsEl.appendChild(row);
+    });
+
+    totalPrice.textContent = fmt(total);
+    const count = cart.reduce((s, i) => s + i.qty, 0);
+    cartCount.textContent = `${count} ${count === 1 ? 'položka' : count < 5 ? 'položky' : 'položek'}`;
+
+    // Update hidden order field
+    const summary = cart.map(i => `${i.name} ×${i.qty} (${fmt(i.price * i.qty)})`).join(', ');
+    (document.getElementById('hidden-order') as HTMLInputElement).value = `${summary} | Celkem: ${fmt(total)}`;
+  }
+
+  function addItem(name: string, priceStr: string) {
+    const price = parsePriceKc(priceStr);
+    const existing = cart.find(i => i.name === name);
+    if (existing) existing.qty++;
+    else cart.push({ name, price, priceStr, qty: 1 });
+    renderCart();
+  }
+
+  // Add buttons
+  document.querySelectorAll('.add-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const name  = (btn as HTMLElement).dataset.name || '';
+      const price = (btn as HTMLElement).dataset.price || '';
+      addItem(name, price);
+      btn.classList.add('added');
+      btn.textContent = '✓ Přidáno';
+      setTimeout(() => { btn.classList.remove('added'); btn.textContent = '+ Přidat'; }, 1500);
+    });
+  });
+
+  // Cart qty buttons (delegated)
+  document.getElementById('cart-items')?.addEventListener('click', e => {
+    const btn = (e.target as HTMLElement).closest('.qty-btn') as HTMLElement;
+    if (!btn) return;
+    const idx    = Number(btn.dataset.idx);
+    const action = btn.dataset.action;
+    if (action === 'dec') {
+      cart[idx].qty--;
+      if (cart[idx].qty <= 0) cart.splice(idx, 1);
+    } else { cart[idx].qty++; }
+    renderCart();
+  });
+
+  // Custom time toggle
+  document.getElementById('t-cas')?.addEventListener('change', e => {
+    const val = (e.target as HTMLSelectElement).value;
+    const g   = document.getElementById('vlastni-cas-group') as HTMLElement;
+    g.style.display = val === 'vlastni' ? 'block' : 'none';
+  });
+
+  // Form submit
+  document.getElementById('takeaway-form')?.addEventListener('submit', async e => {
+    e.preventDefault();
+    const form = e.target as HTMLFormElement;
+    try {
+      const res = await fetch(form.action, {
+        method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' }
+      });
+      if (res.ok) {
+        form.style.display = 'none';
+        document.getElementById('takeaway-success')?.classList.remove('hidden');
+      }
+    } catch { form.submit(); }
+  });
+
+  renderCart();
+</script>

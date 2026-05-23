@@ -1,0 +1,414 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import '../styles/global.css';
+
+const rooms = [
+  {
+    id: 'srdce',
+    name: 'Pokoj Srdce',
+    emoji: '❤️',
+    capacity: 1,
+    beds: '1 jednolůžko',
+    price: 500,
+    img: '/images/rooms/placeholder.png',
+    desc: 'Útulný jednolůžkový pokoj ideální pro sólové cestovatele nebo jednodenní výlety. Klidná atmosféra a komfortní prostředí.',
+    features: ['Soukromá koupelna', 'TV', 'WiFi zdarma', 'Klimatizace'],
+  },
+  {
+    id: 'klasik',
+    name: 'Pokoj Klasik',
+    emoji: '🏠',
+    capacity: 2,
+    beds: '1 manželská postel',
+    price: 800,
+    img: '/images/rooms/placeholder.png',
+    desc: 'Klasický dvoulůžkový pokoj pro páry nebo přátele. Rustikální výzdoba a veškerý komfort moderního ubytování.',
+    features: ['Soukromá koupelna', 'TV', 'WiFi zdarma', 'Minibar'],
+  },
+  {
+    id: 'familiarni',
+    name: 'Pokoj Familiární',
+    emoji: '👨‍👩‍👧‍👦',
+    capacity: 4,
+    beds: '2 oddělené ložnice',
+    price: 1200,
+    img: '/images/rooms/placeholder.png',
+    desc: 'Prostorný rodinný pokoj pro 4 osoby se dvěma ložnicemi. Ideální volba pro rodiny s dětmi i skupiny přátel.',
+    features: ['2 koupelny', 'TV', 'WiFi zdarma', 'Lednička', 'Dětská postýlka na vyžádání'],
+  },
+  {
+    id: 'luxus',
+    name: 'Pokoj Luxus',
+    emoji: '✨',
+    capacity: 2,
+    beds: '1 king-size postel + obývák',
+    price: 1500,
+    img: '/images/rooms/placeholder.png',
+    desc: 'Luxusní dvoulůžkový pokoj s oddělenou obývací částí. Romantická atmosféra a prémiové vybavení.',
+    features: ['Whirlpool vana', 'TV', 'WiFi zdarma', 'Minibar', 'Obývací část', 'Klimatizace'],
+    badge: 'Nejoblíbenější',
+  },
+  {
+    id: 'penthouse',
+    name: 'Penthouse',
+    emoji: '🌟',
+    capacity: 4,
+    beds: '2 ložnice + terasa',
+    price: 1800,
+    img: '/images/rooms/penthouse.png',
+    desc: 'Náš nejprostornější apartmán se soukromou terasou a výhledem do zahrady. Výjimečný zážitek pro výjimečné příležitosti.',
+    features: ['2 koupelny', 'Soukromá terasa', 'WiFi zdarma', 'Plně vybavená kuchyňka', 'TV', 'Klimatizace', 'Minibar'],
+    badge: 'Prémiový',
+  },
+];
+---
+
+<BaseLayout
+  title="Ubytování"
+  description="Ubytování v Hostinci AB v Městečku u Nespek. 5 pokojů od 500 do 1800 Kč/noc. WiFi, parkování zdarma, snídaně na vyžádání."
+>
+  <Header />
+
+  <!-- HERO -->
+  <div class="page-hero ubyt-hero">
+    <div class="container">
+      <span class="badge">Ubytování</span>
+      <h1 class="mt-md">Přespěte u nás<br /><em>v srdci Městečka</em></h1>
+      <p class="lead mt-md">5 pokojů · WiFi zdarma · Parkování zdarma · Snídaně na vyžádání</p>
+      <div class="flex gap-md flex-wrap mt-xl" style="justify-content:center">
+        <a href="#pokoje" class="btn btn-primary" id="ubyt-hero-pokoje-btn">Prohlédnout pokoje</a>
+        <a href="/rezervace-pokoje" class="btn btn-outline" id="ubyt-hero-rez-btn">Rezervovat pobyt</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- VÝHODY -->
+  <section class="section-sm ubyt-perks">
+    <div class="container">
+      <div class="perks-grid reveal">
+        {[
+          { icon: '🅿️', title: 'Parkování zdarma', sub: 'Vlastní parkoviště' },
+          { icon: '📶', title: 'WiFi zdarma',       sub: 'Vysokorychlostní' },
+          { icon: '🍳', title: 'Snídaně',           sub: 'Na vyžádání +150 Kč' },
+          { icon: '🔑', title: 'Check-in 14:00',    sub: 'Check-out 11:00' },
+          { icon: '🐾', title: 'Domácí mazlíčci',   sub: 'Po domluvě' },
+          { icon: '🏠', title: 'Recepce',           sub: 'Po–Ne 8:00–22:00' },
+        ].map(p => (
+          <div class="perk-item">
+            <span class="perk-icon">{p.icon}</span>
+            <div>
+              <div class="perk-title">{p.title}</div>
+              <div class="perk-sub">{p.sub}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- POKOJE -->
+  <section class="section" id="pokoje">
+    <div class="container">
+      <div class="section-header text-center reveal">
+        <span class="gold-line" aria-hidden="true"></span>
+        <h2>Naše pokoje</h2>
+        <p class="lead">Vyberte si pokoj podle Vašich potřeb · Ceny platné za noc</p>
+      </div>
+
+      <div class="rooms-grid reveal">
+        {rooms.map(room => (
+          <div class="room-card" id={`room-${room.id}`}>
+            {room.badge && <div class="room-badge">{room.badge}</div>}
+            <div class="room-img-wrap">
+              <img
+                src={room.img}
+                alt={`${room.name} – ilustrativní fotka`}
+                loading="lazy"
+                class="room-img"
+              />
+              <div class="room-img-note">📷 Foto je ilustrativní</div>
+            </div>
+            <div class="room-body">
+              <div class="room-header-row">
+                <div>
+                  <div class="room-emoji">{room.emoji}</div>
+                  <h3 class="room-name">{room.name}</h3>
+                  <div class="room-capacity">
+                    <span class="cap-icon">👤</span>
+                    {room.capacity} {room.capacity === 1 ? 'osoba' : room.capacity < 5 ? 'osoby' : 'osob'} · {room.beds}
+                  </div>
+                </div>
+                <div class="room-price-wrap">
+                  <div class="room-price">{room.price.toLocaleString('cs-CZ')} Kč</div>
+                  <div class="room-price-sub">/ noc</div>
+                </div>
+              </div>
+              <p class="room-desc">{room.desc}</p>
+              <div class="room-features">
+                {room.features.map(f => (
+                  <span class="feature-tag">✓ {f}</span>
+                ))}
+              </div>
+              <a
+                href={`/rezervace-pokoje?pokoj=${room.id}&cena=${room.price}`}
+                class="btn btn-primary mt-lg room-btn"
+                id={`room-btn-${room.id}`}
+              >
+                Rezervovat tento pokoj
+              </a>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- SLEVY ZA DÉLKU POBYTU -->
+  <section class="section-sm discount-section reveal">
+    <div class="container">
+      <div class="discount-card">
+        <div class="discount-title">
+          <span>🎁</span> Slevy za delší pobyt
+        </div>
+        <div class="discount-grid">
+          <div class="discount-item">
+            <div class="discount-nights">1–4 noci</div>
+            <div class="discount-pct">Základní cena</div>
+          </div>
+          <div class="discount-item highlight">
+            <div class="discount-nights">5–6 nocí</div>
+            <div class="discount-pct">−10 %</div>
+          </div>
+          <div class="discount-item highlight gold">
+            <div class="discount-nights">7+ nocí</div>
+            <div class="discount-pct">−15 %</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PODMÍNKY -->
+  <section class="section-sm">
+    <div class="container">
+      <div class="grid-2 reveal">
+        <div class="info-box">
+          <h3>⏰ Check-in / Check-out</h3>
+          <div class="info-rows">
+            <div class="info-row"><span>Check-in</span><strong>od 14:00</strong></div>
+            <div class="info-row"><span>Check-out</span><strong>do 11:00</strong></div>
+            <div class="info-row"><span>Brzy příjezd / pozdní odjezd</span><strong>Po domluvě</strong></div>
+            <div class="info-row"><span>Recepce</span><strong>8:00 – 22:00</strong></div>
+          </div>
+        </div>
+        <div class="info-box">
+          <h3>📋 Storno podmínky</h3>
+          <div class="info-rows">
+            <div class="info-row"><span>Bezplatné storno</span><strong>48 h předem</strong></div>
+            <div class="info-row"><span>Storno 24–48 h</span><strong>50 % ceny</strong></div>
+            <div class="info-row"><span>Storno do 24 h / nástup</span><strong>100 % ceny</strong></div>
+            <div class="info-row"><span>Domácí mazlíčci</span><strong>Po domluvě (+100 Kč)</strong></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-banner reveal">
+    <div class="container text-center">
+      <h2>Připraveni zarezervovat?</h2>
+      <p class="lead mt-md">Vyplňte rezervační formulář nebo nám zavolejte.</p>
+      <div class="flex gap-md flex-wrap items-center mt-xl" style="justify-content:center">
+        <a href="/rezervace-pokoje" class="btn btn-primary" id="ubyt-cta-rez-btn">Rezervovat pokoj</a>
+        <a href="tel:+420737484116" class="btn btn-outline" id="ubyt-cta-phone-btn">+420 737 484 116</a>
+      </div>
+    </div>
+  </section>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .ubyt-hero em { font-style: italic; color: var(--clr-gold); display: block; }
+
+  /* Perks */
+  .ubyt-perks { background: var(--clr-surface); border-bottom: 1px solid var(--clr-border); }
+  .perks-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: var(--space-md);
+  }
+  .perk-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: var(--space-sm);
+    padding: var(--space-lg) var(--space-md);
+  }
+  .perk-icon { font-size: 1.8rem; }
+  .perk-title { font-weight: 600; font-size: 0.88rem; color: var(--clr-cream); }
+  .perk-sub   { font-size: 0.76rem; color: var(--clr-text-muted); }
+
+  /* Rooms */
+  .rooms-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: var(--space-xl);
+    margin-top: var(--space-2xl);
+  }
+  .room-card {
+    background: var(--clr-surface);
+    border: 1px solid var(--clr-border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    position: relative;
+    transition: all var(--transition);
+  }
+  .room-card:hover {
+    border-color: rgba(201,168,76,0.4);
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md), var(--shadow-gold);
+  }
+  .room-badge {
+    position: absolute;
+    top: var(--space-md);
+    right: var(--space-md);
+    z-index: 2;
+    background: linear-gradient(135deg, var(--clr-gold), var(--clr-gold-dark));
+    color: var(--clr-bg);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.7rem;
+    border-radius: 100px;
+  }
+  .room-img-wrap { position: relative; }
+  .room-img { width: 100%; height: 200px; object-fit: cover; }
+  .room-img-note {
+    position: absolute;
+    bottom: 0.5rem;
+    left: 0.75rem;
+    font-size: 0.72rem;
+    color: rgba(255,255,255,0.6);
+    background: rgba(0,0,0,0.5);
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    backdrop-filter: blur(4px);
+  }
+  .room-body { padding: var(--space-xl); }
+  .room-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: var(--space-md);
+    margin-bottom: var(--space-md);
+  }
+  .room-emoji { font-size: 1.4rem; margin-bottom: 4px; }
+  .room-name  { font-size: 1.2rem; color: var(--clr-cream); margin-bottom: 4px; }
+  .room-capacity {
+    font-size: 0.82rem;
+    color: var(--clr-text-muted);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .cap-icon { opacity: 0.6; }
+  .room-price-wrap { text-align: right; flex-shrink: 0; }
+  .room-price {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--clr-gold);
+    line-height: 1;
+  }
+  .room-price-sub { font-size: 0.75rem; color: var(--clr-text-muted); }
+  .room-desc { font-size: 0.88rem; color: var(--clr-text-muted); margin-bottom: var(--space-lg); line-height: 1.6; }
+  .room-features { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .feature-tag {
+    font-size: 0.76rem;
+    padding: 0.2rem 0.6rem;
+    background: rgba(201,168,76,0.08);
+    border: 1px solid rgba(201,168,76,0.15);
+    border-radius: 100px;
+    color: var(--clr-text-muted);
+  }
+  .room-btn { width: 100%; justify-content: center; }
+
+  /* Discounts */
+  .discount-section { background: var(--clr-bg-2); border-top: 1px solid var(--clr-border); border-bottom: 1px solid var(--clr-border); }
+  .discount-card {
+    background: var(--clr-surface);
+    border: 1px solid var(--clr-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-xl);
+  }
+  .discount-title {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    color: var(--clr-cream);
+    margin-bottom: var(--space-lg);
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+  }
+  .discount-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-md);
+  }
+  .discount-item {
+    text-align: center;
+    padding: var(--space-lg);
+    border-radius: var(--radius-md);
+    background: var(--clr-bg);
+    border: 1px solid var(--clr-border);
+  }
+  .discount-item.highlight { border-color: rgba(201,168,76,0.3); background: rgba(201,168,76,0.05); }
+  .discount-item.gold { border-color: rgba(201,168,76,0.6); background: rgba(201,168,76,0.1); }
+  .discount-nights { font-size: 0.85rem; color: var(--clr-text-muted); margin-bottom: 0.25rem; }
+  .discount-pct { font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; color: var(--clr-gold); }
+  .discount-item:first-child .discount-pct { color: var(--clr-text-muted); font-size: 0.95rem; }
+
+  /* Info boxes */
+  .info-box {
+    background: var(--clr-surface);
+    border: 1px solid var(--clr-border);
+    border-radius: var(--radius-md);
+    padding: var(--space-xl);
+  }
+  .info-box h3 { font-size: 1.05rem; margin-bottom: var(--space-lg); }
+  .info-rows { display: flex; flex-direction: column; gap: var(--space-sm); }
+  .info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-md);
+    padding: var(--space-sm) 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    font-size: 0.88rem;
+  }
+  .info-row span { color: var(--clr-text-muted); }
+  .info-row strong { color: var(--clr-cream); font-weight: 600; }
+
+  .cta-banner {
+    padding: var(--space-3xl) 0;
+    background: linear-gradient(135deg, rgba(201,168,76,0.08), rgba(44,90,61,0.15));
+    border-top: 1px solid var(--clr-border);
+  }
+
+  @media (max-width: 900px) {
+    .perks-grid { grid-template-columns: repeat(3, 1fr); }
+    .discount-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 600px) {
+    .perks-grid { grid-template-columns: repeat(2, 1fr); }
+    .rooms-grid { grid-template-columns: 1fr; }
+    .room-header-row { flex-direction: column; }
+    .room-price-wrap { text-align: left; }
+  }
+</style>

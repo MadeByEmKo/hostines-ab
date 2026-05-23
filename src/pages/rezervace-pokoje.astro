@@ -1,0 +1,394 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import '../styles/global.css';
+
+const rooms = [
+  { id: 'srdce',      name: 'Pokoj Srdce',      price: 500,  capacity: 1 },
+  { id: 'klasik',     name: 'Pokoj Klasik',      price: 800,  capacity: 2 },
+  { id: 'familiarni', name: 'Pokoj Familiární',  price: 1200, capacity: 4 },
+  { id: 'luxus',      name: 'Pokoj Luxus',       price: 1500, capacity: 2 },
+  { id: 'penthouse',  name: 'Penthouse',         price: 1800, capacity: 4 },
+];
+---
+
+<BaseLayout
+  title="Rezervace pokoje"
+  description="Online rezervace ubytování v Hostinci AB. Vyberte pokoj, datum příjezdu a odjezdu. Ceny od 500 Kč/noc."
+>
+  <Header />
+
+  <div class="page-hero">
+    <div class="container">
+      <span class="badge">Ubytování</span>
+      <h1 class="mt-md">Rezervace pokoje</h1>
+      <p class="lead mt-md">Vyberte pokoj a termín · Potvrzení emailem do 24 hodin</p>
+    </div>
+  </div>
+
+  <section class="section">
+    <div class="container">
+      <div class="booking-layout">
+
+        <!-- FORMULÁŘ -->
+        <div class="booking-form-wrap reveal">
+
+          <!-- Krok 1: Pokoj -->
+          <div class="booking-step">
+            <div class="step-label"><span class="step-num">1</span> Vyberte pokoj</div>
+            <div class="room-selector">
+              {rooms.map(r => (
+                <label class="room-option" id={`label-room-${r.id}`}>
+                  <input type="radio" name="pokoj" value={r.id} data-price={r.price} data-name={r.name} data-capacity={r.capacity} />
+                  <div class="room-option-body">
+                    <div class="room-option-name">{r.name}</div>
+                    <div class="room-option-cap">až {r.capacity} {r.capacity === 1 ? 'osoba' : 'osoby/osob'}</div>
+                  </div>
+                  <div class="room-option-price">{r.price.toLocaleString('cs-CZ')} Kč<small>/noc</small></div>
+                </label>
+              ))}
+            </div>
+          </div>
+
+          <!-- Krok 2: Daty -->
+          <div class="booking-step">
+            <div class="step-label"><span class="step-num">2</span> Vyberte termín</div>
+            <div class="date-pickers">
+              <div class="form-group">
+                <label for="checkin">Datum příjezdu (check-in od 14:00)</label>
+                <input type="date" id="checkin" name="checkin" />
+              </div>
+              <div class="form-group">
+                <label for="checkout">Datum odjezdu (check-out do 11:00)</label>
+                <input type="date" id="checkout" name="checkout" />
+              </div>
+            </div>
+
+            <!-- Cenový souhrn -->
+            <div class="price-summary" id="price-summary" style="display:none">
+              <div class="ps-row">
+                <span id="ps-nights-label">3 noci × 800 Kč</span>
+                <span id="ps-base-price">2 400 Kč</span>
+              </div>
+              <div class="ps-row discount-row" id="ps-discount-row" style="display:none">
+                <span id="ps-discount-label">Sleva za délku pobytu</span>
+                <span id="ps-discount-val" class="text-gold">–0 Kč</span>
+              </div>
+              <div class="ps-divider"></div>
+              <div class="ps-row total">
+                <span>Celkem</span>
+                <span id="ps-total" class="text-gold">2 400 Kč</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Krok 3: Kontakt -->
+          <div class="booking-step">
+            <div class="step-label"><span class="step-num">3</span> Vaše údaje</div>
+            <form
+              id="booking-form"
+              action="https://formspree.io/f/YYYYYYYY"
+              method="POST"
+            >
+              <input type="hidden" name="_subject" value="Rezervace pokoje – Hostinec AB" />
+              <input type="hidden" name="pokoj"    id="hidden-pokoj"   value="" />
+              <input type="hidden" name="checkin"  id="hidden-checkin" value="" />
+              <input type="hidden" name="checkout" id="hidden-checkout" value="" />
+              <input type="hidden" name="nights"   id="hidden-nights"  value="" />
+              <input type="hidden" name="cena"     id="hidden-cena"    value="" />
+
+              <div class="grid-2-form">
+                <div class="form-group">
+                  <label for="b-jmeno">Jméno *</label>
+                  <input type="text" id="b-jmeno" name="jmeno" placeholder="Jan" required />
+                </div>
+                <div class="form-group">
+                  <label for="b-prijmeni">Příjmení *</label>
+                  <input type="text" id="b-prijmeni" name="prijmeni" placeholder="Novák" required />
+                </div>
+                <div class="form-group">
+                  <label for="b-email">E-mail *</label>
+                  <input type="email" id="b-email" name="email" placeholder="jan@email.cz" required />
+                </div>
+                <div class="form-group">
+                  <label for="b-telefon">Telefon *</label>
+                  <input type="tel" id="b-telefon" name="telefon" placeholder="+420 123 456 789" required />
+                </div>
+                <div class="form-group">
+                  <label for="b-osoby">Počet osob</label>
+                  <select id="b-osoby" name="osoby">
+                    {[1,2,3,4].map(n => <option value={n}>{n}</option>)}
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="b-poznamka">Poznámky (alergie, požadavky, domácí mazlíčci…)</label>
+                <textarea id="b-poznamka" name="poznamka" rows="3"></textarea>
+              </div>
+
+              <div class="gdpr-check">
+                <input type="checkbox" id="b-gdpr" name="gdpr" required />
+                <label for="b-gdpr">Souhlasím se zpracováním osobních údajů za účelem vyřízení rezervace.</label>
+              </div>
+
+              <button type="submit" class="btn btn-primary submit-btn" id="booking-submit-btn">
+                <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                Odeslat rezervaci
+              </button>
+            </form>
+
+            <div class="form-success hidden" id="booking-success">
+              <div class="success-icon">🛏️</div>
+              <h3>Rezervace přijata!</h3>
+              <p>Potvrzení Vám zašleme na zadaný email do 24 hodin. Těšíme se na Vaši návštěvu!</p>
+              <a href="/ubytovani" class="btn btn-outline mt-lg">Zpět na ubytování</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- SIDEBAR -->
+        <aside class="booking-sidebar reveal">
+          <div class="sidebar-card">
+            <h3>📞 Raději telefonicky?</h3>
+            <p>Zavolejte nám – rádi Vám rezervaci potvrdíme přímo.</p>
+            <a href="tel:+420737484116" class="btn btn-primary mt-lg" id="book-sidebar-phone">+420 737 484 116</a>
+          </div>
+          <div class="sidebar-card mt-lg">
+            <h3>⏰ Check-in / Check-out</h3>
+            <div class="hours-grid mt-md">
+              <div class="hours-row"><span class="hours-day">Příjezd</span><span class="hours-time">od 14:00</span></div>
+              <div class="hours-row"><span class="hours-day">Odjezd</span><span class="hours-time">do 11:00</span></div>
+            </div>
+          </div>
+          <div class="sidebar-card mt-lg">
+            <h3>🎁 Slevy</h3>
+            <div class="hours-grid mt-md">
+              <div class="hours-row"><span class="hours-day">5–6 nocí</span><span class="hours-time text-gold">−10 %</span></div>
+              <div class="hours-row"><span class="hours-day">7+ nocí</span><span class="hours-time text-gold">−15 %</span></div>
+            </div>
+          </div>
+          <div class="sidebar-card mt-lg">
+            <h3>🍳 Snídaně</h3>
+            <p style="font-size:0.87rem;color:var(--clr-text-muted)">Snídaně lze doobjednat za 150 Kč/osoba/den. Uveďte v poznámce.</p>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .booking-layout {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: var(--space-2xl);
+    align-items: start;
+  }
+
+  /* Steps */
+  .booking-step {
+    background: var(--clr-surface);
+    border: 1px solid var(--clr-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-xl);
+    margin-bottom: var(--space-lg);
+  }
+  .step-label {
+    font-weight: 700;
+    color: var(--clr-cream);
+    margin-bottom: var(--space-lg);
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    font-size: 1.05rem;
+  }
+  .step-num {
+    width: 28px; height: 28px;
+    background: linear-gradient(135deg, var(--clr-gold), var(--clr-gold-dark));
+    color: var(--clr-bg);
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  /* Room selector */
+  .room-selector { display: flex; flex-direction: column; gap: var(--space-sm); }
+  .room-option {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    padding: var(--space-md) var(--space-lg);
+    border: 1.5px solid var(--clr-border);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .room-option:hover { border-color: rgba(201,168,76,0.4); }
+  .room-option input[type="radio"] { accent-color: var(--clr-gold); width: 18px; height: 18px; flex-shrink: 0; }
+  .room-option.selected { border-color: var(--clr-gold); background: rgba(201,168,76,0.06); }
+  .room-option-body { flex: 1; }
+  .room-option-name { font-weight: 600; color: var(--clr-cream); font-size: 0.95rem; }
+  .room-option-cap  { font-size: 0.78rem; color: var(--clr-text-muted); }
+  .room-option-price {
+    font-family: var(--font-display);
+    color: var(--clr-gold);
+    font-weight: 700;
+    font-size: 1.05rem;
+    text-align: right;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .room-option-price small { font-size: 0.7rem; font-weight: 400; color: var(--clr-text-muted); display: block; }
+
+  /* Date pickers */
+  .date-pickers { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-md); }
+
+  /* Price summary */
+  .price-summary {
+    margin-top: var(--space-lg);
+    background: var(--clr-bg);
+    border: 1px solid var(--clr-border);
+    border-radius: var(--radius-md);
+    padding: var(--space-lg);
+  }
+  .ps-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    padding: var(--space-xs) 0;
+    color: var(--clr-text-muted);
+  }
+  .ps-row.total { font-weight: 700; color: var(--clr-cream); font-size: 1.1rem; padding-top: var(--space-sm); }
+  .ps-divider { height: 1px; background: var(--clr-border); margin: var(--space-sm) 0; }
+  .discount-row .text-gold { color: var(--clr-gold); font-weight: 600; }
+
+  .grid-2-form { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-md); }
+  .gdpr-check {
+    display: flex; gap: var(--space-sm); align-items: flex-start; margin-bottom: var(--space-xl);
+  }
+  .gdpr-check input { margin-top: 3px; accent-color: var(--clr-gold); flex-shrink: 0; }
+  .gdpr-check label { font-size: 0.82rem; color: var(--clr-text-muted); cursor: pointer; }
+  .submit-btn { width: 100%; justify-content: center; }
+
+  .form-success {
+    text-align: center;
+    padding: var(--space-3xl) var(--space-xl);
+  }
+  .success-icon { font-size: 3rem; margin-bottom: var(--space-lg); }
+  .hidden { display: none !important; }
+
+  /* Sidebar */
+  .booking-sidebar { position: sticky; top: 90px; }
+  .sidebar-card { background: var(--clr-surface); border: 1px solid var(--clr-border); border-radius: var(--radius-md); padding: var(--space-xl); }
+  .sidebar-card h3 { font-size: 1rem; margin-bottom: var(--space-sm); }
+  .sidebar-card p  { font-size: 0.87rem; color: var(--clr-text-muted); }
+
+  @media (max-width: 900px) {
+    .booking-layout { grid-template-columns: 1fr; }
+    .booking-sidebar { position: static; order: -1; }
+    .date-pickers, .grid-2-form { grid-template-columns: 1fr; }
+  }
+</style>
+
+<script>
+  // Pre-select room from URL param
+  const params = new URLSearchParams(window.location.search);
+  const preRoom = params.get('pokoj');
+  if (preRoom) {
+    const el = document.querySelector(`input[name="pokoj"][value="${preRoom}"]`) as HTMLInputElement;
+    if (el) { el.checked = true; el.closest('.room-option')?.classList.add('selected'); }
+  }
+
+  // Room selection styling
+  document.querySelectorAll('.room-option input[type="radio"]').forEach(radio => {
+    radio.addEventListener('change', () => {
+      document.querySelectorAll('.room-option').forEach(o => o.classList.remove('selected'));
+      (radio as HTMLElement).closest('.room-option')?.classList.add('selected');
+      recalculate();
+    });
+  });
+
+  // Date min
+  const today = new Date().toISOString().split('T')[0];
+  const checkinEl  = document.getElementById('checkin')  as HTMLInputElement;
+  const checkoutEl = document.getElementById('checkout') as HTMLInputElement;
+  checkinEl.min  = today;
+  checkoutEl.min = today;
+
+  checkinEl.addEventListener('change', () => {
+    // checkout must be after checkin
+    const next = new Date(checkinEl.value);
+    next.setDate(next.getDate() + 1);
+    checkoutEl.min = next.toISOString().split('T')[0];
+    if (checkoutEl.value && checkoutEl.value <= checkinEl.value) checkoutEl.value = '';
+    recalculate();
+  });
+  checkoutEl.addEventListener('change', recalculate);
+
+  function recalculate() {
+    const roomInput = document.querySelector('input[name="pokoj"]:checked') as HTMLInputElement;
+    if (!roomInput || !checkinEl.value || !checkoutEl.value) {
+      (document.getElementById('price-summary') as HTMLElement).style.display = 'none';
+      return;
+    }
+    const price    = Number(roomInput.dataset.price);
+    const roomName = roomInput.dataset.name || '';
+    const ms       = new Date(checkoutEl.value).getTime() - new Date(checkinEl.value).getTime();
+    const nights   = Math.round(ms / 86400000);
+    if (nights <= 0) return;
+
+    let discount = 0;
+    let discountLabel = '';
+    if (nights >= 7)      { discount = 0.15; discountLabel = `Sleva za 7+ nocí (−15 %)`; }
+    else if (nights >= 5) { discount = 0.10; discountLabel = `Sleva za 5–6 nocí (−10 %)`; }
+
+    const base     = nights * price;
+    const discAmt  = Math.round(base * discount);
+    const total    = base - discAmt;
+
+    const fmt = (n: number) => n.toLocaleString('cs-CZ') + ' Kč';
+
+    const summary = document.getElementById('price-summary') as HTMLElement;
+    summary.style.display = 'block';
+    document.getElementById('ps-nights-label')!.textContent = `${nights} ${nights === 1 ? 'noc' : nights < 5 ? 'noci' : 'nocí'} × ${price.toLocaleString('cs-CZ')} Kč (${roomName})`;
+    document.getElementById('ps-base-price')!.textContent   = fmt(base);
+    const discRow = document.getElementById('ps-discount-row') as HTMLElement;
+    if (discount > 0) {
+      discRow.style.display = 'flex';
+      document.getElementById('ps-discount-label')!.textContent = discountLabel;
+      document.getElementById('ps-discount-val')!.textContent   = `–${fmt(discAmt)}`;
+    } else { discRow.style.display = 'none'; }
+    document.getElementById('ps-total')!.textContent = fmt(total);
+
+    // Fill hidden fields
+    (document.getElementById('hidden-pokoj')   as HTMLInputElement).value = roomName;
+    (document.getElementById('hidden-checkin') as HTMLInputElement).value = checkinEl.value;
+    (document.getElementById('hidden-checkout') as HTMLInputElement).value = checkoutEl.value;
+    (document.getElementById('hidden-nights')  as HTMLInputElement).value = String(nights);
+    (document.getElementById('hidden-cena')    as HTMLInputElement).value = `${fmt(total)} (${nights} nocí, sleva ${discAmt > 0 ? fmt(discAmt) : 'žádná'})`;
+  }
+
+  // Form submit (AJAX)
+  document.getElementById('booking-form')?.addEventListener('submit', async e => {
+    e.preventDefault();
+    const form = e.target as HTMLFormElement;
+    try {
+      const res = await fetch(form.action, {
+        method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' }
+      });
+      if (res.ok) {
+        form.classList.add('hidden');
+        document.getElementById('booking-success')?.classList.remove('hidden');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    } catch { form.submit(); }
+  });
+</script>
