@@ -326,6 +326,20 @@ import { getUrl } from '../utils/paths.js';
     flex-wrap: wrap;
     margin-bottom: var(--space-2xl);
   }
+  @media (min-width: 481px) {
+    .hero-ctas { margin-top: 40px; }
+  }
+  @media (min-width: 769px) {
+    .hero-ctas {
+      margin-top: 50px;
+      gap: 20px;
+    }
+    .hero-ctas .btn {
+      min-width: 200px;
+      padding: 14px 40px;
+      justify-content: center;
+    }
+  }
   .hero-stats {
     display: flex;
     align-items: center;
