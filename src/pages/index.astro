@@ -26,34 +26,38 @@ import { getUrl } from '../utils/paths.js';
         <span class="hero-subtitle">Vítá Vás</span>
         <span class="hero-main-title">Hostinec Antonín Barták</span>
       </h1>
-      <div class="hero-stats" style="margin-top: 30px;">
+      <p class="hero-sub lead">
+        Tradiční česká hospoda v srdci Městečka u Nespek. Čepujeme Gambrinus, Prazdroj, Kozel. Vaříme poctivou domácí kuchyni.<br />
+        Denní menu, skupinové akce, letní zahrádka s grilem.
+      </p>
+      <div class="hero-stats">
         <div class="stat">
-          <span class="stat-emoji">📋</span>
+          <i class="fa-solid fa-bowl-food stat-icon"></i>
           <strong>99 Kč</strong>
           <span>Denní menu</span>
         </div>
         <div class="stat">
-          <span class="stat-emoji">🍺</span>
+          <i class="fa-solid fa-beer-mug-empty stat-icon"></i>
           <strong>4 druhy</strong>
           <span>Piva</span>
         </div>
         <div class="stat">
-          <span class="stat-emoji">👥</span>
+          <i class="fa-solid fa-users stat-icon"></i>
           <strong>50+ osob</strong>
           <span>Kapacita</span>
         </div>
         <div class="stat">
-          <span class="stat-emoji">🕐</span>
+          <i class="fa-solid fa-clock stat-icon"></i>
           <strong>11:00-22:00</strong>
           <span>Otevřeno</span>
         </div>
       </div>
-      <div class="hero-ctas" style="margin-top: 30px;">
+      <div class="hero-ctas">
         <a href={getUrl('/rezervace')} class="btn btn-primary" id="hero-rezervace-btn">
-          Rezervace stolu
+          <i class="fa-solid fa-calendar-days"></i> Rezervace stolu
         </a>
         <a href={getUrl('/menu')} class="btn btn-outline" id="hero-menu-btn">
-          Zobrazit menu
+          <i class="fa-solid fa-book-open"></i> Zobrazit menu
         </a>
       </div>
     </div>
