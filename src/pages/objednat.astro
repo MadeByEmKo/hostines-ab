@@ -27,52 +27,54 @@ import '../styles/global.css';
       <div class="daily-menu-preview">
         <h2>Dnešní nabídka</h2>
         
-        <div class="menu-item-card">
-          <div class="menu-item-header">
-            <h3>Italská tomatová polévka s pestem a tarhoňou</h3>
-            <span class="price">59 Kč</span>
+        <div class="menu-items-grid">
+          <div class="menu-item-card">
+            <h3 class="menu-item-title">
+              Italská tomatová polévka s pestem a tarhoňou
+              <span class="price">59 Kč</span>
+            </h3>
+            <button class="btn-add-to-order" data-item="01">Přidat</button>
           </div>
-          <button class="btn-add-to-order" data-item="01">Přidat</button>
-        </div>
-        
-        <div class="menu-item-card">
-          <div class="menu-item-header">
-            <h3>Slepičí vývar s masem, zeleninkou a kapáním</h3>
-            <span class="price">59 Kč</span>
+          
+          <div class="menu-item-card">
+            <h3 class="menu-item-title">
+              Slepičí vývar s masem, zeleninkou a kapáním
+              <span class="price">59 Kč</span>
+            </h3>
+            <button class="btn-add-to-order" data-item="02">Přidat</button>
           </div>
-          <button class="btn-add-to-order" data-item="02">Přidat</button>
-        </div>
-        
-        <div class="menu-item-card">
-          <div class="menu-item-header">
-            <h3>Dršťková jemně pikantní z hlívy ústřičné</h3>
-            <span class="price">59 Kč</span>
+          
+          <div class="menu-item-card">
+            <h3 class="menu-item-title">
+              Dršťková jemně pikantní z hlívy ústřičné
+              <span class="price">59 Kč</span>
+            </h3>
+            <button class="btn-add-to-order" data-item="03">Přidat</button>
           </div>
-          <button class="btn-add-to-order" data-item="03">Přidat</button>
-        </div>
 
-        <div class="menu-item-card">
-          <div class="menu-item-header">
-            <h3>200g Asijský vepřový bůček se sezamem, jasmínová rýže</h3>
-            <span class="price">209 Kč</span>
+          <div class="menu-item-card">
+            <h3 class="menu-item-title">
+              200g Asijský vepřový bůček se sezamem, jasmínová rýže
+              <span class="price">209 Kč</span>
+            </h3>
+            <button class="btn-add-to-order" data-item="04">Přidat</button>
           </div>
-          <button class="btn-add-to-order" data-item="04">Přidat</button>
-        </div>
 
-        <div class="menu-item-card">
-          <div class="menu-item-header">
-            <h3>120g Smažený sýr GOUDA, tatarská omáčka</h3>
-            <span class="price">199 Kč</span>
+          <div class="menu-item-card">
+            <h3 class="menu-item-title">
+              120g Smažený sýr GOUDA, tatarská omáčka
+              <span class="price">199 Kč</span>
+            </h3>
+            <button class="btn-add-to-order" data-item="05">Přidat</button>
           </div>
-          <button class="btn-add-to-order" data-item="05">Přidat</button>
-        </div>
 
-        <div class="menu-item-card">
-          <div class="menu-item-header">
-            <h3>350g Italské krémové zeleninové rizoto se žampióny a parmezánem</h3>
-            <span class="price">189 Kč</span>
+          <div class="menu-item-card">
+            <h3 class="menu-item-title">
+              350g Italské krémové zeleninové rizoto se žampióny a parmezánem
+              <span class="price">189 Kč</span>
+            </h3>
+            <button class="btn-add-to-order" data-item="06">Přidat</button>
           </div>
-          <button class="btn-add-to-order" data-item="06">Přidat</button>
         </div>
       </div>
 
@@ -195,13 +197,22 @@ import '../styles/global.css';
   text-align: center;
 }
 
+/* MENU ITEMS GRID */
+.menu-items-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+}
+
 /* MENU ITEM CARD */
 .menu-item-card {
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid #333;
   border-radius: 6px;
-  padding: 12px;
-  margin-bottom: 10px;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   transition: all 0.3s ease;
 }
 
@@ -210,28 +221,23 @@ import '../styles/global.css';
   border-color: #D4AF37;
 }
 
-.menu-item-card h3 {
+.menu-item-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 0 0 12px 0;
   font-size: 14px;
-  margin: 0 0 8px 0;
   color: #fff;
   font-weight: 600;
   line-height: 1.4;
 }
 
-.menu-item-card .price {
+.menu-item-title .price {
   color: #D4AF37;
   font-size: 16px;
   font-weight: bold;
-  display: block;
-  margin-bottom: 8px;
-}
-
-.menu-item-card .menu-item-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 10px;
-  margin-bottom: 8px;
+  white-space: nowrap;
 }
 
 /* TLAČÍTKO PŘIDAT */
@@ -446,14 +452,18 @@ import '../styles/global.css';
 
 /* MOBILE OPTIMIZACE */
 @media (max-width: 768px) {
+  .menu-items-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
   .daily-menu-preview {
     padding: 15px;
     margin-bottom: 30px;
   }
 
   .menu-item-card {
-    padding: 10px;
-    margin-bottom: 8px;
+    padding: 12px;
   }
 
   .menu-item-card h3 {
@@ -498,7 +508,15 @@ document.querySelectorAll('.btn-add-to-order').forEach(btn => {
     const target = e.target as HTMLElement;
     const itemId = target.dataset.item;
     if(!itemId) return;
-    const itemName = target.parentElement?.querySelector('h3')?.textContent || 'Položka';
+    const itemNameNode = target.parentElement?.querySelector('.menu-item-title');
+    let itemName = 'Položka';
+    if(itemNameNode) {
+      // Get text without the price span
+      itemName = Array.from(itemNameNode.childNodes)
+        .filter(node => node.nodeType === Node.TEXT_NODE)
+        .map(node => node.textContent?.trim())
+        .join(' ') || 'Položka';
+    }
     const itemPrice = orderPrices[itemId as keyof typeof orderPrices];
     
     if (!orderItems[itemId]) {
