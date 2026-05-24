@@ -3,101 +3,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import '../styles/global.css';
-import { readFileSync } from 'fs';
-import { join } from 'path';
-
-// Load daily menu with all sections
-let dm = { date:'', soups:[] as {name:string,price:string}[], bezlepkova:[] as {name:string,price:string}[], bezmasa:[] as {name:string,price:string}[], hotova:[] as {name:string,price:string}[], gril:[] as {name:string,price:string}[], salaty:[] as {name:string,price:string}[], dezerty:[] as {name:string,price:string}[] };
-try {
-  const raw = readFileSync(join(process.cwd(),'content/daily-menu.md'),'utf8');
-  // Normalize line endings
-  const lines = raw.replace(/\r\n/g, '\n').replace(/\r/g, '\n').split('\n');
-
-  // Extract frontmatter lines (between first and second ---)
-  let inFm = false, fmLines: string[] = [];
-  for (const line of lines) {
-    if (line.trim() === '---') { if (!inFm) { inFm = true; continue; } else break; }
-    if (inFm) fmLines.push(line);
-  }
-
-  // Parse simple YAML: find "key:" then collect "  - value | price" lines
-  const parseSection = (key: string): {name: string; price: string}[] => {
-    const result: {name: string; price: string}[] = [];
-    let collecting = false;
-    for (const line of fmLines) {
-      if (line.match(new RegExp('^' + key + '\\s*:'))) { collecting = true; continue; }
-      if (collecting) {
-        if (line.match(/^\s+-\s+/)) {
-          const text = line.replace(/^\s+-\s+/, '').trim();
-          const parts = text.split('|');
-          result.push({ name: parts[0].trim(), price: parts[1]?.trim() || '' });
-        } else if (line.match(/^\w/) || line.trim() === '') {
-          // New top-level key or blank line ends section
-          if (line.match(/^\w/)) collecting = false;
-        }
-      }
-    }
-    return result;
-  };
-
-  // Parse date
-  for (const line of fmLines) {
-    if (line.startsWith('date:')) { dm.date = line.replace('date:', '').trim().replace(/"/g, ''); break; }
-  }
-
-  dm.soups      = parseSection('soups');
-  dm.bezlepkova = parseSection('bezlepkova');
-  dm.bezmasa    = parseSection('bezmasa');
-  dm.hotova     = parseSection('hotova');
-  dm.gril       = parseSection('gril');
-  dm.salaty     = parseSection('salaty');
-  dm.dezerty    = parseSection('dezerty');
-} catch(e){ console.error('daily-menu parse error:', e); }
-
-const hasDailyItems = [
-  ...dm.soups, ...dm.bezlepkova, ...dm.bezmasa, ...dm.hotova, ...dm.gril, ...dm.salaty, ...dm.dezerty
-].length > 0;
-
-// Stálý lístek
-const staleLístek = [
-  { cat: '🥗 Předkrmy & chuťovky', items: [
-    { name: 'Nakládaný hermelín v oleji', price: '89 Kč' },
-    { name: 'Utopenec pikantní', price: '65 Kč' },
-    { name: 'Tatarský biftek 100g', price: '149 Kč' },
-    { name: 'Smažené žampiony s tatarkou', price: '99 Kč' },
-  ]},
-  { cat: '🥣 Polévky stálé', items: [
-    { name: 'Hovězí vývar s nudlemi', price: '59 Kč' },
-    { name: 'Gulášová polévka stálá', price: '65 Kč' },
-    { name: 'Česnečka se sýrem a krutony', price: '59 Kč' },
-  ]},
-  { cat: '🍽️ Staročeská klasika', items: [
-    { name: 'Svíčková hovězí na smetaně, knedlík', price: '229 Kč' },
-    { name: 'Vepřový guláš, houskový knedlík', price: '169 Kč' },
-    { name: 'Vepřové výpečky, špenát, knedlík', price: '199 Kč' },
-    { name: 'Smažený vepřový řízek', price: '199 Kč' },
-    { name: 'Smažený holandský řízek, kaše', price: '199 Kč' },
-    { name: 'Staročeská pečená kachna, zelí, knedlík', price: '269 Kč' },
-  ]},
-  { cat: '🌱 Bezmasá jídla stálá', items: [
-    { name: 'Smažený sýr GOUDA, brambor, tatarka', price: '199 Kč' },
-    { name: 'Italské krémové zeleninové rizoto', price: '189 Kč' },
-  ]},
-  { cat: '👶 Dětská jídla', items: [
-    { name: 'Kuřecí řízek dětský, hranolky', price: '129 Kč' },
-    { name: 'Špagety s kečupem a parmazánem', price: '99 Kč' },
-  ]},
-  { cat: '🍰 Dezerty', items: [
-    { name: 'Tiramisu', price: '79 Kč' },
-    { name: 'Panna cotta s lesním ovocem', price: '79 Kč' },
-    { name: 'Jablečný závin', price: '79 Kč' },
-  ]}
-];
 ---
 
 <BaseLayout
   title="Objednat s sebou"
-  description="Objednávky jídel s sebou z Hostince AB. Denní menu i stálý lístek. Vyzvednutí na místě."
+  description="Objednávky jídel s sebou z Hostince AB."
 >
   <Header />
 
@@ -108,637 +18,608 @@ const staleLístek = [
         <i class="fa-solid fa-utensils title-icon-gold"></i>
         Objednat s sebou
       </h1>
-      <p class="lead mt-md">Vyberte si jídlo, zadejte čas vyzvednutí · Vyzvednutí na místě v Městečku</p>
     </div>
   </div>
 
-  <section class="section">
-    <div class="container">
-
-      <!-- MOBILE: Mini košík (plovoucí nad sticky footer) -->
-      <div class="mobile-minicart no-print" id="mobile-minicart" style="display:none">
-        <div class="minicart-info">
-          <span id="mc-count">0 položek</span>
-          <strong id="mc-total">0 Kč</strong>
+  <div class="container" style="max-width: 800px; margin: 40px auto;">
+    <section class="order-page">
+      <!-- DENNÍ LÍSTEK - HNED NA ZAČÁTKU -->
+      <div class="daily-menu-preview">
+        <h2>Dnešní nabídka</h2>
+        
+        <div class="menu-item-card">
+          <div class="menu-item-header">
+            <h3>Italská tomatová polévka s pestem a tarhoňou</h3>
+            <span class="price">59 Kč</span>
+          </div>
+          <button class="btn-add-to-order" data-item="01">Přidat</button>
         </div>
-        <a href="#cart-anchor" class="btn btn-primary btn-sm" id="mc-scroll-btn">
-          <i class="fa-solid fa-bag-shopping"></i> Zobrazit objednávku
-        </a>
+        
+        <div class="menu-item-card">
+          <div class="menu-item-header">
+            <h3>Slepičí vývar s masem, zeleninkou a kapáním</h3>
+            <span class="price">59 Kč</span>
+          </div>
+          <button class="btn-add-to-order" data-item="02">Přidat</button>
+        </div>
+        
+        <div class="menu-item-card">
+          <div class="menu-item-header">
+            <h3>Dršťková jemně pikantní z hlívy ústřičné</h3>
+            <span class="price">59 Kč</span>
+          </div>
+          <button class="btn-add-to-order" data-item="03">Přidat</button>
+        </div>
+
+        <div class="menu-item-card">
+          <div class="menu-item-header">
+            <h3>200g Asijský vepřový bůček se sezamem, jasmínová rýže</h3>
+            <span class="price">209 Kč</span>
+          </div>
+          <button class="btn-add-to-order" data-item="04">Přidat</button>
+        </div>
+
+        <div class="menu-item-card">
+          <div class="menu-item-header">
+            <h3>120g Smažený sýr GOUDA, tatarská omáčka</h3>
+            <span class="price">199 Kč</span>
+          </div>
+          <button class="btn-add-to-order" data-item="05">Přidat</button>
+        </div>
+
+        <div class="menu-item-card">
+          <div class="menu-item-header">
+            <h3>350g Italské krémové zeleninové rizoto se žampióny a parmezánem</h3>
+            <span class="price">189 Kč</span>
+          </div>
+          <button class="btn-add-to-order" data-item="06">Přidat</button>
+        </div>
       </div>
 
-      <div class="takeaway-layout">
+      <!-- OBJEDNÁVKOVÝ FORMULÁŘ -->
+      <div class="order-form-container">
+        <h2>Vaše objednávka</h2>
+        
+        <form id="order-form" class="order-form" action="https://formspree.io/f/ZZZZZZZZ" method="POST">
+          <!-- SKRYTÉ POLE PRO OBSAH OBJEDNÁVKY -->
+          <input type="hidden" name="obsah_objednavky" id="hidden-order-content">
+          
+          <!-- SHRNUTÍ OBJEDNÁVKY -->
+          <div class="order-summary" id="order-summary">
+            <div class="empty-state">Vyberte si položky z nabídky výše</div>
+          </div>
 
-        <!-- MENU SEKCE -->
-        <div class="menu-section reveal">
+          <!-- KONTAKTNÍ ÚDAJE -->
+          <fieldset class="form-section">
+            <legend>Vaše údaje</legend>
+            <input type="text" name="name" placeholder="Jméno *" required>
+            <input type="email" name="email" placeholder="Email *" required>
+            <input type="tel" name="phone" placeholder="Telefon *" required>
+          </fieldset>
 
-          <!-- DENNÍ MENU -->
-          <div class="menu-block">
-            <div class="menu-block-header">
-              <h2>🗓️ Denní menu</h2>
-              {dm.date && <span class="menu-date-badge">Platné {dm.date}</span>}
-            </div>
+          <!-- ZPŮSOB VYZVEDNUTÍ -->
+          <fieldset class="form-section">
+            <legend>Způsob vyzvednutí</legend>
             
-            {hasDailyItems ? (
-              <div>
-                {[
-                  {key:'soups',    emoji:'🥣', title:'Polévky',        items:dm.soups},
-                  {key:'bezlepkova',emoji:'🌾',title:'Bezlepková jídla',items:dm.bezlepkova},
-                  {key:'bezmasa',  emoji:'🌱', title:'Bezmasá jídla',  items:dm.bezmasa},
-                  {key:'hotova',   emoji:'🍽️', title:'Hotová jídla',   items:dm.hotova},
-                  {key:'gril',     emoji:'🔥', title:'Jídla z grilu a wok', items:dm.gril},
-                  {key:'salaty',   emoji:'🥗', title:'Saláty',         items:dm.salaty},
-                  {key:'dezerty',  emoji:'🍰', title:'Dezerty',        items:dm.dezerty},
-                ].filter(s=>s.items.length>0).map(sec=>(
-                  <div class="menu-category">
-                    <div class="menu-category-title">{sec.emoji} {sec.title}</div>
-                    {sec.items.map(item => (
-                      <div class="takeaway-item">
-                        <div class="ti-info">
-                          <div class="ti-name">{item.name}</div>
-                          <div class="ti-price">{item.price}</div>
-                        </div>
-                        <button class="add-btn" data-name={item.name} data-price={item.price} id={`add-daily-${item.name.slice(0,12).replace(/\s/g,'-')}`}>
-                          + Přidat
-                        </button>
-                      </div>
-                    ))}
-                  </div>
-                ))}
+            <label class="delivery-option">
+              <input type="radio" name="delivery" value="pickup" checked>
+              <div class="delivery-option-content">
+                <strong>Vyzvednu osobně</strong>
+                <small>Zdarma, 30-45 minut</small>
               </div>
-            ) : (
-              <div class="no-daily">
-                <p>Dnešní denní menu ještě nebylo zveřejněno. Zavolejte nám nebo objednejte ze stálého lístku.</p>
-                <a href="tel:+420737484116" class="btn btn-outline mt-md">+420 737 484 116</a>
+            </label>
+            
+            <label class="delivery-option">
+              <input type="radio" name="delivery" value="delivery">
+              <div class="delivery-option-content">
+                <strong>Doručení domů</strong>
+                <small>+50 Kč, 45 minut</small>
               </div>
-            )}
+            </label>
+          </fieldset>
+
+          <!-- ČAS VYZVEDNUTÍ -->
+          <fieldset class="form-section">
+            <legend>Čas vyzvednutí</legend>
+            
+            <label class="time-option">
+              <input type="radio" name="time" value="now" checked>
+              <span>Nyní (do 30 minut)</span>
+            </label>
+            
+            <label class="time-option">
+              <input type="radio" name="time" value="30min">
+              <span>Za 30 minut</span>
+            </label>
+            
+            <label class="time-option">
+              <input type="radio" name="time" value="1hour">
+              <span>Za 1 hodinu</span>
+            </label>
+          </fieldset>
+
+          <!-- POZNÁMKY -->
+          <fieldset class="form-section">
+            <legend>Poznámky k objednávce</legend>
+            <textarea name="notes" placeholder="Bez cibule, bez soli, atd."></textarea>
+          </fieldset>
+
+          <!-- CENA -->
+          <div class="order-total">
+            <div class="total-row">
+              <span>Jídlo:</span>
+              <span id="food-price">0 Kč</span>
+            </div>
+            <div class="total-row" id="delivery-row" style="display:none;">
+              <span>Doručení:</span>
+              <span>+50 Kč</span>
+            </div>
+            <div class="total-row total">
+              <span>CELKEM:</span>
+              <span id="total-price">0 Kč</span>
+            </div>
           </div>
 
-          <!-- STÁLÝ LÍSTEK -->
-          <div class="menu-block mt-xl">
-            <div class="menu-block-header">
-              <h2>📜 Stálý lístek</h2>
-            </div>
-            {staleLístek.map(cat => (
-              <div class="menu-category">
-                <div class="menu-category-title">{cat.cat}</div>
-                {cat.items.map(item => (
-                  <div class="takeaway-item">
-                    <div class="ti-info">
-                      <div class="ti-name">{item.name}</div>
-                      <div class="ti-price">{item.price}</div>
-                    </div>
-                    <button class="add-btn" data-name={item.name} data-price={item.price} id={`add-stale-${item.name.slice(0,12).replace(/\s/g,'-')}`}>
-                      + Přidat
-                    </button>
-                  </div>
-                ))}
-              </div>
-            ))}
-          </div>
+          <!-- TLAČÍTKO -->
+          <button type="submit" class="btn btn-primary btn-full">Odeslat objednávku</button>
+        </form>
+        
+        <div class="form-success hidden" id="takeaway-success" style="display:none; text-align:center; padding:40px 0;">
+          <div style="font-size:3rem; margin-bottom:1rem;">✅</div>
+          <h3 style="color:var(--clr-gold);">Objednávka přijata!</h3>
+          <p>Zavoláme Vám pro potvrzení.</p>
+          <button class="btn btn-outline mt-lg" onclick="location.reload()">Objednat znovu</button>
         </div>
-
-        <!-- KOŠÍK + FORMULÁŘ -->
-        <aside class="cart-sidebar" id="cart-anchor">
-          <div class="cart-box sticky-cart reveal">
-            <div class="cart-header">
-              🛒 Košík <span class="cart-count" id="cart-count">0 položek</span>
-            </div>
-
-            <div id="cart-items" class="cart-items">
-              <div class="cart-empty" id="cart-empty">
-                <span>Přidejte položky z menu</span>
-              </div>
-            </div>
-
-            <div class="cart-summary-block" id="cart-total-row" style="display:none">
-              <div class="summary-row">
-                <span>Mezisoučet (jídlo):</span>
-                <span id="summary-subtotal">0 Kč</span>
-              </div>
-              <div class="summary-row">
-                <span>Doručení:</span>
-                <span id="summary-delivery">Zdarma</span>
-              </div>
-              <div class="summary-row total-row">
-                <span>Celkem k úhradě:</span>
-                <strong id="cart-total-price">0 Kč</strong>
-              </div>
-            </div>
-
-            <!-- Formulář -->
-            <form id="takeaway-form" class="cart-form" style="display:none"
-              action="https://formspree.io/f/ZZZZZZZZ"
-              method="POST"
-            >
-              <input type="hidden" name="_subject" value="Objednávka s sebou – Hostinec AB" />
-              <input type="hidden" name="objednavka" id="hidden-order" />
-
-              <div class="form-group">
-                <label for="t-jmeno">Jméno *</label>
-                <input type="text" id="t-jmeno" name="jmeno" placeholder="Jan Novák" required />
-              </div>
-              <div class="form-group">
-                <label for="t-telefon">Telefon *</label>
-                <input type="tel" id="t-telefon" name="telefon" placeholder="+420 123 456 789" required />
-              </div>
-
-              <!-- Způsob převzetí -->
-              <div class="form-group">
-                <label>Způsob převzetí *</label>
-                <div class="radio-group">
-                  <label class="radio-label">
-                    <input type="radio" name="zpusob_doruceni" value="osobne" checked required />
-                    <span>Vyzvednu osobně (zdarma, 30–45 min)</span>
-                  </label>
-                  <label class="radio-label">
-                    <input type="radio" name="zpusob_doruceni" value="dovoz" required />
-                    <span>Doručení domů (+50 Kč, do 45 min)</span>
-                  </label>
-                </div>
-              </div>
-
-              <!-- Čas převzetí -->
-              <div class="form-group">
-                <label>Čas převzetí *</label>
-                <div class="radio-group">
-                  <label class="radio-label">
-                    <input type="radio" name="cas_prevzeti" value="co-nejdrive" checked required />
-                    <span>Nyní (do 30 minut)</span>
-                  </label>
-                  <label class="radio-label">
-                    <input type="radio" name="cas_prevzeti" value="za-30" required />
-                    <span>Za 30 minut</span>
-                  </label>
-                  <label class="radio-label">
-                    <input type="radio" name="cas_prevzeti" value="za-60" required />
-                    <span>Za 1 hodinu</span>
-                  </label>
-                  <label class="radio-label">
-                    <input type="radio" name="cas_prevzeti" value="vlastni" required />
-                    <span>Vlastní čas</span>
-                  </label>
-                </div>
-              </div>
-              <div class="form-group" id="vlastni-cas-group" style="display:none">
-                <label for="t-vlastni-cas">Konkrétní čas</label>
-                <input type="time" id="t-vlastni-cas" name="vlastni_cas" min="11:00" max="21:00" />
-              </div>
-
-              <div class="form-group">
-                <label for="t-poznamka">Poznámky (alergie, úpravy, adresa pro doručení…)</label>
-                <textarea id="t-poznamka" name="poznamka" rows="2" placeholder="např. bez cibule, adresa: Hlavní 123..."></textarea>
-              </div>
-
-              <div class="gdpr-check">
-                <input type="checkbox" id="t-gdpr" name="gdpr" required />
-                <label for="t-gdpr">Souhlasím se zpracováním kontaktních údajů.</label>
-              </div>
-
-              <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center" id="takeaway-submit-btn">
-                📤 Odeslat objednávku
-              </button>
-            </form>
-
-            <div class="form-success hidden" id="takeaway-success">
-              <div style="font-size:2.5rem;margin-bottom:0.75rem">✅</div>
-              <h3>Objednávka přijata!</h3>
-              <p>Zavoláme Vám pro potvrzení. Připravíme vše na domluvený čas.</p>
-              <button class="btn btn-outline mt-lg" onclick="location.reload()" id="order-again-btn">Objednat znovu</button>
-            </div>
-          </div>
-        </aside>
       </div>
-    </div>
-  </section>
+    </section>
+  </div>
 
   <Footer />
 </BaseLayout>
 
 <style>
-  .takeaway-layout {
-    display: grid;
-    grid-template-columns: 1fr 340px;
-    gap: var(--space-2xl);
-    align-items: start;
+/* DENNÍ LÍSTEK - PREVIEW */
+.daily-menu-preview {
+  margin-bottom: 40px;
+  padding: 20px;
+  background: rgba(212, 175, 55, 0.05);
+  border-radius: 8px;
+  border: 1px solid #D4AF37;
+}
+
+.daily-menu-preview h2 {
+  color: #D4AF37;
+  font-size: 20px;
+  margin-top: 0;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* MENU ITEM CARD */
+.menu-item-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid #333;
+  border-radius: 6px;
+  padding: 12px;
+  margin-bottom: 10px;
+  transition: all 0.3s ease;
+}
+
+.menu-item-card:hover {
+  background: rgba(212, 175, 55, 0.1);
+  border-color: #D4AF37;
+}
+
+.menu-item-card h3 {
+  font-size: 14px;
+  margin: 0 0 8px 0;
+  color: #fff;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.menu-item-card .price {
+  color: #D4AF37;
+  font-size: 16px;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.menu-item-card .menu-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+/* TLAČÍTKO PŘIDAT */
+.btn-add-to-order {
+  width: 100%;
+  padding: 8px;
+  background: #D4AF37;
+  color: #1a3a2a;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 13px;
+  transition: all 0.3s ease;
+}
+
+.btn-add-to-order:hover {
+  background: #E8C547;
+  transform: scale(1.02);
+}
+
+.btn-add-to-order:active {
+  transform: scale(0.98);
+}
+
+/* OBJEDNÁVKOVÝ FORMULÁŘ */
+.order-form-container {
+  background: rgba(20, 50, 40, 0.5);
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid #D4AF37;
+}
+
+.order-form-container h2 {
+  color: #D4AF37;
+  font-size: 18px;
+  margin-top: 0;
+}
+
+/* SHRNUTÍ OBJEDNÁVKY */
+.order-summary {
+  background: rgba(212, 175, 55, 0.05);
+  padding: 15px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.order-summary .empty-state {
+  text-align: center;
+  color: #999;
+  font-size: 13px;
+  padding: 20px;
+}
+
+.order-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid #333;
+  font-size: 13px;
+}
+
+.order-item:last-child {
+  border-bottom: none;
+}
+
+.order-item-name {
+  flex: 1;
+  margin-right: 10px;
+  color: #fff;
+}
+
+.order-item-price {
+  color: #D4AF37;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+.order-item-remove {
+  margin-left: 10px;
+  cursor: pointer;
+  color: #999;
+  font-size: 16px;
+}
+
+/* FORMULÁŘ */
+.form-section {
+  border: none;
+  margin-bottom: 15px;
+  padding: 0;
+}
+
+.form-section legend {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #D4AF37;
+  font-size: 13px;
+}
+
+.form-section input[type="text"],
+.form-section input[type="email"],
+.form-section input[type="tel"],
+.form-section textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid #444;
+  border-radius: 4px;
+  color: #fff;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.form-section textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+/* DELIVERY OPTIONS */
+.delivery-option {
+  display: flex;
+  padding: 10px;
+  margin-bottom: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 2px solid #D4AF37;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.delivery-option input[type="radio"] {
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.delivery-option input[type="radio"]:checked + .delivery-option-content {
+  color: #D4AF37;
+}
+
+.delivery-option-content strong {
+  display: block;
+  margin-bottom: 2px;
+  color: #fff;
+}
+
+.delivery-option input[type="radio"]:checked + .delivery-option-content strong {
+  color: #D4AF37;
+}
+
+.delivery-option-content small {
+  display: block;
+  font-size: 12px;
+  opacity: 0.8;
+  color: #ccc;
+}
+
+/* TIME OPTIONS */
+.time-option {
+  display: flex;
+  margin-bottom: 8px;
+  cursor: pointer;
+}
+
+.time-option input[type="radio"] {
+  margin-right: 8px;
+  cursor: pointer;
+}
+
+.time-option span {
+  color: #fff;
+}
+
+/* CENA */
+.order-total {
+  background: rgba(212, 175, 55, 0.1);
+  padding: 15px;
+  border-radius: 6px;
+  margin: 20px 0;
+  border: 1px solid #D4AF37;
+}
+
+.total-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  margin-bottom: 8px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #333;
+  color: #fff;
+}
+
+.total-row.total {
+  font-size: 16px;
+  font-weight: bold;
+  color: #D4AF37;
+  border: none;
+  margin-bottom: 0;
+}
+
+/* BUTTON */
+.btn-full {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+/* MOBILE OPTIMIZACE */
+@media (max-width: 768px) {
+  .daily-menu-preview {
+    padding: 15px;
+    margin-bottom: 30px;
   }
 
-  .page-title-with-icon {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.75rem;
-  }
-  .title-icon-gold {
-    color: var(--clr-gold);
-    flex-shrink: 0;
+  .menu-item-card {
+    padding: 10px;
+    margin-bottom: 8px;
   }
 
-  .menu-block { background: var(--clr-surface); border: 1px solid var(--clr-border); border-radius: var(--radius-lg); padding: var(--space-xl); }
-  .menu-block-header {
-    display: flex; align-items: center; justify-content: space-between;
-    flex-wrap: wrap; gap: var(--space-sm);
-    margin-bottom: var(--space-lg);
-    padding-bottom: var(--space-lg);
-    border-bottom: 1px solid var(--clr-border);
-  }
-  .menu-block-header h2 { font-size: 1.3rem; margin: 0; }
-  .menu-date-badge {
-    font-size: 0.78rem; font-weight: 600;
-    background: rgba(201,168,76,0.12);
-    border: 1px solid rgba(201,168,76,0.25);
-    color: var(--clr-gold);
-    padding: 0.25rem 0.75rem;
-    border-radius: 100px;
-    letter-spacing: 0.04em;
+  .menu-item-card h3 {
+    font-size: 13px;
   }
 
-  .takeaway-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--space-md);
-    padding: var(--space-md) 0;
-    border-bottom: 1px solid rgba(255,255,255,0.04);
-  }
-  .takeaway-item:last-child { border-bottom: none; }
-  .ti-info { flex: 1; }
-  .ti-name  { font-weight: 500; color: var(--clr-cream); font-size: 0.93rem; }
-  .ti-price { font-size: 0.82rem; color: var(--clr-gold); font-weight: 600; margin-top: 2px; }
-
-  .add-btn {
-    flex-shrink: 0;
-    padding: 0.35rem 0.85rem;
-    background: rgba(201,168,76,0.1);
-    border: 1px solid rgba(201,168,76,0.3);
-    border-radius: var(--radius-sm);
-    color: var(--clr-gold);
-    font-size: 0.82rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s;
-    white-space: nowrap;
-    font-family: var(--font-body);
-  }
-  .add-btn:hover { background: var(--clr-gold); color: var(--clr-bg); }
-  .add-btn.added { background: var(--clr-gold); color: var(--clr-bg); }
-
-  .no-daily { text-align: center; padding: var(--space-xl); color: var(--clr-text-muted); font-size: 0.9rem; }
-
-  /* Cart */
-  .sticky-cart { position: sticky; top: 120px; }
-  .cart-box {
-    background: var(--clr-surface);
-    border: 1px solid var(--clr-border);
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-  }
-  .cart-header {
-    padding: var(--space-lg) var(--space-xl);
-    background: var(--clr-surface-2);
-    border-bottom: 1px solid var(--clr-border);
-    font-weight: 700;
-    color: var(--clr-cream);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .cart-count { font-size: 0.78rem; color: var(--clr-gold); font-weight: 600; }
-  .cart-items { max-height: 280px; overflow-y: auto; padding: var(--space-md) var(--space-xl); }
-  .cart-empty { text-align: center; padding: var(--space-xl) 0; color: var(--clr-text-muted); font-size: 0.88rem; }
-  .cart-item {
-    display: flex;
-    align-items: center;
-    gap: var(--space-sm);
-    padding: var(--space-sm) 0;
-    border-bottom: 1px solid rgba(255,255,255,0.05);
-    font-size: 0.85rem;
-  }
-  .cart-item-name { flex: 1; color: var(--clr-cream); }
-  .cart-item-qty-controls { display: flex; align-items: center; gap: 6px; }
-  .qty-btn {
-    width: 24px; height: 24px;
-    background: rgba(255,255,255,0.07);
-    border: 1px solid var(--clr-border);
-    border-radius: 4px;
-    color: var(--clr-cream);
-    font-size: 1rem;
-    cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    transition: background 0.15s;
-    line-height: 1;
-    font-family: var(--font-body);
-  }
-  .qty-btn:hover { background: rgba(201,168,76,0.2); }
-  .cart-item-qty { font-weight: 700; color: var(--clr-gold); min-width: 16px; text-align: center; }
-  .cart-item-price { color: var(--clr-text-muted); font-size: 0.78rem; white-space: nowrap; }
-
-  /* Radio Group */
-  .radio-group {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    margin-top: 0.35rem;
-    background: rgba(255,255,255,0.02);
-    padding: 0.75rem;
-    border-radius: var(--radius-sm);
-    border: 1px solid var(--clr-border);
-  }
-  .radio-label {
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-    cursor: pointer;
-    font-size: 0.85rem;
-    color: var(--clr-cream);
-    user-select: none;
-  }
-  .radio-label input[type="radio"] {
-    appearance: none;
-    background-color: transparent;
-    margin: 0;
-    font: inherit;
-    color: var(--clr-gold);
-    width: 18px;
-    height: 18px;
-    border: 2px solid rgba(255,255,255,0.2);
-    border-radius: 50%;
-    display: grid;
-    place-content: center;
-    cursor: pointer;
-    transition: border-color 0.2s, background-color 0.2s;
-  }
-  .radio-label input[type="radio"]::before {
-    content: "";
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    transform: scale(0);
-    transition: 120ms transform ease-in-out;
-    background-color: var(--clr-gold);
-  }
-  .radio-label input[type="radio"]:checked {
-    border-color: var(--clr-gold);
-  }
-  .radio-label input[type="radio"]:checked::before {
-    transform: scale(1);
-  }
-  .radio-label span {
-    line-height: 1.2;
+  .order-form-container {
+    padding: 15px;
   }
 
-  /* Cart Summary Block */
-  .cart-summary-block {
-    padding: var(--space-md) var(--space-xl);
-    border-top: 1px solid var(--clr-border);
-    font-size: 0.88rem;
-    color: var(--clr-text-muted);
+  .form-section input,
+  .form-section textarea {
+    padding: 8px;
+    font-size: 13px;
   }
-  .summary-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 0.35rem;
-  }
-  .summary-row span {
-    color: var(--clr-text-muted);
-  }
-  .summary-row #summary-subtotal,
-  .summary-row #summary-delivery {
-    color: var(--clr-cream);
-    font-weight: 500;
-  }
-  .summary-row.total-row {
-    border-top: 1px solid rgba(255,255,255,0.08);
-    margin-top: 0.5rem;
-    padding-top: 0.5rem;
-    font-size: 0.95rem;
-  }
-  .summary-row.total-row span {
-    color: var(--clr-cream);
-    font-weight: 600;
-  }
-  .summary-row.total-row strong {
-    color: var(--clr-gold);
-    font-family: var(--font-display);
-    font-size: 1.25rem;
-    font-weight: 700;
-  }
-
-  .cart-form { padding: var(--space-xl); border-top: 1px solid var(--clr-border); }
-  .cart-form .form-group { margin-bottom: var(--space-md); }
-  .cart-form label { font-size: 0.78rem; }
-  .cart-form input, .cart-form select, .cart-form textarea {
-    font-size: 0.88rem; padding: 0.6rem 0.85rem;
-  }
-  .cart-form .gdpr-check { font-size: 0.76rem; margin-bottom: var(--space-md); }
-  .cart-form .gdpr-check label { font-size: 0.76rem; }
-
-  .form-success { text-align: center; padding: var(--space-xl); }
-  .hidden { display: none !important; }
-
-  @media (max-width: 900px) {
-    .takeaway-layout { display: flex; flex-direction: column; }
-    /* Na mobilu se menu zobrazí PRVNÍ, košík POD ním */
-    .menu-section { order: 1; width: 100%; }
-    .cart-sidebar { order: 2; width: 100%; }
-    .sticky-cart { position: static; }
-    .cart-items { max-height: 200px; }
-  }
-
-  /* Plovoucí mini košík na mobilu */
-  .mobile-minicart {
-    position: fixed;
-    bottom: 72px; /* nad sticky CTA footer */
-    left: 0;
-    right: 0;
-    z-index: 9000;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    padding: 0.6rem var(--space-md);
-    background: var(--clr-surface-2);
-    border-top: 2px solid var(--clr-gold);
-    box-shadow: 0 -4px 20px rgba(0,0,0,0.4);
-    backdrop-filter: blur(12px);
-  }
-  .minicart-info { display: flex; flex-direction: column; gap: 1px; }
-  .minicart-info span { font-size: .75rem; color: var(--clr-text-muted); }
-  .minicart-info strong { font-size: 1rem; color: var(--clr-gold); font-family: var(--font-display); }
-  @media (min-width: 901px) {
-    .mobile-minicart { display: none !important; }
-  }
+}
 </style>
 
 <script>
-  interface CartItem { name: string; price: number; priceStr: string; qty: number; }
-  let cart: CartItem[] = [];
+// Globální variable pro objednávku
+let orderItems = {};
+let orderPrices = {
+  '01': 59, '02': 59, '03': 59, '04': 209, '05': 199, '06': 189
+};
 
-  function parsePriceKc(str: string): number {
-    return parseInt(str.replace(/[^\d]/g, '')) || 0;
+// Vystavení funkce do window, abychom ji mohli volat z HTML onclick
+window.removeItem = function(itemId) {
+  if (orderItems[itemId]) {
+    orderItems[itemId].quantity--;
+    if (orderItems[itemId].quantity <= 0) {
+      delete orderItems[itemId];
+    }
+    updateOrderSummary();
+    updateTotal();
   }
+};
 
-  function fmt(n: number) { return n.toLocaleString('cs-CZ') + ' Kč'; }
+// Přidání položky do objednávky
+document.querySelectorAll('.btn-add-to-order').forEach(btn => {
+  btn.addEventListener('click', function(e) {
+    e.preventDefault();
+    const target = e.target as HTMLElement;
+    const itemId = target.dataset.item;
+    if(!itemId) return;
+    const itemName = target.parentElement?.querySelector('h3')?.textContent || 'Položka';
+    const itemPrice = orderPrices[itemId as keyof typeof orderPrices];
+    
+    if (!orderItems[itemId]) {
+      orderItems[itemId] = {
+        id: itemId,
+        name: itemName,
+        price: itemPrice,
+        quantity: 0
+      };
+    }
+    
+    orderItems[itemId].quantity++;
+    updateOrderSummary();
+    updateTotal();
+    
+    // Změna textu tlačítka pro zpětnou vazbu
+    const originalText = target.textContent;
+    target.textContent = '✓ Přidáno';
+    setTimeout(() => { target.textContent = originalText; }, 1000);
+  });
+});
 
-  function renderCart() {
-    const itemsEl   = document.getElementById('cart-items')!;
-    const emptyEl   = document.getElementById('cart-empty')!;
-    const totalRow  = document.getElementById('cart-total-row') as HTMLElement;
-    const totalPrice = document.getElementById('cart-total-price')!;
-    const cartCount  = document.getElementById('cart-count')!;
-    const formEl    = document.querySelector('.cart-form') as HTMLElement;
-    const subtotalEl = document.getElementById('summary-subtotal')!;
-    const deliveryEl = document.getElementById('summary-delivery')!;
+// Update shrnutí objednávky
+function updateOrderSummary() {
+  const summary = document.getElementById('order-summary');
+  if(!summary) return;
+  const items = Object.values(orderItems).filter((item: any) => item.quantity > 0) as any[];
+  
+  if (items.length === 0) {
+    summary.innerHTML = '<div class="empty-state">Vyberte si položky z nabídky výše</div>';
+    (document.getElementById('hidden-order-content') as HTMLInputElement).value = '';
+    return;
+  }
+  
+  let html = '';
+  let hiddenContent = 'Objednávka:\n';
+  
+  items.forEach(item => {
+    const subtotal = item.price * item.quantity;
+    html += `
+      <div class="order-item">
+        <div class="order-item-name">
+          ${item.name} <strong>x${item.quantity}</strong>
+        </div>
+        <div class="order-item-price">${subtotal} Kč</div>
+        <span class="order-item-remove" onclick="window.removeItem('${item.id}')" title="Odebrat">✕</span>
+      </div>
+    `;
+    hiddenContent += `- ${item.name} (x${item.quantity}): ${subtotal} Kč\n`;
+  });
+  
+  summary.innerHTML = html;
+  (document.getElementById('hidden-order-content') as HTMLInputElement).value = hiddenContent;
+}
 
-    if (cart.length === 0) {
-      emptyEl.style.display = '';
-      totalRow.style.display = 'none';
-      if (formEl) formEl.style.display = 'none';
-      itemsEl.querySelectorAll('.cart-item').forEach(el => el.remove());
-      cartCount.textContent = '0 položek';
+// Výpočet ceny
+function updateTotal() {
+  let foodPrice = 0;
+  Object.values(orderItems).forEach((item: any) => {
+    foodPrice += item.price * item.quantity;
+  });
+  
+  const deliveryInput = document.querySelector('input[name="delivery"]:checked') as HTMLInputElement;
+  const delivery = deliveryInput ? deliveryInput.value : 'pickup';
+  const deliveryFee = delivery === 'delivery' ? 50 : 0;
+  const total = foodPrice + deliveryFee;
+  
+  const foodPriceEl = document.getElementById('food-price');
+  const totalPriceEl = document.getElementById('total-price');
+  if(foodPriceEl) foodPriceEl.textContent = foodPrice + ' Kč';
+  if(totalPriceEl) totalPriceEl.textContent = total + ' Kč';
+  
+  const deliveryRow = document.getElementById('delivery-row');
+  if(deliveryRow) {
+    if (delivery === 'delivery') {
+      deliveryRow.style.display = 'flex';
+    } else {
+      deliveryRow.style.display = 'none';
+    }
+  }
+}
+
+// Change delivery method
+document.querySelectorAll('input[name="delivery"]').forEach(radio => {
+  radio.addEventListener('change', updateTotal);
+});
+
+// Form submit
+const orderForm = document.getElementById('order-form');
+if(orderForm) {
+  orderForm.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const items = Object.values(orderItems);
+    if(items.length === 0) {
+      alert("Nejprve přidejte položky do objednávky.");
       return;
     }
-
-    emptyEl.style.display = 'none';
-    totalRow.style.display = 'block';
-    if (formEl) formEl.style.display = 'block';
-
-    itemsEl.querySelectorAll('.cart-item').forEach(el => el.remove());
-
-    let foodTotal = 0;
-    cart.forEach((item, i) => {
-      foodTotal += item.price * item.qty;
-      const row = document.createElement('div');
-      row.className = 'cart-item';
-      row.innerHTML = `
-        <span class="cart-item-name">${item.name}</span>
-        <div class="cart-item-qty-controls">
-          <button class="qty-btn" data-idx="${i}" data-action="dec">−</button>
-          <span class="cart-item-qty">${item.qty}</span>
-          <button class="qty-btn" data-idx="${i}" data-action="inc">+</button>
-        </div>
-        <span class="cart-item-price">${fmt(item.price * item.qty)}</span>
-      `;
-      itemsEl.appendChild(row);
-    });
-
-    // Check delivery cost
-    const isDelivery = (document.querySelector('input[name="zpusob_doruceni"]:checked') as HTMLInputElement)?.value === 'dovoz';
-    const deliveryFee = isDelivery ? 50 : 0;
-    const finalTotal = foodTotal + deliveryFee;
-
-    subtotalEl.textContent = fmt(foodTotal);
-    deliveryEl.textContent = deliveryFee > 0 ? fmt(deliveryFee) : 'Zdarma';
-    totalPrice.textContent = fmt(finalTotal);
-
-    const count = cart.reduce((s, i) => s + i.qty, 0);
-    cartCount.textContent = `${count} ${count === 1 ? 'položka' : count < 5 ? 'položky' : 'položek'}`;
-
-    // ── Mobilní mini-košík ──────────────────────────────────────────
-    const miniCart = document.getElementById('mobile-minicart') as HTMLElement | null;
-    if (miniCart) {
-      if (cart.length > 0 && window.innerWidth <= 900) {
-        miniCart.style.display = 'flex';
-        const mcCount = document.getElementById('mc-count');
-        const mcTotal = document.getElementById('mc-total');
-        if (mcCount) mcCount.textContent = `${count} ${count === 1 ? 'položka' : count < 5 ? 'položky' : 'položek'}`;
-        if (mcTotal) mcTotal.textContent = fmt(finalTotal);
-      } else {
-        miniCart.style.display = 'none';
-      }
-    }
-
-    // Get time text
-    const selectedTimeEl = document.querySelector('input[name="cas_prevzeti"]:checked') as HTMLInputElement;
-    let timeText = selectedTimeEl ? selectedTimeEl.nextElementSibling?.textContent?.trim() || selectedTimeEl.value : '';
-    if (selectedTimeEl?.value === 'vlastni') {
-      const vlastniCasVal = (document.getElementById('t-vlastni-cas') as HTMLInputElement).value;
-      timeText += ` (${vlastniCasVal || '--:--'})`;
-    }
-
-    const deliveryMethodText = isDelivery ? 'Doručení domů (+50 Kč)' : 'Vyzvednu osobně (Zdarma)';
-
-    const itemsSummary = cart.map(i => `${i.name} ×${i.qty} (${fmt(i.price * i.qty)})`).join(', ');
-    (document.getElementById('hidden-order') as HTMLInputElement).value = 
-      `Jídla: ${itemsSummary} | Převzetí: ${deliveryMethodText} | Čas: ${timeText} | Mezisoučet: ${fmt(foodTotal)} | Celkem: ${fmt(finalTotal)}`;
-  }
-
-  function addItem(name: string, priceStr: string) {
-    const price = parsePriceKc(priceStr);
-    const existing = cart.find(i => i.name === name);
-    if (existing) existing.qty++;
-    else cart.push({ name, price, priceStr, qty: 1 });
-    renderCart();
-  }
-
-  // Pre-fill query param helper
-  const urlParams = new URLSearchParams(window.location.search);
-  const prefillItem = urlParams.get('item');
-  const prefillPrice = urlParams.get('price');
-  if (prefillItem && prefillPrice) {
-    addItem(prefillItem, prefillPrice);
-  }
-
-  // Add buttons
-  document.querySelectorAll('.add-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const name  = (btn as HTMLElement).dataset.name || '';
-      const price = (btn as HTMLElement).dataset.price || '';
-      addItem(name, price);
-      btn.classList.add('added');
-      btn.textContent = '✓ Přidáno';
-      setTimeout(() => { btn.classList.remove('added'); btn.textContent = '+ Přidat'; }, 1500);
-    });
-  });
-
-  // Cart qty buttons
-  document.getElementById('cart-items')?.addEventListener('click', e => {
-    const btn = (e.target as HTMLElement).closest('.qty-btn') as HTMLElement;
-    if (!btn) return;
-    const idx    = Number(btn.dataset.idx);
-    const action = btn.dataset.action;
-    if (action === 'dec') {
-      cart[idx].qty--;
-      if (cart[idx].qty <= 0) cart.splice(idx, 1);
-    } else { cart[idx].qty++; }
-    renderCart();
-  });
-
-  // Delivery options events
-  document.querySelectorAll('input[name="zpusob_doruceni"]').forEach(radio => {
-    radio.addEventListener('change', renderCart);
-  });
-
-  // Time options events
-  document.querySelectorAll('input[name="cas_prevzeti"]').forEach(radio => {
-    radio.addEventListener('change', (e) => {
-      const val = (e.target as HTMLInputElement).value;
-      const g = document.getElementById('vlastni-cas-group') as HTMLElement;
-      g.style.display = val === 'vlastni' ? 'block' : 'none';
-      if (val === 'vlastni') {
-        document.getElementById('t-vlastni-cas')?.setAttribute('required', 'true');
-      } else {
-        document.getElementById('t-vlastni-cas')?.removeAttribute('required');
-      }
-      renderCart();
-    });
-  });
-  document.getElementById('t-vlastni-cas')?.addEventListener('change', renderCart);
-
-  // Form submit
-  document.getElementById('takeaway-form')?.addEventListener('submit', async e => {
-    e.preventDefault();
+    
+    // Odeslání formuláře přes fetch (Formspree nebo vlastní endpoint)
     const form = e.target as HTMLFormElement;
     try {
       const res = await fetch(form.action, {
-        method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' }
+        method: 'POST', 
+        body: new FormData(form), 
+        headers: { Accept: 'application/json' }
       });
       if (res.ok) {
         form.style.display = 'none';
-        document.getElementById('takeaway-success')?.classList.remove('hidden');
+        const successEl = document.getElementById('takeaway-success');
+        if(successEl) successEl.style.display = 'block';
+      } else {
+        alert("Chyba při odesílání objednávky. Zkuste to prosím znovu.");
       }
-    } catch { form.submit(); }
+    } catch (err) { 
+      // Fallback
+      form.submit(); 
+    }
   });
+}
 
-  renderCart();
+// Inicializace
+updateOrderSummary();
+updateTotal();
 </script>
