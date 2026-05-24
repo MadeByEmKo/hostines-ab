@@ -537,10 +537,10 @@ const staleLístek = [
   .hidden { display: none !important; }
 
   @media (max-width: 900px) {
-    .takeaway-layout { grid-template-columns: 1fr; }
-    /* Na mobilu se košík zobrazí POD menu (přirozené pořadí) */
-    .cart-sidebar { order: 2; }
-    .menu-section { order: 1; }
+    .takeaway-layout { display: flex; flex-direction: column; }
+    /* Na mobilu se menu zobrazí PRVNÍ, košík POD ním */
+    .menu-section { order: 1; width: 100%; }
+    .cart-sidebar { order: 2; width: 100%; }
     .sticky-cart { position: static; }
     .cart-items { max-height: 200px; }
   }

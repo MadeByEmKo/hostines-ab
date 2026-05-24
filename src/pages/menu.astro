@@ -73,18 +73,15 @@ const allDailyItems = [
       <div class="menu-tabs reveal">
         <button class="tab-btn active" id="tab-denni"   data-tab="denni">
           <i class="fa-solid fa-calendar-days"></i>
-          <span class="tab-label-desktop">Denní menu</span>
-          <span class="tab-label-mobile">Denní</span>
+          <span>Denní</span>
         </button>
         <button class="tab-btn"        id="tab-jidelni" data-tab="jidelni">
           <i class="fa-solid fa-utensils"></i>
-          <span class="tab-label-desktop">Jídelní lístek</span>
-          <span class="tab-label-mobile">Stálice</span>
+          <span>Stálice</span>
         </button>
         <button class="tab-btn"        id="tab-napoje"  data-tab="napoje">
           <i class="fa-solid fa-wine-bottle"></i>
-          <span class="tab-label-desktop">Nápojový lístek</span>
-          <span class="tab-label-mobile">Nápoje</span>
+          <span>Nápoje</span>
         </button>
       </div>
 
@@ -413,7 +410,6 @@ const allDailyItems = [
   .tab-btn:hover { color:var(--clr-cream); }
   .tab-btn.active { color:var(--clr-gold); border-bottom-color:var(--clr-gold); }
   .hidden { display:none!important; }
-  .tab-label-mobile { display:none; }
   .daily-header { display:flex; justify-content:space-between; align-items:flex-start; gap:var(--space-lg); margin-bottom:var(--space-xl); flex-wrap:wrap; }
   .daily-badge-wrap { display:flex; align-items:center; gap:var(--space-sm); flex-wrap:wrap; }
   .daily-price-badge { background:linear-gradient(135deg,var(--clr-gold),var(--clr-gold-dark)); color:var(--clr-bg); font-weight:700; font-size:1.05rem; padding:.4rem 1rem; border-radius:var(--radius-sm); font-family:var(--font-display); }
@@ -435,19 +431,12 @@ const allDailyItems = [
   .menu-item-info { padding: .5rem .75rem; margin-top: .25rem; background: rgba(201,168,76,.06); border-left: 3px solid var(--clr-gold); border-radius: var(--radius-sm); font-size: .82rem; color: var(--clr-text-muted); display: flex; align-items: center; gap: .5rem; }
   .menu-item-info i { color: var(--clr-gold); flex-shrink: 0; }
 
-  @media (max-width:600px) {
+  @media (max-width: 768px) {
+    .menu-tabs { overflow-x:auto; margin:0 -1.5rem 2rem; padding:0 1.5rem; justify-content:flex-start; white-space:nowrap; -webkit-overflow-scrolling:touch; }
+    .tab-btn { padding:0.6rem 1rem; font-size:0.85rem; }
     .menu-card { padding:var(--space-lg); }
     .daily-header { flex-direction:column; }
-    .tab-label-desktop { display:none; }
-    .tab-label-mobile { display:inline; }
     .menu-image-container { border-radius: var(--radius-md); }
-    .menu-tabs {
-      flex-wrap: nowrap;
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-      padding-bottom: 4px;
-      scrollbar-width: none;
-    }
     .menu-tabs::-webkit-scrollbar { display: none; }
     .tab-btn {
       flex: 1;
