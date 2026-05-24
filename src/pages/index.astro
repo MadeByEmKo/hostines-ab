@@ -41,11 +41,26 @@ import { getUrl } from '../utils/paths.js';
         </a>
       </div>
       <div class="hero-stats">
-        <div class="stat"><strong>99 Kč</strong><span>Denní menu od</span></div>
-        <div class="stat-divider"></div>
-        <div class="stat"><strong>4 druhy</strong><span>Čepovaného piva</span></div>
-        <div class="stat-divider"></div>
-        <div class="stat"><strong>50+ osob</strong><span>Kapacita pro akce</span></div>
+        <div class="stat">
+          <i class="fa-solid fa-bowl-food stat-icon"></i>
+          <strong>99 Kč</strong>
+          <span>Denní menu</span>
+        </div>
+        <div class="stat">
+          <i class="fa-solid fa-beer-mug-empty stat-icon"></i>
+          <strong>4 druhy</strong>
+          <span>Čepovaného piva</span>
+        </div>
+        <div class="stat">
+          <i class="fa-solid fa-users stat-icon"></i>
+          <strong>50+ osob</strong>
+          <span>Kapacita pro akce</span>
+        </div>
+        <div class="stat">
+          <i class="fa-solid fa-clock stat-icon"></i>
+          <strong>11–22 hod</strong>
+          <span>Otevřeno dnes</span>
+        </div>
       </div>
     </div>
     <div class="hero-scroll" aria-hidden="true">
@@ -319,7 +334,8 @@ import { getUrl } from '../utils/paths.js';
     gap: var(--space-xl);
     flex-wrap: wrap;
   }
-  .stat { display: flex; flex-direction: column; }
+  .stat { display: flex; flex-direction: column; align-items: center; text-align: center; }
+  .stat-icon { font-size: 1.1rem; color: var(--clr-gold); opacity: 0.7; margin-bottom: 4px; }
   .stat strong {
     font-family: var(--font-display);
     font-size: 1.5rem;
@@ -509,8 +525,25 @@ import { getUrl } from '../utils/paths.js';
   }
   @media (max-width: 600px) {
     .food-grid { grid-template-columns: 1fr; }
-    .hero-stats { gap: var(--space-lg); }
-    .hero-ctas .btn { width: auto; }
+    /* 2x2 karta grid pro stats */
+    .hero-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-sm);
+      width: 100%;
+    }
+    .stat {
+      background: rgba(0,0,0,0.35);
+      border: 1px solid rgba(212,175,55,0.25);
+      border-radius: var(--radius-md);
+      padding: var(--space-md);
+      align-items: center;
+      text-align: center;
+    }
+    .stat strong { font-size: 1.3rem; }
+    .stat-divider { display: none; }
+    .hero-ctas { flex-direction: column; width: 100%; }
+    .hero-ctas .btn { width: 100%; justify-content: center; }
     .hero-subtitle { font-size: 18px; }
     .hero-main-title { font-size: 36px; }
     .hero-title { gap: 12px; }

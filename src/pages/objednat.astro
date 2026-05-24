@@ -7,26 +7,52 @@ import { readFileSync } from 'fs';
 import { join } from 'path';
 
 // Load daily menu with all sections
-let dm = { date:'', soups:[], bezlepkova:[], bezmasa:[], hotova:[], gril:[], salaty:[], dezerty:[] };
+let dm = { date:'', soups:[] as {name:string,price:string}[], bezlepkova:[] as {name:string,price:string}[], bezmasa:[] as {name:string,price:string}[], hotova:[] as {name:string,price:string}[], gril:[] as {name:string,price:string}[], salaty:[] as {name:string,price:string}[], dezerty:[] as {name:string,price:string}[] };
 try {
   const raw = readFileSync(join(process.cwd(),'content/daily-menu.md'),'utf8');
-  const fm = raw.match(/^---\n([\s\S]*?)\n---/);
-  const parseSection = (key: string) => {
-    const m = raw.match(new RegExp(key+':\n([\\s\\S]*?)(?=\\w+:|---)'));
-    return m ? m[1].split('\n').filter(l=>l.trim().startsWith('-')).map(l=>{
-      const [name,price]=l.replace(/^\s*-\s*/,'').split('|').map(s=>s.trim());
-      return {name,price:price||''};
-    }) : [];
+  // Normalize line endings
+  const lines = raw.replace(/\r\n/g, '\n').replace(/\r/g, '\n').split('\n');
+
+  // Extract frontmatter lines (between first and second ---)
+  let inFm = false, fmLines: string[] = [];
+  for (const line of lines) {
+    if (line.trim() === '---') { if (!inFm) { inFm = true; continue; } else break; }
+    if (inFm) fmLines.push(line);
+  }
+
+  // Parse simple YAML: find "key:" then collect "  - value | price" lines
+  const parseSection = (key: string): {name: string; price: string}[] => {
+    const result: {name: string; price: string}[] = [];
+    let collecting = false;
+    for (const line of fmLines) {
+      if (line.match(new RegExp('^' + key + '\\s*:'))) { collecting = true; continue; }
+      if (collecting) {
+        if (line.match(/^\s+-\s+/)) {
+          const text = line.replace(/^\s+-\s+/, '').trim();
+          const parts = text.split('|');
+          result.push({ name: parts[0].trim(), price: parts[1]?.trim() || '' });
+        } else if (line.match(/^\w/) || line.trim() === '') {
+          // New top-level key or blank line ends section
+          if (line.match(/^\w/)) collecting = false;
+        }
+      }
+    }
+    return result;
   };
-  if(fm) fm[1].split('\n').forEach(l=>{if(l.startsWith('date:'))dm.date=l.replace('date:','').trim().replace(/"/g,'');});
-  dm.soups=parseSection('soups');
-  dm.bezlepkova=parseSection('bezlepkova');
-  dm.bezmasa=parseSection('bezmasa');
-  dm.hotova=parseSection('hotova');
-  dm.gril=parseSection('gril');
-  dm.salaty=parseSection('salaty');
-  dm.dezerty=parseSection('dezerty');
-} catch(e){}
+
+  // Parse date
+  for (const line of fmLines) {
+    if (line.startsWith('date:')) { dm.date = line.replace('date:', '').trim().replace(/"/g, ''); break; }
+  }
+
+  dm.soups      = parseSection('soups');
+  dm.bezlepkova = parseSection('bezlepkova');
+  dm.bezmasa    = parseSection('bezmasa');
+  dm.hotova     = parseSection('hotova');
+  dm.gril       = parseSection('gril');
+  dm.salaty     = parseSection('salaty');
+  dm.dezerty    = parseSection('dezerty');
+} catch(e){ console.error('daily-menu parse error:', e); }
 
 const hasDailyItems = [
   ...dm.soups, ...dm.bezlepkova, ...dm.bezmasa, ...dm.hotova, ...dm.gril, ...dm.salaty, ...dm.dezerty
